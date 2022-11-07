@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'head' %}
+
+<link rel="stylesheet" href="{% static 'plataforma/css/plataforma.css' %}">
+
+
+{% endblock 'head' %}
+
+{% block 'body' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <br>
+                <a href="{% url 'home'%}" class="link-lateral">
+                    <div class="card-lateral btn-first bg-dark">
+                    <img src="{% static 'plataforma/img/saude.png' %}" weight='80' height='80'  >
+                    <br>
+                    <br>
+                    <h3>OMS</h3>
+                    </div>
+                    </a>
+                    <a href="#" class="link-lateral">
+                    <div class="card-lateral btn-first bg-dark">
+                    <img src="{% static 'plataforma/img/ne.png' %}" weight='80' height='80'>
+                    <br>
+                    <br>
+                    <h3>NOTAS DE EMPENHO</h3>
+                    </div>
+                    </a>
+                    <a href="#" class="link-lateral">
+                    <div class="card-lateral btn-first bg-dark">
+                    <img src="{% static 'plataforma/img/pregao.png' %}" weight='80' height='80'>
+                    <br>
+                    <br>
+                    <h3>PREGÕES</h3>
+                    </div>
+                    </a>
+                    
+            </div>
+            <div class="col-md-8">
+                {% block 'plataforma' %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock%}

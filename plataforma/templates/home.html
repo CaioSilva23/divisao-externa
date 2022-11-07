@@ -1,0 +1,58 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+    <br>
+    <button type="button" class="card-lateral bg-dark" data-toggle="modal" data-target="#modal">
+    CADASTRAR OM
+    </button>
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title titulo" id="exampleModalLabel">Cadastrar OM</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+        
+        <form action="{% url 'home'%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+        
+         <div class="row">
+        <div class="modal-body">
+            <table class="table shadow-lg bg-light bg-secondary " >
+                
+        
+                <thead class="table-dark">
+                <tr>
+                <th>OM</th>
+                <th>DESCRICAO</th>
+                <th>EMAIL</th>
+                <th>TELEFONE</th>
+                <th>INSIGNIAS</th>
+
+                </tr>
+                </thead>
+        
+                <tbody>
+                <tr>
+                <td>{{form_om.sigla}}</td>
+                <td>{{form_om.descricao}}</td>
+                <td>{{form_om.email}}</td>
+                <td>{{form_om.telefone}}</td>
+                <td>{{form_om.foto}}</td>
+        {% comment %}{% endcomment %} 
+                </th>
+                </tbody>
+                </table>
+        <br>
+        <input type="submit" class="btn btn-success btn-lg" value="Registar">
+        </form>
+        </div>
+        </div>
+        </div>
+        </div>
+
+{% endblock 'plataforma' %}
