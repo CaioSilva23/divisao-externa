@@ -51,3 +51,7 @@ def inserir_empenho(request, id):
             form_empenho.save()
         return redirect(f'/om_empenhos_id/{id}')
 
+
+def remover_empenho(request, id):
+    pass
+
