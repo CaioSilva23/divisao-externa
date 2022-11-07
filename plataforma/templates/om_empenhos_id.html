@@ -25,6 +25,7 @@
             <h6>{{i.telefone}}</h6>
         </div>
         {% endfor %}
+        <h1>{{om.sigla}}</h1>
     </div>
     <hr>
     <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modal">
@@ -46,7 +47,7 @@
 
             </tr>
             </thead>
-        
+
             <tbody >
             {% for i in empenhos %}
             <tr>
@@ -65,6 +66,7 @@
             {% endfor %}
             </tbody>
         </table>
+
         </div>
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -76,8 +78,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        
-                        <form action="{% url 'inserir_empenho'%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+                        {% for i in om %}
+                        <form action="{% url 'inserir_empenho' i.id%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
                             
                             <div class="row">
                                 <div class="modal-body"> 
@@ -116,8 +118,10 @@
                             <br>
                             <input type="submit" class="btn btn-success bg-dark" value="Registar">
                         </form>
+                        {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
+            
 {% endblock%}

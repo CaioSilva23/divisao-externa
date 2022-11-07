@@ -44,10 +44,10 @@ def om_empenhos_id(request, id):
 
 
 @login_required(login_url='/auth/logar/')
-def inserir_empenho(request):
+def inserir_empenho(request, id):
     if request.method == 'POST':
         form_empenho = EmpenhoForms(request.POST, request.FILES)
         if form_empenho.is_valid:
             form_empenho.save()
-        return redirect(f'/om_empenhos/')
+        return redirect(f'/om_empenhos_id/{id}')
 
