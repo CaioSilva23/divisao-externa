@@ -1,0 +1,123 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+    {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{message.tags}}">
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <br>
+    
+    <div class="row">
+        {% for i in om %}
+        
+        <div class="col-md-3">
+            <img src="{{ i.foto.url}}">
+            </div>
+            <div class="col-md-3 dados descricao">
+            <h4>{{i.sigla}}</h4>
+            <h6>{{i.email}}</h6>
+            <h6>{{i.telefone}}</h6>
+        </div>
+        {% endfor %}
+    </div>
+    <hr>
+    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modal">
+        Inserir Empenho
+    </button>
+    <br>
+    <br>
+    <div class='scroll'>
+        <table class="table ">
+            <thead class='table-dark '>
+            <tr>
+            <th>OM</th>
+            <th>FORNECEDOR</th>
+            <th>N°</th>
+            <th>ND</th>
+            <th>UG</th>
+            <th>PREGÃO</th>
+            <th>AÇÕES</th>
+
+            </tr>
+            </thead>
+        
+            <tbody >
+            {% for i in empenhos %}
+            <tr>
+                <td>{{i.om }}</td>
+                <td>{{i.fornecedor }}</td>
+                <td>{{i.numero}}</td>
+                <td>{{i.nd}}</td>
+                <td>{{i.ug }}</td>
+                <td>{{i.pregao}}</td>
+                <td> 
+                    <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer">ABRIR</a>
+                    <a href="#">REMOVER</a>  
+                </td>
+                
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header table-dark ">
+                        <h5 id="exampleModalLabel">INSERIR EMPENHO</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <form action="{% url 'inserir_empenho'%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="modal-body"> 
+                                        <div><label>OM: </label>
+                                        <div>{{form_empenho.om}}</div>
+                                        </div>
+                              
+                                        <div><label>FORNECEDOR: </label>
+                                        <div>{{form_empenho.fornecedor}}</div>
+                                        </div>
+                       
+                                        <div><label>NUMERO:</label>
+                                        <div>{{form_empenho.numero}}</div>
+                                        </div>
+              
+                                        <div><label>ND:</label>
+                                        <div>{{form_empenho.nd}}</div>
+                                        </div>
+                                        <div><label>UG: </label>
+                                        <div>{{form_empenho.ug}}</div>
+                                        </div>
+
+                                        <div><label>PREGÃO: </label>
+                                        <div>{{form_empenho.pregao}}</div>
+                                        </div>
+                                   
+                                        <div><label>DATA:</label>
+                                        <div>{{form_empenho.data}}</div>
+                                        </div>
+                                    
+                                        <div><label>PDF:</label>
+                                        <div>{{form_empenho.pdf}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <input type="submit" class="btn btn-success bg-dark" value="Registar">
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock%}

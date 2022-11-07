@@ -1,0 +1,41 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+    {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{message.tags}}">
+            {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <br>
+    <button type="button" class="btn btn-success bg-dark" data-toggle="modal" data-target="#modal">
+    SELECIONE UMA OMS
+    </button>
+
+    <br>
+    <br>
+    <div class="row">
+        {% for om in oms %}
+
+        <div class="col-md-3">
+            <br>
+            <a href="#" class="link-hover">
+                <div class="card-paciente">
+                    <div class="foto-perfil">
+                        <a href="{% url 'om_empenhos_id' om.id%}"><img src="{{ om.foto.url}}" height="150" width="100"></a>
+                    </div>
+                    <br>
+                        <p class="dados">{{ om.sigla}}</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+
+
+{% endblock 'plataforma' %}

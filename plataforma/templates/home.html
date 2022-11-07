@@ -3,56 +3,106 @@
 
 
 {% block 'plataforma' %}
+    {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{message.tags}}">
+            {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
     <br>
-    <button type="button" class="card-lateral bg-dark" data-toggle="modal" data-target="#modal">
+    <button type="button" class="btn btn-success bg-dark" data-toggle="modal" data-target="#modal">
     CADASTRAR OM
     </button>
+
+    <br>
+    <br>
+    <div class="row">
+        {% for om in oms %}
+        <br>
+        <div class="col-md-4">
+            <br>
+            <a href="#" class="link-hover">
+                <div class="card-paciente">
+                    <div class="foto-perfil">
+                        <a href="{% url 'dados_om_id' om.id %}"><img src="{{ om.foto.url}}" height="150" width="100"></a>
+                    </div>
+                    <br>
+                        <p class="dados">{{ om.sigla}}</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+        
+    </div>
+
+
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title titulo" id="exampleModalLabel">Cadastrar OM</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-        
-        <form action="{% url 'home'%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
-        
-         <div class="row">
-        <div class="modal-body">
-            <table class="table shadow-lg bg-light bg-secondary " >
-                
-        
-                <thead class="table-dark">
-                <tr>
-                <th>OM</th>
-                <th>DESCRICAO</th>
-                <th>EMAIL</th>
-                <th>TELEFONE</th>
-                <th>INSIGNIAS</th>
-
-                </tr>
-                </thead>
-        
-                <tbody>
-                <tr>
-                <td>{{form_om.sigla}}</td>
-                <td>{{form_om.descricao}}</td>
-                <td>{{form_om.email}}</td>
-                <td>{{form_om.telefone}}</td>
-                <td>{{form_om.foto}}</td>
-        {% comment %}{% endcomment %} 
-                </th>
-                </tbody>
-                </table>
-        <br>
-        <input type="submit" class="btn btn-success btn-lg" value="Registar">
-        </form>
-        </div>
-        </div>
-        </div>
+            <div class="modal-content">
+                <div class="modal-header table-dark ">
+                    <h5 id="exampleModalLabel">Cadastrar OM</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="{% url 'home'%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="modal-body"> 
+                                    <div><label>OM: </label>
+                                    <div>{{form_om.sigla}}</div>
+                                    </div>
+                                    <br>
+                                    <div><label>EMAIL: </label>
+                                    <div>{{form_om.email}}</div>
+                                    </div>
+                                    <br>
+                                    <div><label>TELEFONE:</label>
+                                    <div>{{form_om.telefone}}</div>
+                                    </div>
+                                    <br>
+                                    <div><label>INSIGNIAS:</label>
+                                    <div>{{form_om.foto}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <input type="submit" class="btn btn-success bg-dark" value="Registar">
+                    </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
 {% endblock 'plataforma' %}
+
+ {% comment %}
+                            <table class="table shadow-lg bg-light bg-secondary " >
+                                
+                        
+                                <thead class="table-dark">
+                                <tr>
+                                <th>OM</th>
+                                <th>DESCRICAO</th>
+                                <th>EMAIL</th>
+                                <th>TELEFONE</th>
+                                <th>INSIGNIAS</th>
+
+                                </tr>
+                                </thead>
+                        
+                                <tbody>
+                                <tr>
+                                <td>{{form_om.sigla}}</td>
+                                <td>{{form_om.descricao}}</td>
+                                <td>{{form_om.email}}</td>
+                                <td>{{form_om.telefone}}</td>
+                                <td>{{form_om.foto}}</td>
+                       
+                                </th>
+                                </tbody>
+                                </table>{% endcomment %} 
