@@ -53,8 +53,6 @@ def inserir_empenho(request, id):
             messages.add_message(request, constants.SUCCESS, 'Empenho inserido com sucesso')
         return redirect(f'/om_empenhos_id/{id}')
 
-
-<<<<<<< HEAD
 @login_required(login_url='/auth/logar/')
 def listar_empenhos(request):
     empenhos = Empenho.objects.all().order_by('numero')
@@ -67,8 +65,5 @@ def remover_empenho(request, id):
     id_om = empenho.om.id
     empenho.delete()
     return redirect(f'/om_empenhos_id/{id_om}')
-=======
-def remover_empenho(request, id):
-    pass
 
->>>>>>> 9af2c94f6acb90fa4161a02ed6a8d7bc7b17a6db
+
