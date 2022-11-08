@@ -55,7 +55,7 @@
                 <td>{{i.data}}</td>
                 <td> 
                     <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer">ABRIR</a>
-                    <a href="#">REMOVER</a>  
+                    <a href="{% url 'remover_empenho' i.id%}">REMOVER</a>  
                 </td>
                 
             </tr>
