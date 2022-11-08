@@ -51,7 +51,7 @@ text-align: center;
     padding-left: var(--bs-gutter-x, 0.75rem);
     margin-right: auto;
     margin-left: auto;
-
+}
 .navbar {
     position: relative;
     display: flex;
@@ -60,3 +60,4 @@ text-align: center;
     justify-content: space-between;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+}

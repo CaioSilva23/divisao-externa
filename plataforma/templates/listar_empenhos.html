@@ -1,0 +1,70 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+    {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{message.tags}}">
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <br>
+    
+    <div class="container">
+
+        <div class="col-md-3">
+            <img src="{% static 'plataforma/img/base.png'%} " width='100'>
+            </div>
+  
+<h1> B ADM CMPL SAU RJ </h1>
+       
+        
+    </div>
+    <hr>
+
+    <br>
+    <div class='scroll1'>
+        <table class="table ">
+            <thead class='table-dark '>
+            <tr>
+            <th>OM</th>
+            <th>FORNECEDOR</th>
+            <th>N°</th>
+            <th>ND</th>
+            <th>UG</th>
+            <th>PREGÃO</th>
+            <th>DATA</th>
+            <th>AÇÕES</th>
+
+
+            </tr>
+            </thead>
+
+            <tbody >
+            {% for i in empenhos %}
+            <tr>
+                <td>{{i.om }}</td>
+                <td>{{i.fornecedor }}</td>
+                <td>{{i.numero}}</td>
+                <td>{{i.nd}}</td>
+                <td>{{i.ug }}</td>
+                <td>{{i.pregao}}</td>
+                <td>{{i.data}}</td>
+                <td> 
+                    <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer">ABRIR</a>
+                    <a href="#">REMOVER</a>  
+                </td>
+                
+            </tr>
+            {% empty %}
+            <td> SEM EMPENHOS</td>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        </div>
+            
+{% endblock%}

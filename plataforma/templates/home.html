@@ -18,24 +18,20 @@
 
     <br>
     <br>
-    <div class="row">
+
+    <div class="row " style='padding: 20px;'> 
         {% for om in oms %}
-        <br>
-        <div class="col-md-4">
+        <div class="card col-md-2" style='margin: 4px;'>
             <br>
-            <a href="#" class="link-hover">
-                <div class="card-paciente">
-                    <div class="foto-perfil">
-                        <a href="{% url 'dados_om_id' om.id %}"><img src="{{ om.foto.url}}" height="150" width="100"></a>
-                    </div>
-                    <br>
-                        <p class="dados">{{ om.sigla}}</p>
-                </div>
-            </a>
+            <div class="card-header text-center bg-white ">
+                <a href="{% url 'dados_om_id' om.id%}"><img src="{{ om.foto.url}}" height="150" width="100"></a>
+            </div>
+            <div class="card-body text-center ">
+              <h5 class="card-title ">{{om.sigla}}</h5>
+            </div>
         </div>
         {% endfor %}
-        
-    </div>
+        </div>
 
 
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -79,30 +75,3 @@
         </div>
 
 {% endblock 'plataforma' %}
-
- {% comment %}
-                            <table class="table shadow-lg bg-light bg-secondary " >
-                                
-                        
-                                <thead class="table-dark">
-                                <tr>
-                                <th>OM</th>
-                                <th>DESCRICAO</th>
-                                <th>EMAIL</th>
-                                <th>TELEFONE</th>
-                                <th>INSIGNIAS</th>
-
-                                </tr>
-                                </thead>
-                        
-                                <tbody>
-                                <tr>
-                                <td>{{form_om.sigla}}</td>
-                                <td>{{form_om.descricao}}</td>
-                                <td>{{form_om.email}}</td>
-                                <td>{{form_om.telefone}}</td>
-                                <td>{{form_om.foto}}</td>
-                       
-                                </th>
-                                </tbody>
-                                </table>{% endcomment %} 

@@ -39,7 +39,7 @@
             <tr>
             <th>OM</th>
             <th>FORNECEDOR</th>
-            <th>N°</th>
+            <th>NE</th>
             <th>ND</th>
             <th>UG</th>
             <th>PREGÃO</th>
@@ -53,16 +53,18 @@
             <tr>
                 <td>{{i.om }}</td>
                 <td>{{i.fornecedor }}</td>
-                <td>{{i.numero}}</td>
+                <td>2022NE000{{i.numero}}</td>
                 <td>{{i.nd}}</td>
                 <td>{{i.ug }}</td>
                 <td>{{i.pregao}}</td>
                 <td> 
                     <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer">ABRIR</a>
-                    <a href="#">REMOVER</a>  
+                    <a href="{% url 'remover_empenho' i.id%}">REMOVER</a>  
                 </td>
                 
             </tr>
+            {% empty %}
+            <td> SEM EMPENHOS</td>
             {% endfor %}
             </tbody>
         </table>

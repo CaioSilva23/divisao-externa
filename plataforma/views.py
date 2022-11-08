@@ -5,6 +5,7 @@ from .models import Om, Empenho
 from .forms import OmForms, EmpenhoForms
 from django.contrib import messages
 from django.contrib.messages import constants
+from datetime import date
 
 
 
@@ -38,7 +39,7 @@ def om_empenhos(request):
 @login_required(login_url='/auth/logar/')
 def om_empenhos_id(request, id):
     om = Om.objects.filter(id=id)
-    empenhos = Empenho.objects.filter(om_id=id)
+    empenhos = Empenho.objects.filter(om_id=id).order_by('numero')
     form_empenho = EmpenhoForms()
     return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'form_empenho':form_empenho})
 
@@ -49,5 +50,19 @@ def inserir_empenho(request, id):
         form_empenho = EmpenhoForms(request.POST, request.FILES)
         if form_empenho.is_valid:
             form_empenho.save()
+            messages.add_message(request, constants.SUCCESS, 'Empenho inserido com sucesso')
         return redirect(f'/om_empenhos_id/{id}')
 
+
+@login_required(login_url='/auth/logar/')
+def listar_empenhos(request):
+    empenhos = Empenho.objects.all().order_by('numero')
+    return render(request, 'listar_empenhos.html',{'empenhos': empenhos})
+
+
+@login_required(login_url='/auth/logar/')
+def remover_empenho(request, id):
+    empenho = Empenho.objects.get(id=id)
+    id_om = empenho.om.id
+    empenho.delete()
+    return redirect(f'/om_empenhos_id/{id_om}')

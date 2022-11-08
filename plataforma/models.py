@@ -8,6 +8,10 @@ class Om(models.Model):
         ('IBEX', 'IBEX'),
         ('HCE', 'HCE'),
         ('OCEX', 'OCEX'),
+        ('HMR', 'HMR'),
+        ('HGERJ', 'HGERJ'),
+        ('PM Gu VV', 'PM Gu VV'),
+        ('LQFEX', 'LQFEX'),
         )
 
     sigla = models.CharField(max_length=10, choices=LISTA_OMS)
@@ -48,4 +52,4 @@ class Empenho(models.Model):
     
 
     def __str__(self):
-        return str(self.numero)
+        return self.fornecedor
