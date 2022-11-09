@@ -1,0 +1,34 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+    {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{message.tags}}">
+            {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <br>
+    <button type="button" class="btn btn-success bg-dark" data-toggle="modal" data-target="#modal">
+    PREGÕES
+    </button>
+<a href="#">
+        <button type="button" class="btn btn-success bg-dark" action='#'>
+        
+        </button>
+</a>
+
+    <br>
+    <br>
+
+        <div> 
+         <iframe src="" frameborder="0">
+            {{ tabela.to_html }}
+         </iframe>
+          
+        </div>
+
+{% endblock 'plataforma' %}

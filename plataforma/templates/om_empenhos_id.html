@@ -14,17 +14,16 @@
     <br>
     
     <div class="row">
-        {% for i in om %}
-        
+
         <div class="col-md-3">
-            <img src="{{ i.foto.url}}">
+            <img src="{{ om.foto.url}}">
             </div>
             <div class="col-md-3 dados descricao">
-            <h4>{{i.sigla}}</h4>
-            <h6>{{i.email}}</h6>
-            <h6>{{i.telefone}}</h6>
+            <h4>{{om.sigla}}</h4>
+            <h6>{{om.email}}</h6>
+            <h6>{{om.telefone}}</h6>
         </div>
-        {% endfor %}
+     
         <h1>{{om.sigla}}</h1>
     </div>
     <hr>
@@ -34,7 +33,8 @@
     <br>
     <br>
     <div class='scroll'>
-        <table class="table ">
+        <table class="table table-striped table-bordered table-hover table-sm ">
+            <caption>Lista de Empenhos</caption>
             <thead class='table-dark '>
             <tr>
             <th>OM</th>
@@ -46,12 +46,12 @@
             <th>AÇÕES</th>
 
             </tr>
-            </thead>
+            </thead >
 
-            <tbody >
+            <tbody>
             {% for i in empenhos %}
             <tr>
-                <td>{{i.om }}</td>
+                <td>{{i.om}}</td>
                 <td>{{i.fornecedor }}</td>
                 <td>2022NE000{{i.numero}}</td>
                 <td>{{i.nd}}</td>
@@ -80,8 +80,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        {% for i in om %}
-                        <form action="{% url 'inserir_empenho' i.id%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+                       
+                        <form action="{% url 'inserir_empenho' om.id%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
                             
                             <div class="row">
                                 <div class="modal-body"> 
@@ -120,7 +120,7 @@
                             <br>
                             <input type="submit" class="btn btn-success bg-dark" value="Registar">
                         </form>
-                        {% endfor %}
+                  
                         </div>
                     </div>
                 </div>

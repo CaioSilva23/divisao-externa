@@ -9,7 +9,7 @@ from datetime import date
 
 
 
-@login_required(login_url='/auth/logar/') # SÓ TEM ACESSO A HOME, USUÁRIOS LOGADOS
+@login_required(login_url='/auth/logar/') 
 def home(request):
     if request.method == 'POST':
         form_om = OmForms(request.POST, request.FILES)
@@ -38,7 +38,7 @@ def om_empenhos(request):
 
 @login_required(login_url='/auth/logar/')
 def om_empenhos_id(request, id):
-    om = Om.objects.filter(id=id)
+    om = Om.objects.get(id=id)
     empenhos = Empenho.objects.filter(om_id=id).order_by('numero')
     form_empenho = EmpenhoForms()
     return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'form_empenho':form_empenho})
@@ -64,6 +64,12 @@ def remover_empenho(request, id):
     empenho = Empenho.objects.get(id=id)
     id_om = empenho.om.id
     empenho.delete()
+    messages.add_message(request, constants.SUCCESS, 'Empenho deletado com sucesso')
     return redirect(f'/om_empenhos_id/{id_om}')
 
+import pandas as pd 
+def pregoes(request):
+    tabela = pd.read_excel('Pregão 04.2022.xlsx')
 
+
+    return render(request, 'pregoes.html', {'tabela': tabela})
