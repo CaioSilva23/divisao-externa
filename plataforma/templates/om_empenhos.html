@@ -12,11 +12,11 @@
         {% endfor %}
     {% endif %}
     <br>
-    <button type="button" class="btn btn-success bg-dark" data-toggle="modal" data-target="#modal">
+     <button type="button" class="btn btn-outline-success " data-toggle="modal" data-target="#modal">
     SELECIONE UMA OMS
     </button>
 <a href="{% url 'listar_empenhos'%}">
-        <button type="button" class="btn btn-success bg-dark" action='{% url 'listar_empenhos'%}'>
+        <button type="button" class="btn btn-outline-success " action='{% url 'listar_empenhos'%}'>
         LISTAR TODOS OS EMPENHOS
         </button>
 </a>
@@ -27,13 +27,13 @@
         <div class="row " style='padding: 20px;'> 
         {% for om in oms %}
         <div class="card col-md-2" style='margin: 4px;'>
-            <br>
+          
             <div class="card-header text-center bg-white ">
-                <img src="{{ om.foto.url}}" height="150" width="100">
+                <img src="{{ om.foto.url}}" height="150" width="100" class='card-img-'>
             </div>
             <div class="card-body text-center ">
               <h5 class="card-title ">{{om.sigla}}</h5>
-              <a href="{% url 'om_empenhos_id' om.id%}" class='btn btn-secondary'>EMPENHOS</a> 
+              <a href="{% url 'om_empenhos_id' om.id%}" class='btn btn-dark'>EMPENHOS</a> 
             </div>
         </div>
         {% endfor %}

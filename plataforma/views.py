@@ -67,9 +67,6 @@ def remover_empenho(request, id):
     messages.add_message(request, constants.SUCCESS, 'Empenho deletado com sucesso')
     return redirect(f'/om_empenhos_id/{id_om}')
 
-import pandas as pd 
+
 def pregoes(request):
-    tabela = pd.read_excel('Pregão 04.2022.xlsx')
-
-
-    return render(request, 'pregoes.html', {'tabela': tabela})
+    return render(request, 'pregoes.html')
