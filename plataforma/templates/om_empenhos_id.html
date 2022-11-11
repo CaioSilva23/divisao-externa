@@ -28,11 +28,31 @@
         <h1>{{om.sigla}}</h1>
     </div>
     <hr>
-    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modal">
+    <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#modal">
         Inserir Empenho
     </button>
     <br>
     <br>
+    <form>
+        <div class="row" action="{% url 'inserir_empenho' om.id%}" method="GET">
+            
+                <div class="col-md-4">
+                    <input type="text" placeholder="Busque pelo fornecedor" class="form-control" name="fornecedor">
+                </div>
+
+                <div class="col-md-4">
+                    <input type="text" placeholder="Busque pelo n° empenho" class="form-control" name="numero_empenho">
+                </div>
+
+
+
+            <div class="col-md-3">
+                <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark">
+            </div>
+        </div>
+        </form>
+    <br>
+    
     <div class='scroll'>
         <table class="table table-striped table-bordered table-hover table-sm ">
             <caption>Lista de Empenhos</caption>
@@ -59,10 +79,39 @@
                 <td>{{i.ug }}</td>
                 <td>{{i.pregao}}</td>
                 <td> 
-                    <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer">ABRIR</a>
-                    <a href="{% url 'remover_empenho' i.id%}">REMOVER</a>  
+                    <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer"><button type="button" class="btn btn-outline-dark btn-sm">
+                        ABRIR
+                        </button></a>
+
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+                        REMOVER
+                        </button>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">REMOVER</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  Tem certeza que deseja remover este EMPENHO ?
+                                </div>
+                                
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">NÃO</button>
+                                  <a href="{% url 'remover_empenho' i.id%}"><button type="button" class="btn btn-danger">DELETAR</button></a>
+                               
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                 </td>
-                
+                {% comment %}{% url 'remover_empenho' i.id%}{% endcomment %}
+      
+
+
             </tr>
             {% empty %}
             <td> SEM EMPENHOS</td>
@@ -71,7 +120,8 @@
         </table>
 
         </div>
-        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header table-dark ">
@@ -127,5 +177,8 @@
                     </div>
                 </div>
             </div>
+         
+
+
             
 {% endblock%}

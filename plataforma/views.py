@@ -38,10 +38,15 @@ def om_empenhos(request):
 
 @login_required(login_url='/auth/logar/')
 def om_empenhos_id(request, id):
-    om = Om.objects.get(id=id)
-    empenhos = Empenho.objects.filter(om_id=id).order_by('numero')
-    form_empenho = EmpenhoForms()
-    return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'form_empenho':form_empenho})
+    try:
+        om = Om.objects.get(id=id)
+        empenhos = Empenho.objects.filter(om_id=id).order_by('numero')
+        form_empenho = EmpenhoForms()  
+        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'form_empenho':form_empenho})
+    except:
+        form_empenho = EmpenhoForms()    
+        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'form_empenho':form_empenho})
+
 
 
 @login_required(login_url='/auth/logar/')
@@ -55,8 +60,25 @@ def inserir_empenho(request, id):
 
 @login_required(login_url='/auth/logar/')
 def listar_empenhos(request):
+    om_list = Om.objects.all()
     empenhos = Empenho.objects.all().order_by('numero')
-    return render(request, 'listar_empenhos.html',{'empenhos': empenhos})
+    try:
+        fornecedor = request.GET.get('fornecedor')
+        numero_empenho = request.GET.get('numero_empenho')
+        oms = request.GET.get('om_select')
+
+        fornecedor = fornecedor.upper()
+
+
+        if fornecedor:
+            empenhos = Empenho.objects.filter(fornecedor__icontains=fornecedor).order_by('numero')
+        if numero_empenho:
+            empenhos = Empenho.objects.filter(numero=numero_empenho).order_by('numero')
+        if oms:
+            empenhos = Empenho.objects.filter(om=oms).order_by('numero')
+        return render(request, 'listar_empenhos.html',{'empenhos': empenhos, 'om_list': om_list})
+    except:
+            return render(request, 'listar_empenhos.html',{'empenhos': empenhos,'om_list': om_list})
 
 
 @login_required(login_url='/auth/logar/')
@@ -67,6 +89,13 @@ def remover_empenho(request, id):
     messages.add_message(request, constants.SUCCESS, 'Empenho deletado com sucesso')
     return redirect(f'/om_empenhos_id/{id_om}')
 
+
+
+def deletar_om(request, id):
+    om_del = Om.objects.get(id=id)
+    om_del.delete()
+    messages.add_message(request, constants.SUCCESS, 'OM deletada com sucesso')
+    return redirect ('/home/')
 
 def pregoes(request):
     return render(request, 'pregoes.html')
