@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="{% static 'autenticacao/css/login.css' %}">
     <link rel="stylesheet" href="{% static 'autenticacao/css/util.css' %}">
+    <link rel="stylesheet" href="{% static 'autenticacao/css/login.css' %}">
+    
     <title>Document</title>
 </head>
 <body class='fundo'>
@@ -40,7 +40,9 @@
                 <span class="bold">Senha</span>
                 <input class="form-control input-form" name="senha" type="password" placeholder="Digite sua senha...">
                 <br>
-                <button class="btn-first bg-dark">ENTRAR</button>
+                <button class="btn bg-white text-black">ENTRAR</button>
+                <br>
+                <br>
             </form>
         </div>
         <br>
@@ -49,6 +51,8 @@
         </div>
     </div>
 </div>
+<br>
+<div></div>
 {% include 'footer.html' %}
 </body>
 </html>
