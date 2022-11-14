@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.contrib import auth
 
 
+def home_auth(request):
+    return render(request, 'home_auth.html')
+
 def logar(request):
     if request.method == "GET":
         if request.user.is_authenticated: # VERIFICA SE O USUÁRIO JÁ ESTÁ AUTENTICADO

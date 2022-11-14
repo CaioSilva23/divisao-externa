@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https: //fonts.googleapis.com/css2? family= Roboto:wght@900 & display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'autenticacao/css/home.css'%}">
+    <link rel="shortcut icon" href="{% static 'autenticacao/img/base.png'%}" type="image/x-icon">
+    <title>DIV ADM EXT</title>
+</head>
+<body>
+    <header>
+        <navbar id="navbar">
+            <div class="navbar-container">
+                <img src="{% static 'autenticacao/img/base.png'%}" class="logo">
+                <ul class="nav-items">
+                    <li class="nav-item">INTRANET</li>
+                    <li class="nav-item">SISCAU</li>
+                    <li class="nav-item">CONTATO</li>
+                    <a href="{% url 'logar'%}"><li class="nav-item">ENTRAR</li></a>
+                </ul>
+            </div>
+        </navbar>
+    </header>
+    <main class="showcase">
+        <section class="showcase-container">
+                <img src="{% static 'autenticacao/img/base.png'%}" class="logo-home">
+            <h2> B ADM CMPL SAU RJ</h2>
+            <p>SISTEMA DE CONTROLE DE PREGÕES E EMPENHOS</p>
+            <div class="">         
+                <a href="{% url 'logar'%}"><button class="btn-home">ENTRAR</button></a> 
+
+                <button class="btn-home">VISITANTE</button>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="p-item">&copy; 2022 Cb CAIO - DIV ADM EXT</p>
+        </div>
+    </footer>
+</body>
+</html>

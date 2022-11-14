@@ -25,7 +25,7 @@ div.fundo{
 }
 body.fundo{
     background-image:url('http://127.0.0.1:8000/static/autenticacao/img/rj1.jpg');
-    background-repeat: no-repeat;
+    background-repeat: initial;
     background-attachment: scroll;
     background-size: 100%
 
