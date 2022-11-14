@@ -1,0 +1,219 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.body-b{
+    font-family: 'Roboto', sans-serif;
+    background: url("../img/rj1.jpg") center center/cover;
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: color;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.logo{
+    height: 50px;
+    width: auto;
+}
+
+.logo{
+    cursor: pointer;
+
+}    
+
+
+.btn-home{
+    background-color: rgb(66, 66, 60);
+    padding: 20px 50px; /* ESPACO INTERNO - 15 EM CIMA E BAIXO, 50 NO LADOS*/
+    border: none; /* TIRA AS BORDAS*/
+    border-radius: 10px; /* ARRENDAMENTO*/
+    letter-spacing: 1px; /* ESPAÇO ENTRE AS LETRAS*/
+    font-weight: bold;
+    transition: all 300ms ease;
+    color: white;
+    font-size:medium;
+}
+
+.btn-home:hover{
+    background: green;
+    cursor: pointer;
+}
+
+#navbar-inicial{
+    display: flex;
+    color: white;
+    background-color: rgb(44, 46, 45);
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+
+}
+
+.navbar-conteudo{
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+.ul-ul{
+    display: flex;
+    list-style: none;
+    font-weight: bold;
+}
+
+.li-li{
+    padding: 0 20px;
+    transition: all 300ms ease;
+}
+
+.li-li:hover{
+    color: green;
+    cursor: pointer;
+}
+
+.li-li:nth-child(3){
+    border-right: 1px solid white;
+
+}
+.a-a:visited{
+    color: white;
+}
+.a-a:link{
+    text-decoration: none
+    
+}
+.a-a:hover{
+    color: green;
+    cursor: pointer;
+}
+
+.main-inicial{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding-bottom: 40px;
+}
+
+.main-conteudo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.logo-home{
+    height: 200px;
+    width: auto;
+    padding-bottom: 20px;
+
+}
+
+
+.h2-h{
+    font-size: 5rem;
+}
+.p-p{
+    margin: 20px;
+    font-size: 1.4rem;
+ 
+}
+
+.footer-inicial{
+    display: flex;
+    color: white;
+    background-color: rgb(44, 46, 45);
+    justify-content: center;
+    width: 100%;
+    padding: 10px 0;
+
+
+}
+
+.footer-conteudo{
+    display: flex;
+    margin: auto;
+
+}
+
+.p-item{
+    margin: 5px 0;
+    font-size: 1rem;
+
+}
+
+
+/*formulario*/
+
+.form-inicial{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding-bottom: 40px;
+}
+
+.conteudo{
+    color: black;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow:  0  2px 5px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    max-width: 80%;
+}
+
+
+
+.conteudo h2{
+    font-size: 2rem;
+}
+
+.form-cabeca{
+    color: white;
+    background-color: rgb(44, 46, 45);
+    padding: 20px;
+    text-align: center;
+
+}
+
+.formulario{
+    padding: 20px;
+}
+
+.form-controle{
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.form-controle label{
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.form-controle input{
+    border: 2px solid #f0f0f0;
+    display: block;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    padding: 10px;
+}
+
+
+.formulario button{
+    color: white;
+    background-color: rgb(44, 46, 45);
+    border: 0;
+    width: 100%;
+    border-radius: 5px;
+    padding: 15px;
+    font-weight: bold;
+}
+.sub-titulo{
+    color: gray;
+}

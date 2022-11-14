@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.messages import constants
 from django.contrib import messages
+from django.contrib.messages import constants
 from django.contrib import auth
 
 

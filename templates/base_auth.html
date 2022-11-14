@@ -1,0 +1,52 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https: //fonts.googleapis.com/css2? family= Roboto:wght@900 & display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'autenticacao/img/base.png'%}" type="image/x-icon">
+    {% block 'head' %}{% endblock %}
+    <title>{% block 'titulo' %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'autenticacao/css/style.css'%}">
+
+</head>
+<body class='body-b'>
+    <navbar id="navbar-inicial">
+        <div class="navbar-conteudo">
+            <a href="{% url 'home_auth'%}"><img src="{% static 'autenticacao/img/base.png'%}" class="logo"></a>
+            <ul class="nav-items ul-ul">
+                <li class="nav-item li-li"><a class='a-a' href="#">INTRANET</a></li>
+                <li class="nav-item li-li"><a class='a-a' href="#">SISCAU</a></li>
+                <li class="nav-item li-li"><a class='a-a' href="#">CONTATO</a></li>
+                <li class="nav-item li-li"><a class='a-a' href="{% url 'logar'%}">ENTRAR</a></li>
+                
+            </ul>
+        </div>
+    </navbar>
+
+
+    {% comment %}
+          {% if user.is_authenticated %}
+
+  {% else %}
+    {% include 'navbar.html' %}
+  {% endif %}
+    {% endcomment %}
+
+  {% block 'body' %}{% endblock %}
+  <footer class="footer-inicial">
+    <div class="footer-conteudo">
+        <p class="p-item p-p">&copy; 2022 Cb CAIO - DIV ADM EXT</p>
+    </div>
+</div>
+
+</footer>
+
+</body>
+</html>

@@ -1,67 +1,50 @@
-<!DOCTYPE html>
+{% extends 'base_auth.html' %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https: //fonts.googleapis.com/css2? family= Roboto:wght@900 & display=swap" rel="stylesheet">
+
+{% block 'head' %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+{% endblock %}
+
+{% block 'titulo' %}LOGIN{% endblock %}
+
+
+    {% block 'body' %}
+
+
     
-    <link rel="stylesheet" href="{% static 'autenticacao/css/login.css'%}">
-    <link rel="shortcut icon" href="{% static 'autenticacao/img/base.png'%}" type="image/x-icon">
+            <main class="form-inicial">
+                <div class="conteudo">
+                    <div class="form-cabeca">
+                        <h2 class='h2-h'>DIV ADM EXT</h2>
 
-    <title>LOGIN</title>
-</head>
-<body>
-
-            {% if messages %}
-                <br>
-                {% for message in messages %}
-                    <div class="alert {{message.tags}}">
-                        {{message}}
                     </div>
-                {% endfor %}
-            {% endif %}
+                    
+                    <p class="sub-titulo p-p">Entre com sua conta</p>
 
-    <header>
-        <navbar id="navbar">
-            <div class="navbar-container">
-                <img src="{% static 'autenticacao/img/base.png'%}" class="logo">
-                <ul class="nav-items">
-                    <li class="nav-item">INTRANET</li>
-                    <li class="nav-item">SISCAU</li>
-                    <li class="nav-item">CONTATO</li>
-                    <a href="{% url 'home_auth'%}"><li class="nav-item">VOLTAR</li></a>
-                </ul>
-            </div>
-        </navbar>
-        <main class="form-content">
-            <div class="container">
-                <div class="form-header">
-                    <h2>DIV ADM EXT</h2>
-                </div>
-                <p class="sub-titulo">Entre com sua conta</p>
-                <form id="form" class="form" action="{% url 'logar'%}" method="POST">{% csrf_token %}
-                    <div class="form-control">
-                        <label for="">Nome de usuário</label>
-                        <input type="text" name="usuario" placeholder="Digite seu nome de usuário">
-                    </div>
-                    <div class="form-control">
-                        <label for="">Senha</label>
-                        <input type="password" name="senha" placeholder="Digite sua senha">
-                    </div>
-                    <button type="submit" class="btn-home">ENTRAR</button>
-                </form>
-            </main>
-            <footer class="footer">
-                <div class="footer-content">
-                    <p class="p-item">&copy; 2022 Cb CAIO - DIV ADM EXT</p>
-                </div>
-            </div>
+                    <form class="formulario" action="{% url 'logar'%}" method="POST">{% csrf_token %}
+                        <div class="form-controle">
+                            <label for="">Nome de usuário</label>
+                            <input type="text" name="usuario" placeholder="Digite seu nome de usuário">
+                        </div>
+                        <div class="form-controle">
+                            <label for="">Senha</label>
+                            <input type="password" name="senha" placeholder="Digite sua senha">
+                        </div>
+                        {% if messages %}
+                    <br>
+                    {% for message in messages %}
+                        <div class="alert {{message.tags}}">
+                            {{message}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                        <button type="submit" class="btn-home">ENTRAR</button>
+                    </form>
 
-        </footer>
+                </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" ></script>
+    {% endblock %}
 
-</body>
-</html>
