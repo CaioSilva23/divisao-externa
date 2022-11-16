@@ -75,17 +75,18 @@ def listar_empenhos(request):
     try:
         fornecedor = request.GET.get('fornecedor')
         numero_empenho = request.GET.get('numero_empenho')
-        oms = request.GET.get('om_select')
+        om_filtrar = request.GET.get('om_select')
 
         fornecedor = fornecedor.upper()
 
-
+        print(om_filtrar)
         if fornecedor:
             empenhos = Empenho.objects.filter(fornecedor__icontains=fornecedor).order_by('numero')
         if numero_empenho:
             empenhos = Empenho.objects.filter(numero=numero_empenho).order_by('numero')
-        # if oms:
-        #     empenhos = Empenho.objects.filter(om=oms).order_by('numero')
+        if om_filtrar:
+            empenhos = Empenho.objects.filter(om=om_filtrar).order_by('numero')
+
         return render(request, 'listar_empenhos.html',{'empenhos': empenhos, 'om_list': om_list})
     except:
             return render(request, 'listar_empenhos.html',{'empenhos': empenhos,'om_list': om_list})
