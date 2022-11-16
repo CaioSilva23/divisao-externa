@@ -28,7 +28,7 @@
         <h1>{{om.sigla}}</h1>
     </div>
     <hr>
-    <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#modal">
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal">
         Inserir Empenho
     </button>
     <br>
@@ -78,36 +78,18 @@
                 <td>{{i.nd}}</td>
                 <td>{{i.ug }}</td>
                 <td>{{i.pregao}}</td>
-                <td>{{i.id}}
                 <td> 
                     <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer"><button type="button" class="btn btn-outline-dark btn-sm">
                         ABRIR
                         </button></a>
 
-                    <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
-                        REMOVER
-                        </button>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">REMOVER</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  Tem certeza que deseja remover este EMPENHO ?
-                                </div>
-                                
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">NÃO</button>
-                                  <a href="{% url 'remover_empenho' i.id%}"><button type="button" class="btn btn-danger">DELETAR</button></a>
-                               
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                        <a href="{% url 'remover_empenho' i.id%}" rel="noopener noreferrer"><button type="button" class="btn btn-outline-dark btn-sm">
+                            REMOVER
+                            </button></a>
+                    </div>
+                    </div>
+                </div>
+                </div>
                 </td>
                 {% comment %}{% url 'remover_empenho' i.id%}{% endcomment %}
       

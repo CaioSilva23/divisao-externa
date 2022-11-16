@@ -42,15 +42,14 @@ def om_empenhos_id(request, id):
     empenhos = Empenho.objects.filter(om_id=id).order_by('numero')
     
     try:
-        # fornecedor = request.GET.get('fornecedor')
-        # numero_empenho = request.GET.get('numero_empenho')
-        # if fornecedor:
-        #     empenhos = Empenho.objects.filter(fornecedor__icontains=fornecedor).order_by('numero')
-        # lista = []
-        # for i in empenhos:
-        #     if i.om.id == id:
-        #         lista.append(i)
-        # empenhos
+        fornecedor = request.GET.get('fornecedor')
+        numero_empenho = request.GET.get('numero_empenho')
+        if fornecedor:
+            empenhos = Empenho.objects.filter(fornecedor__icontains=fornecedor).order_by('numero')
+            empenhos = empenhos.filter(om_id=id).order_by('numero')
+
+        if numero_empenho:
+            empenhos = Empenho.objects.filter(numero=numero_empenho)
         form_empenho = EmpenhoForms()  
         return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'form_empenho':form_empenho})
     except:

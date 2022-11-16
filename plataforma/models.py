@@ -18,6 +18,10 @@ class Om(models.Model):
     foto = models.ImageField(upload_to="imagens")
     email = models.EmailField(null=True)
     telefone = models.IntegerField(null=True)
+    ch_almox = models.CharField(max_length=10, null=True, blank=True)
+    tel_ch_almox = models.CharField(max_length=15, null=True, blank=True)
+    adj_almox = models.CharField(max_length=10, null=True, blank=True)
+    tel_adj_almox = models.CharField(max_length=15, null=True, blank=True)
 
     def __str__(self):
         return self.sigla
