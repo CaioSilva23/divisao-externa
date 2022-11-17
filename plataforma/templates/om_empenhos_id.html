@@ -118,40 +118,52 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                       
                         <form action="{% url 'inserir_empenho' om.id%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
                             
                             <div class="row">
                                 <div class="modal-body"> 
-                                        <div><label>OM: </label>
-                                        <div>{{form_empenho.om}}</div>
-                                        </div>
-                              
-                                        <div><label>FORNECEDOR: </label>
-                                        <div>{{form_empenho.fornecedor}}</div>
-                                        </div>
-                       
-                                        <div><label>NUMERO:</label>
-                                        <div>{{form_empenho.numero}}</div>
-                                        </div>
-              
-                                        <div><label>ND:</label>
-                                        <div>{{form_empenho.nd}}</div>
-                                        </div>
-                                        <div><label>UG: </label>
-                                        <div>{{form_empenho.ug}}</div>
-                                        </div>
 
-                                        <div><label>PREGÃO: </label>
-                                        <div>{{form_empenho.pregao}}</div>
-                                        </div>
-                                   
-                                        <div><label>DATA:</label>
-                                        <div>{{form_empenho.data}}</div>
-                                        </div>
+                                        <label>OM: </label>                                        
+                                        <select name="om" class="form-control">
+                                            <option value="{{om.id}}">{{om.sigla}}</option>
+                                        </select>
+
+
+                                        <label>FORNECEDOR: </label>
+                                        <select name="fornecedor" class="form-control">
+                                            {% for forn in  fornecedor%}
+                                            <option value="{{forn.id}}">{{forn.nome}}</option>
+                                            {% endfor %}
+                                        </select>
+                             
+                       
+                                        <label>NUMERO:</label>
+                                        <input type="text" placeholder="0" class="form-control" name="numero_empenho">
                                     
-                                        <div><label>PDF:</label>
-                                        <div>{{form_empenho.pdf}}</div>
+                                        <label>ND:</label>
+                                            <select name="nd" class="form-control">
+                                                <option value="" selected=""></option>
+                                                <option value="30">30</option>
+                                                <option value="39">39</option>
+                                                <option value="52">52</option>
+                                        </select>
+                                        
+                                        <label>UG: </label>
+                                            <select name="ug" class="form-control">
+                                                <option value="160242">160242</option>
+                                                <option value="167242">167242</option>
+                                        </select>
+   
+                                        <label>PREGÃO: </label>
+                                        <input type="text" placeholder="" class="form-control" name="pregao">
+                                        
+                                   
+                                        <label>DATA:</label>
+                                        <input type="date" class="form-control" name="data">
+                                        
+                                    
+                                        <label class="required" for="#">Pdf:</label>
+                                        <input type="file" name="pdf" required="" id="">
                                     </div>
                                 </div>
                             </div>

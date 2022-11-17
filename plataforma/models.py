@@ -1,5 +1,6 @@
 from django.db import models
-
+from datetime import date
+from django.utils.timezone import now
 class Om(models.Model):
     LISTA_OMS = (
         ('PMPV', 'PMPV'),
@@ -40,8 +41,8 @@ class Fornecedor(models.Model):
 class Empenho(models.Model):
     LISTA_ND = (
         ("30", '30'),
-        ("39", '30'),
-        ("52", '30'),
+        ("39", '39'),
+        ("52", '52'),
     )
 
     LISTA_UG = (
@@ -55,7 +56,7 @@ class Empenho(models.Model):
     ug = models.CharField(max_length=6,choices=LISTA_UG)
     pregao = models.CharField(max_length=8)
     data = models.DateField()
-    numero = models.IntegerField()
+    numero = models.CharField(max_length=4)
     pdf = models.FileField(upload_to="pdf")
     
 
