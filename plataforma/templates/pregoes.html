@@ -11,24 +11,83 @@
             </div>
         {% endfor %}
     {% endif %}
-    <br>
-    <button type="button" class="btn btn-success bg-dark" data-toggle="modal" data-target="#modal">
+    {% comment %}
+        <button type="button" class="btn btn-success bg-dark" data-toggle="modal" data-target="#modal">
     PREGÕES
     </button>
 <a href="#">
         <button type="button" class="btn btn-success bg-dark" action='#'>
         
         </button>
-</a>
+</a> 
+    {% endcomment %}
+    <div class="wrapper">
+        <div class="box"> 
+            <div class="header-box">
+                {% if messages %}
+                    {% for message in messages %}
+                        <section class="alert {{message.tags}}">
+                            {{message}}
+                        </section>
+                    {% endfor %}
+                {% endif %}
+                <h2 class="titulo">PREGÕES</h2>
+                
+                <a href='#' class="btn-nova-empresa btn-dark">NOVO PREGÃO</a>
+            </div>
+            <div class="borda-box"></div>
+            <div class="body-box">
+            
+                <form action='#' method='GET'> {% csrf_token %}
+                <div class="row">
+                    
+                        <div class="col-md-5">
+                            <input type="text" placeholder="Busque pelo numero" class="form-control" name="nome">
+                        </div>
 
-    <br>
-    <br>
+        
+                    
+                    <div class="col-md-3">
+                        <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark ">
+                    </div>
+                </div>
+                </form>
 
-        <div> 
-         <iframe src="" frameborder="0">
-            {{ tabela.to_html }}
-         </iframe>
-          
+                <table class="tabela" cellpadding="20">
+                    <tr >
+                        <th>NOME</th>
+                        <th>CNPJ</th>
+                        <th>EMAIL</th>
+                        <th>TELEFONE</th>
+                        <th>AÇÃO</th>
+                        
+                    </tr>
+                    
+                        {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
+                        
+                        <tr>
+                            <td>##########</td>
+                            <td>##########</td>
+                            <td>
+                                ##########                            
+                            </td>
+                            <td>
+                                ##########
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-lg btn-dark ">Excluir Pregão</a>
+                            </td>
+                        </tr>
+                     
+                </table>
+            </div>
+
+
+            
+
         </div>
+    </div>
+
+   
 
 {% endblock 'plataforma' %}

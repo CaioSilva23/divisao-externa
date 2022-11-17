@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Om, Empenho
+from .models import Om, Empenho, Fornecedor
 from .forms import OmForms, EmpenhoForms
 from django.contrib import messages
 from django.contrib.messages import constants
 from datetime import date
 #
-
 
 @login_required(login_url='/auth/logar/') 
 def home(request):
@@ -100,12 +99,17 @@ def remover_empenho(request, id):
     return redirect(f'/om_empenhos_id/{id_om}')
 
 
-
+@login_required(login_url='/auth/logar/') 
 def deletar_om(request, id):
     om_del = Om.objects.get(id=id)
     om_del.delete()
     messages.add_message(request, constants.SUCCESS, 'OM deletada com sucesso')
     return redirect ('/home/')
 
+@login_required(login_url='/auth/logar/') 
 def pregoes(request):
     return render(request, 'pregoes.html')
+
+def fornecedores(request):
+    fornecedores = Fornecedor.objects.all()
+    return render(request, 'fornecedores.html', {'fornecedores': fornecedores})

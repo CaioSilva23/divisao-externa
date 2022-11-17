@@ -1,0 +1,82 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+    {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{message.tags}}">
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="wrapper">
+        <div class="box"> 
+            <div class="header-box">
+                {% if messages %}
+                    {% for message in messages %}
+                        <section class="alert {{message.tags}}">
+                            {{message}}
+                        </section>
+                    {% endfor %}
+                {% endif %}
+                <h2 class="titulo">FORNECEDORES</h2>
+                
+                <a href='#' class="btn-nova-empresa btn-dark">NOVO FORNECEDOR</a>
+            </div>
+            <div class="borda-box"></div>
+            <div class="body-box">
+            
+                <form action='#' method='GET'> {% csrf_token %}
+                <div class="row">
+                    
+                        <div class="col-md-5">
+                            <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+                        </div>
+
+        
+                    
+                    <div class="col-md-3">
+                        <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark ">
+                    </div>
+                </div>
+                </form>
+
+                <table class="tabela" cellpadding="20">
+                    <tr >
+                        <th>NOME</th>
+                        <th>CNPJ</th>
+                        <th>EMAIL</th>
+                        <th>TELEFONE</th>
+                        <th>AÇÃO</th>
+                        
+                    </tr>
+                    
+                        {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
+                        {% for fornecedor in fornecedores %}
+                        <tr>
+                            <td>{{fornecedor.nome}}</td>
+                            <td>{{fornecedor.cnpj}}</td>
+                            <td>
+                                {{fornecedor.email}}                            
+                            </td>
+                            <td>
+                                {{fornecedor.telefone}}
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-lg btn-dark ">Excluir Fornecedor</a>
+                            </td>
+                        </tr>
+                     {% endfor %}
+                </table>
+            </div>
+
+
+            
+
+        </div>
+    </div>
+            
+{% endblock%}

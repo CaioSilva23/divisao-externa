@@ -7,6 +7,7 @@ class OmForms(forms.ModelForm):
         model = Om
         fields = ('sigla','foto', 'email', 'telefone')
 
+#ch_almox','tel_ch_almox','adj_almox','tel_adj_almox'
 
 class EmpenhoForms(forms.ModelForm):
     

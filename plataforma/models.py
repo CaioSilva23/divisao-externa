@@ -27,6 +27,16 @@ class Om(models.Model):
         return self.sigla
 
 
+class Fornecedor(models.Model):
+    nome = models.CharField(max_length=30)
+    cnpj = models.CharField(max_length=14)
+    telefone = models.CharField(max_length=15)
+    email = models.EmailField()
+
+    def __str__(self):
+        return self.nome
+
+
 class Empenho(models.Model):
     LISTA_ND = (
         ("30", '30'),
@@ -39,14 +49,8 @@ class Empenho(models.Model):
         ("167242", '167242'),
     )
 
-    LISTA_FORNECEDOR = (
-        ('BIOMEDICAL', 'BIOMEDICAL'),
-        ('SULAR', 'SULAR'),
-        ('MEDSANTA', 'MEDSANTA'),
-    )
-
     om = models.ForeignKey(Om, on_delete=models.CASCADE)
-    fornecedor = models.CharField(max_length=50, choices=LISTA_FORNECEDOR)
+    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.DO_NOTHING)
     nd = models.CharField(max_length=2,choices=LISTA_ND)
     ug = models.CharField(max_length=6,choices=LISTA_UG)
     pregao = models.CharField(max_length=8)
@@ -56,4 +60,6 @@ class Empenho(models.Model):
     
 
     def __str__(self):
-        return self.fornecedor
+        return f'2022NE000{self.numero}'
+
+

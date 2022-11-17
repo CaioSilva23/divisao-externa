@@ -11,11 +11,11 @@
             </div>
         {% endfor %}
     {% endif %}
-    <br>{% comment %}
+    {% comment %}
            <button type="button" class="btn btn-outline-dark " data-toggle="modal" data-target="#modal">
     SELECIONE UMA OMS
     </button>
-    {% endcomment %}
+    
   
        <a href="{% url 'listar_empenhos'%}">
         <button type="button" class="btn btn-dark ">
@@ -40,5 +40,47 @@
         </div>
         {% endfor %}
         </div>
+    {% endcomment %}
+
+
+<div class="wrapper">
+    <div class="box"> 
+        <div class="header-box">
+            {% if messages %}
+                {% for message in messages %}
+                    <section class="alert {{message.tags}}">
+                        {{message}}
+                    </section>
+                {% endfor %}
+            {% endif %}
+            <h2 class="titulo">EMPENHOS POR OMS</h2>
+            <a href='{% url 'listar_empenhos'%}' class="btn-nova-empresa btn-lg btn-dark">LISTAR TODOS OS EMPENHOS</a>
+        </div>
+        <div class="borda-box"></div>
+        <div class="body-box">
+            <div class="row align-top" style='padding: 20px;'> 
+                {% for om in oms %}
+                <div class="card col-md-2" style='margin: 4px;'>
+                  
+                    <div class="card-header text-center bg-white">
+                        <img src="{{ om.foto.url}}" height="150" width="100" class='card-img-'>
+                    </div>
+                    <div class="card-body text-center ">
+                      <h5 class="card-title ">{{om.sigla}}</h5>
+                      <a href="{% url 'om_empenhos_id' om.id%}" class='btn btn-dark'>EMPENHOS</a> 
+                    </div>
+                </div>
+                {% endfor %}
+                </div>
     
+       
+
+
+        </div>
+
+
+        
+    </div>
+    </div>
+</div>
 {% endblock 'plataforma' %}

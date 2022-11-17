@@ -3,9 +3,13 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+
 
 
 def home_auth(request):
+    if request.user.is_authenticated: # VERIFICA SE O USUÁRIO JÁ ESTÁ AUTENTICADO
+        return redirect('home')
     return render(request, 'home_auth.html')
 
 def logar(request):
