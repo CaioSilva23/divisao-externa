@@ -27,7 +27,9 @@
      
         <h1>{{om.sigla}}</h1>
     </div>
-    <hr>
+    <br>
+    <div class="borda-box"></div>
+    <br>
     <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal">
         Inserir Empenho
     </button>
@@ -64,6 +66,7 @@
             <th>ND</th>
             <th>UG</th>
             <th>PREGÃO</th>
+            <th>DATA</th>
             <th>AÇÕES</th>
 
             </tr>
@@ -78,12 +81,13 @@
                 <td>{{i.nd}}</td>
                 <td>{{i.ug }}</td>
                 <td>{{i.pregao}}</td>
+                <td>{{i.data}}</td>
                 <td> 
-                    <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer"><button type="button" class="btn btn-outline-dark btn-sm">
+                    <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer"><button type="button" class="btn btn-dark btn-sm">
                         ABRIR
                         </button></a>
 
-                        <a href="{% url 'remover_empenho' i.id%}" rel="noopener noreferrer"><button type="button" class="btn btn-outline-dark btn-sm">
+                        <a href="{% url 'remover_empenho' i.id%}" rel="noopener noreferrer"><button type="button" class="btn btn-dark btn-sm">
                             REMOVER
                             </button></a>
                     </div>
@@ -153,7 +157,7 @@
                             </div>
                             <br>
               
-                            <input type="submit" class="btn btn-outline-success " value="Registar">
+                            <input type="submit" class="btn btn-dark " value="Registrar">
                         </form>
                   
                         </div>

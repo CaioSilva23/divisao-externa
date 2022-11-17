@@ -68,26 +68,30 @@ def inserir_empenho(request, id):
 
 @login_required(login_url='/auth/logar/')
 def listar_empenhos(request):
+    fornecedor = request.GET.get('fornecedor')
+    numero_empenho = request.GET.get('numero_empenho')
+
+
     om_list = Om.objects.all()
     empenhos = Empenho.objects.all().order_by('numero')
     try:
-        fornecedor = request.GET.get('fornecedor')
-        numero_empenho = request.GET.get('numero_empenho')
-        om_filtrar = request.GET.get('om_select')
 
-        fornecedor = fornecedor.upper()
+        # om_filtrar = request.GET.get('om_select')
 
-        print(om_filtrar)
+       
+
+        print(fornecedor)
         if fornecedor:
-            empenhos = Empenho.objects.filter(fornecedor__icontains=fornecedor).order_by('numero')
+            empenhos = empenhos.filter(fornecedor=fornecedor).order_by('numero')
+            return render(request, 'listar_empenhos.html',{'empenhos': empenhos, 'om_list': om_list})
         if numero_empenho:
-            empenhos = Empenho.objects.filter(numero=numero_empenho).order_by('numero')
-        if om_filtrar:
-            empenhos = Empenho.objects.filter(om=om_filtrar).order_by('numero')
+            empenhos = empenhos.filter(numero=numero_empenho).order_by('numero')
+        # if om_filtrar:
+        #     empenhos = Empenho.objects.filter(om=om_filtrar).order_by('numero')
 
         return render(request, 'listar_empenhos.html',{'empenhos': empenhos, 'om_list': om_list})
     except:
-            return render(request, 'listar_empenhos.html',{'empenhos': empenhos,'om_list': om_list})
+        return render(request, 'listar_empenhos.html',{'empenhos': empenhos,'om_list': om_list})
 
 
 @login_required(login_url='/auth/logar/')
