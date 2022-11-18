@@ -38,6 +38,26 @@ class Fornecedor(models.Model):
         return self.nome
 
 
+
+
+class Pregao(models.Model):
+    SITUACAO_CHICES = (
+    ('HOMOLOGADO','HOMOLOGADO'),
+    ('CJU','CJU'),
+    )
+
+    numero_ano = models.CharField(max_length=7)
+    situacao = models.CharField(max_length=20, choices=SITUACAO_CHICES)
+    descrição = models.CharField(max_length=200)
+    oms_favorecidas = models.ManyToManyField(Om)
+    termo_homolocao = models.URLField()
+    catalago = models.FileField(upload_to='catalago', null=True, blank=True)
+    
+    
+    def __str__(self):
+        return self.numero_ano
+
+
 class Empenho(models.Model):
     LISTA_ND = (
         ("30", '30'),
@@ -52,6 +72,7 @@ class Empenho(models.Model):
 
     om = models.ForeignKey(Om, on_delete=models.CASCADE)
     fornecedor = models.ForeignKey(Fornecedor, on_delete=models.DO_NOTHING)
+    pregao = models.ForeignKey(Pregao, on_delete=models.DO_NOTHING)
     nd = models.CharField(max_length=2,choices=LISTA_ND)
     ug = models.CharField(max_length=6,choices=LISTA_UG)
     pregao = models.CharField(max_length=8)

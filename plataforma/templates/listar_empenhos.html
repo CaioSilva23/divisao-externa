@@ -46,9 +46,13 @@
                 </div>
                
                
+                
+             
                 <div class="col-md-2">   
-                    <select class="form-select" name="om_select">
+                    <select class="form-control" name="om_select">
+                        <option value="" selected="">-----</option>
                         {% for om in om_list %}
+                        
                         <option value="{{ om.id }}">{{ om }}</option>
                         {% endfor %}
                     </select>         

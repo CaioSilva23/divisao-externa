@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Om, Empenho, Fornecedor
+from .models import Om, Empenho, Fornecedor, Pregao
 from .forms import OmForms
 from django.contrib import messages
 from django.contrib.messages import constants
+
+def home_auth(request):
+    if request.user.is_authenticated: # VERIFICA SE O USUÁRIO JÁ ESTÁ AUTENTICADO
+        return redirect('home')
+    return render(request, 'home_auth.html')
+
 
 @login_required(login_url='/auth/logar/') 
 def home(request):
@@ -39,6 +45,7 @@ def om_empenhos_id(request, id):
     fornecedor = Fornecedor.objects.all()
     om = Om.objects.get(id=id)
     empenhos = Empenho.objects.filter(om_id=id).order_by('numero')
+    pregoes = Pregao.objects.all()
     
     try:
         fornecedor_filtar = request.GET.get('fornecedor')
@@ -49,10 +56,9 @@ def om_empenhos_id(request, id):
 
         if numero_empenho_filtar:
             empenhos = Empenho.objects.filter(numero=numero_empenho_filtar)
-        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'fornecedor': fornecedor})
+        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'fornecedor': fornecedor,'pregoes':pregoes})
     except:
-        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos,  'fornecedor': fornecedor})
-
+        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos,  'fornecedor': fornecedor,'pregoes':pregoes})
 
 
 @login_required(login_url='/auth/logar/')
@@ -61,27 +67,50 @@ def inserir_empenho(request, id):
         return redirect(f'/om_empenhos_id/{id}')
         
     if request.method == 'POST':
-        om1 = request.POST.get('om')
-        fornecedor1 = request.POST.get('fornecedor')
-        numero_empenho1 = request.POST.get('numero_empenho')
-        nd1 = request.POST.get('nd')
-        ug1 = request.POST.get('ug')
-        pregao1 = request.POST.get('pregao')
-        data1 = request.POST.get('data')
-        pdf1 = request.FILES.get('pdf')
+        om = request.POST.get('om')
+        fornecedor = request.POST.get('fornecedor')
+        numero_empenho = request.POST.get('numero_empenho')
+        nd = request.POST.get('nd')
+        ug = request.POST.get('ug')
+        pregao = request.POST.get('pregao')
+        data = request.POST.get('data')
+        pdf = request.FILES.get('pdf')
      
+     
+        if ( len(om.strip()) == 0 or len(fornecedor.strip()) == 0 or len(numero_empenho.strip()) == 0 or len(nd.strip()) ==0 or len(ug.strip()) ==0 or len(pregao.strip()) ==0 or len(data.strip()) ==0): 
+            messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
+            return redirect(f'/om_empenhos_id/{id}')
 
-        forn1 = Fornecedor.objects.get(id=fornecedor1)
-        om_id = Om.objects.get(id=om1)
+        if not numero_empenho.isnumeric():
+            messages.add_message(request, constants.ERROR, 'Digite o número do empenho válido')
+            return redirect(f'/om_empenhos_id/{id}')
+            
+        if not pregao.isnumeric():
+            messages.add_message(request, constants.ERROR, 'Digite um pregão válido (sem / )')
+            return redirect(f'/om_empenhos_id/{id}')
+
+        empenho = Empenho.objects.filter(numero=numero_empenho)
+        
+        if empenho.exists():
+            messages.add_message(request, constants.ERROR, 'Empenho já existe')
+            return redirect(f'/om_empenhos_id/{id}')
+
+        if pdf.size > 100_000_000:
+            messages.add_message(request, constants.ERROR, 'PDF não pode ser mair que 10MB')
+            return redirect(f'/om_empenhos_id/{id}')
+
+        forn1 = Fornecedor.objects.get(id=fornecedor)
+        om_id = Om.objects.get(id=om)
+        pregao_id = Pregao.objects.get(id=pregao)
 
         try:
             empenho = Empenho(om=om_id,
                                 fornecedor=forn1,
-                                nd=nd1,ug=ug1,
-                                pregao=pregao1,
-                                data=data1,
-                                numero=numero_empenho1,
-                                pdf=pdf1)
+                                nd=nd,ug=ug,
+                                pregao=pregao_id,
+                                data=data,
+                                numero=numero_empenho,
+                                pdf=pdf)
             empenho.save()
             messages.add_message(request, constants.SUCCESS, 'Empenho inserido com sucesso')
             return redirect(f'/om_empenhos_id/{id}')
@@ -91,35 +120,27 @@ def inserir_empenho(request, id):
             return redirect(f'/om_empenhos_id/{id}')
 
 
-
-
-
 @login_required(login_url='/auth/logar/')
 def listar_empenhos(request):
     fornecedor = request.GET.get('fornecedor')
     numero_empenho = request.GET.get('numero_empenho')
-
+    om_filtrar = request.GET.get('om_select')
 
     om_list = Om.objects.all()
     empenhos = Empenho.objects.all().order_by('numero')
+    fornecedores_list = Fornecedor.objects.all()
     try:
-
-        # om_filtrar = request.GET.get('om_select')
-
-       
-
         print(fornecedor)
         if fornecedor:
             empenhos = empenhos.filter(fornecedor=fornecedor).order_by('numero')
-            return render(request, 'listar_empenhos.html',{'empenhos': empenhos, 'om_list': om_list})
         if numero_empenho:
             empenhos = empenhos.filter(numero=numero_empenho).order_by('numero')
-        # if om_filtrar:
-        #     empenhos = Empenho.objects.filter(om=om_filtrar).order_by('numero')
+        if om_filtrar:
+            empenhos = empenhos.filter(om=om_filtrar).order_by('numero')
 
-        return render(request, 'listar_empenhos.html',{'empenhos': empenhos, 'om_list': om_list})
+        return render(request, 'listar_empenhos.html',{'empenhos': empenhos, 'om_list': om_list, 'fornecedores_list': fornecedores_list})
     except:
-        return render(request, 'listar_empenhos.html',{'empenhos': empenhos,'om_list': om_list})
+        return render(request, 'listar_empenhos.html',{'empenhos': empenhos,'om_list': om_list, 'fornecedores_list': fornecedores_list})
 
 
 @login_required(login_url='/auth/logar/')
@@ -140,8 +161,96 @@ def deletar_om(request, id):
 
 @login_required(login_url='/auth/logar/') 
 def pregoes(request):
-    return render(request, 'pregoes.html')
+    pregoes = Pregao.objects.all()
+    oms = Om.objects.all()
+    return render(request, 'pregoes.html', {'pregoes': pregoes, 'oms': oms})
 
+@login_required(login_url='/auth/logar/') 
+def inserir_pregao(request):
+    pregao = request.POST.get('pregao')
+    descricao = request.POST.get('descricao')
+    situacao = request.POST.get('situacao')
+    oms = request.POST.getlist('oms')
+    link = request.POST.get('link')
+    catalogo = request.FILES.get('catalogo')
+
+    print(oms)
+    try:
+        novo_pregao = Pregao(numero_ano=pregao,
+                            situacao=situacao,
+                            termo_homolocao=link,
+                            descrição=descricao,
+                            catalago=catalogo)
+        novo_pregao.save()
+        novo_pregao.oms_favorecidas.add(*oms)
+        novo_pregao.save()
+
+
+        messages.add_message(request, constants.SUCCESS, 'Pregão inserido com sucesso')
+        return redirect ('/pregoes/')
+    except Exception as e:
+        print(e)
+        messages.add_message(request, constants.ERROR, 'Erro ao inserir o pregão')
+        return redirect ('/pregoes/')
+
+@login_required(login_url='/auth/logar/') 
+def deletar_pregao(request, id):
+    pregao = Pregao.objects.get(id=id)
+    pregao.delete()
+    messages.add_message(request, constants.SUCCESS, 'Pregão deletado com sucesso')
+    return redirect ('/pregoes/')
+
+@login_required(login_url='/auth/logar/') 
 def fornecedores(request):
     fornecedores = Fornecedor.objects.all()
+    
+    nome = request.GET.get('nome')
+
+    if nome:
+        fornecedores = fornecedores.filter(nome__contains=nome)
+
     return render(request, 'fornecedores.html', {'fornecedores': fornecedores})
+
+@login_required(login_url='/auth/logar/') 
+def inserir_fornecedor(request):
+    if request.method == 'GET':
+        return redirect('fornecedores/')
+    elif request.method == 'POST':
+        nome = request.POST.get('nome').upper()
+        cnpj = request.POST.get('cnpj')
+        email = request.POST.get('email')
+        telefone = request.POST.get('email')
+
+        if (len(nome.strip()) == 0 or len(email.strip()) == 0 or len(telefone.strip()) == 0 or len(email.strip()) ==0): 
+            messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
+            return redirect('/fornecedores/')
+
+        if not cnpj.isnumeric():
+            messages.add_message(request, constants.ERROR, 'Digite cnpj válido')
+            return redirect('/fornecedores/')
+            
+        # if not telefone.isnumeric():
+        #     messages.add_message(request, constants.ERROR, 'Digite telefone válido')
+        #     return redirect('/fornecedores/')
+
+        fornecedor = Fornecedor.objects.filter(cnpj=cnpj)
+        
+        if fornecedor.exists():
+            messages.add_message(request, constants.ERROR, 'Fornecedor já existe')
+            return redirect('/fornecedores/')
+
+        try:
+            novo_fornecedor = Fornecedor(nome=nome, cnpj=cnpj, email=email, telefone=telefone)
+            novo_fornecedor.save()
+            messages.add_message(request, constants.SUCCESS, 'Fornecedor inserido com sucesso')
+            return redirect('/fornecedores/')
+        except Exception as e:
+            print(e)
+            messages.add_message(request, constants.ERROR, 'Erro ao inserir o fornecedor')
+            return redirect('/fornecedores/')
+
+@login_required(login_url='/auth/logar/') 
+def deletar_fornecedor(request, id):
+    fornecedor = Fornecedor.objects.get(id=id)
+    fornecedor.delete()
+    return redirect('/fornecedores/')

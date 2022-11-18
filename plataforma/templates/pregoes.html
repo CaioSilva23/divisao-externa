@@ -24,17 +24,11 @@
     <div class="wrapper">
         <div class="box"> 
             <div class="header-box">
-                {% if messages %}
-                    {% for message in messages %}
-                        <section class="alert {{message.tags}}">
-                            {{message}}
-                        </section>
-                    {% endfor %}
-                {% endif %}
                 <h2 class="titulo">PREGÕES</h2>
                 
-                <a href='#' class="btn-nova-empresa btn-dark">NOVO PREGÃO</a>
-            </div>
+                <button type="button" class="btn-nova-empresa btn-dark" data-toggle="modal" data-target="#modal">
+                    NOVO PREGÃO
+                </button>            </div>
             <div class="borda-box"></div>
             <div class="body-box">
             
@@ -51,34 +45,58 @@
                         <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark ">
                     </div>
                 </div>
-                </form>
+                </form> 
+                <br>
+                <table class="table " cellpadding="20">
+                    <caption>Lista de pregões</caption>
+                    <thead class='thead-dark'>
+                       <tr >
+                        <th>N°</th>
+                        <th>DESCRIÇÃO</th>
+                        <th>SITUAÇÃO</th>
+                        <th>OMS FAVORECIDAS</th>
+                        <th>TERMO DE HOMOLOGAÇÃO</th>
+                        <th>CATÁLOGO DE MATERIAIS</th>
 
-                <table class="tabela" cellpadding="20">
-                    <tr >
-                        <th>NOME</th>
-                        <th>CNPJ</th>
-                        <th>EMAIL</th>
-                        <th>TELEFONE</th>
                         <th>AÇÃO</th>
                         
-                    </tr>
+                    </tr> 
+                    </thead>
                     
+                    <tbody class='table-light'>
                         {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
-                        
+                        {% for pregao in pregoes %}
                         <tr>
-                            <td>##########</td>
-                            <td>##########</td>
+                            <td>{{pregao.numero_ano}}</td>
+                            <td>{{pregao.descrição}}</td>
                             <td>
-                                ##########                            
+                                {{pregao.situacao}}                            
                             </td>
                             <td>
-                                ##########
+                                <select class="form-control">       
+                                    {% for oms in pregao.oms_favorecidas.all %}
+                                    <option>{{ oms }}</option>                    
+                                    {% endfor %}
+                                </select>
+                            </td>
+
+                            <td>
+
+                                <a href="{{pregao.termo_homolocao}}" target='_blank'>{{pregao.termo_homolocao}}</a>
                             </td>
                             <td>
-                                <a href="#" class="btn btn-lg btn-dark ">Excluir Pregão</a>
+                                {% if pregao.catalago %}
+                                <a href="{{pregao.catalago.url}}" target='_blank'>ABRIR</a>       
+                                {% else %}
+                                <a href="#">----</a>
+                                {% endif %}                   
+                            </td>
+                            <td>
+                                <a href="{% url 'deletar_pregao' pregao.id %}" class="btn btn-dark ">Excluir Pregão</a>
                             </td>
                         </tr>
-                     
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>
 
@@ -87,7 +105,62 @@
 
         </div>
     </div>
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header table-dark ">
+                    <h5 id="exampleModalLabel">NOVO PREGÃO</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'inserir_pregao'%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="modal-body"> 
 
+                                    <label>PREGÃO: </label>                                        
+                                    <input type="text" placeholder="PE" class="form-control" name="pregao">
+
+
+                                    <label>DESCRIÇÃO: </label>
+                                    <input type="text" placeholder="Descrição" class="form-control" name="descricao">
+
+                                    <label>OMS FAVORECIDAS:</label>
+                                    <select class="form-control" name="oms" multiple>                                
+                                        {% for om in oms %}
+                                        <option value="{{om.id}}">{{om}}</option>
+                                        {% endfor %}
+                                        
+                                    </select>
+
+                                    <label>SITUAÇÃO: </label>
+                                    <select name="situacao" class="form-control">
+                                        <option value="HOMOLOGADO">HOMOLOGADO</option>
+                                        <option value="CJU">CJU</option>
+
+                                    </select>
+                                    <label>Termo de Homologação:</label>
+                                    <input type="text" placeholder="https://" class="form-control" name="link">
+
+                                    <label>Catálogo:</label>
+                                    <br>
+                                    <input type="file" placeholder="Catálogo" name="catalogo">
+
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-lg btn-dark " value="Registrar">
+
+                        </div>
+                        <br>
+          
+                    </form>
+              
+                    </div>
+                </div>
+            </div>
+        </div>
    
 
 {% endblock 'plataforma' %}
