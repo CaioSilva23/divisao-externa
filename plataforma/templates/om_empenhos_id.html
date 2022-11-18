@@ -142,7 +142,10 @@
                                     
                                         <label>ND:</label>
                                             <select name="nd" class="form-control">
-                                                <option value="" selected=""></option>
+                                                {% comment %}
+                                                    <option value="" selected=""></option>
+                                                {% endcomment %}
+                                                
                                                 <option value="30">30</option>
                                                 <option value="39">39</option>
                                                 <option value="52">52</option>
@@ -155,21 +158,26 @@
                                         </select>
    
                                         <label>PREGÃO: </label>
-                                        <input type="text" placeholder="" class="form-control" name="pregao">
-                                        
+                                        <select name="pregao" class="form-control">
+                                        {% for pregao in  pregoes%}
+                                        <option value="{{pregao.id}}">{{pregao.numero_ano}}</option>
+                                        {% endfor %}
+                                        </select>                                     
                                    
                                         <label>DATA:</label>
                                         <input type="date" class="form-control" name="data">
                                         
-                                    
-                                        <label class="required" for="#">Pdf:</label>
-                                        <input type="file" name="pdf" required="" id="">
+                                        <br>
+                                        <label>PDF: </label>
+                                        <input type="file" name="pdf">
                                     </div>
                                 </div>
+                                <input type="submit" class="btn btn-lg btn-dark " value="Registrar">
+
                             </div>
-                            <br>
-              
-                            <input type="submit" class="btn btn-dark " value="Registrar">
+                            <div>
+
+                            </div>
                         </form>
                   
                         </div>

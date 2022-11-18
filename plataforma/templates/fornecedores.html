@@ -1,0 +1,119 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+    <div class="wrapper">
+        <div class="box"> 
+            <div class="header-box">
+                {% if messages %}
+                    {% for message in messages %}
+                        <section class="alert {{message.tags}}">
+                            {{message}}
+                        </section>
+                    {% endfor %}
+                {% endif %}
+                <h2 class="titulo">FORNECEDORES</h2>
+                <button type="button" class="btn-nova-empresa btn-dark" data-toggle="modal" data-target="#modal">
+                    NOVO FORNECEDOR
+                </button>
+            </div>
+            <div class="borda-box"></div>
+            <div class="body-box">
+            
+                <form action='{% url "fornecedores"%}' method='GET'> {% csrf_token %}
+                <div class="row">
+                    
+                        <div class="col-md-5">
+                            <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+                        </div>
+                    <div class="col-md-3">
+                        <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark ">
+                    </div>
+                </div>
+                </form>
+                <br>
+                <table class="table" cellpadding="20">
+                    <caption>Lista de fornecedores</caption>
+                    <thead class='thead-dark'>
+                        <th>FORNECEDOR</th>
+                        <th>CNPJ</th>
+                        <th>EMAIL</th>
+                        <th>TELEFONE</th>
+                        <th>AÇÃO</th>
+                        
+                    </tr>
+                </thead> 
+                 <tbody class='table-light'>
+                        {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
+                        {% for fornecedor in fornecedores %}
+                      
+                           <tr>
+                            <td > {{fornecedor.nome}}</td>
+                            <td>{{fornecedor.cnpj}}</td>
+                            <td>
+                                {{fornecedor.email}}                            
+                            </td>
+                            <td>
+                                {{fornecedor.telefone}}
+                            </td>
+                            <td>
+                                <a href="{% url 'deletar_fornecedor' fornecedor.id%}" class="btn btn-dark ">Excluir Fornecedor</a>
+                            </td>
+                        </tr> 
+                             {% endfor %}
+                        </tbody>
+
+                   
+                </table>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header table-dark ">
+                    <h5 id="exampleModalLabel">INSERIR FORNECEDOR</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'inserir_fornecedor'%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="modal-body"> 
+
+                                    <label>NOME: </label>                                        
+                                    <input type="text" placeholder="Nome" class="form-control" name="nome">
+
+
+                                    <label>CNPJ: </label>
+                                    <input type="text" placeholder="Cnpj" class="form-control" name="cnpj">
+
+                         
+                                    <label>EMAIL:</label>
+                                    <input type="email" placeholder="Email" class="form-control" name="email">
+                                
+                                    <label>TELEFONE:</label>
+                                    <input type="text" placeholder="(21) 0000-0000" class="form-control" name="telefone">
+
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-lg btn-dark " value="Registrar">
+
+                        </div>
+                        <br>
+          
+                    </form>
+              
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+{% endblock%}

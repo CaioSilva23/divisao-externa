@@ -3,6 +3,7 @@ from . import views
 
 
 urlpatterns = [
+    path('', views.home_auth, name='home_auth'),
     path('home/', views.home, name='home'),
 
     #OM
@@ -18,7 +19,11 @@ urlpatterns = [
 
     #PREGÕES
     path('pregoes/', views.pregoes, name='pregoes'),
+    path('inserir_pregao/', views.inserir_pregao, name='inserir_pregao'),
+    path('deletar_pregao/<int:id>', views.deletar_pregao, name='deletar_pregao'),
 
     # FORNECEDORES
     path('fornecedores/', views.fornecedores, name='fornecedores'),
+    path('inserir_fornecedor/', views.inserir_fornecedor, name='inserir_fornecedor'),
+    path('deletar_fornecedor/<int:id>', views.deletar_fornecedor, name='deletar_fornecedor'),
 ]
