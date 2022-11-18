@@ -12,7 +12,6 @@ def home_auth(request):
     return render(request, 'home_auth.html')
 
 
-
 @login_required(login_url='/auth/logar/') 
 def home(request):
     
@@ -60,7 +59,6 @@ def om_empenhos_id(request, id):
         return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'fornecedor': fornecedor,'pregoes':pregoes})
     except:
         return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos,  'fornecedor': fornecedor,'pregoes':pregoes})
-
 
 
 @login_required(login_url='/auth/logar/')
@@ -122,9 +120,6 @@ def inserir_empenho(request, id):
             return redirect(f'/om_empenhos_id/{id}')
 
 
-
-
-
 @login_required(login_url='/auth/logar/')
 def listar_empenhos(request):
     fornecedor = request.GET.get('fornecedor')
@@ -170,7 +165,7 @@ def pregoes(request):
     oms = Om.objects.all()
     return render(request, 'pregoes.html', {'pregoes': pregoes, 'oms': oms})
 
-
+@login_required(login_url='/auth/logar/') 
 def inserir_pregao(request):
     pregao = request.POST.get('pregao')
     descricao = request.POST.get('descricao')
@@ -198,21 +193,14 @@ def inserir_pregao(request):
         messages.add_message(request, constants.ERROR, 'Erro ao inserir o pregão')
         return redirect ('/pregoes/')
 
-
-
+@login_required(login_url='/auth/logar/') 
 def deletar_pregao(request, id):
     pregao = Pregao.objects.get(id=id)
     pregao.delete()
     messages.add_message(request, constants.SUCCESS, 'Pregão deletado com sucesso')
     return redirect ('/pregoes/')
 
-
-
-
-
-
-
-
+@login_required(login_url='/auth/logar/') 
 def fornecedores(request):
     fornecedores = Fornecedor.objects.all()
     
@@ -223,7 +211,7 @@ def fornecedores(request):
 
     return render(request, 'fornecedores.html', {'fornecedores': fornecedores})
 
-
+@login_required(login_url='/auth/logar/') 
 def inserir_fornecedor(request):
     if request.method == 'GET':
         return redirect('fornecedores/')
@@ -261,7 +249,7 @@ def inserir_fornecedor(request):
             messages.add_message(request, constants.ERROR, 'Erro ao inserir o fornecedor')
             return redirect('/fornecedores/')
 
-
+@login_required(login_url='/auth/logar/') 
 def deletar_fornecedor(request, id):
     fornecedor = Fornecedor.objects.get(id=id)
     fornecedor.delete()
