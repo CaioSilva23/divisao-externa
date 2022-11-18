@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Om, Empenho, Fornecedor, Pregao
+from .models import Om, Empenho, Fornecedor, Pregao, PlanoInterno
 from .forms import OmForms
 from django.contrib import messages
 from django.contrib.messages import constants
@@ -70,14 +70,12 @@ def inserir_empenho(request, id):
         om = request.POST.get('om')
         fornecedor = request.POST.get('fornecedor')
         numero_empenho = request.POST.get('numero_empenho')
-        nd = request.POST.get('nd')
-        ug = request.POST.get('ug')
         pregao = request.POST.get('pregao')
         data = request.POST.get('data')
         pdf = request.FILES.get('pdf')
      
      
-        if ( len(om.strip()) == 0 or len(fornecedor.strip()) == 0 or len(numero_empenho.strip()) == 0 or len(nd.strip()) ==0 or len(ug.strip()) ==0 or len(pregao.strip()) ==0 or len(data.strip()) ==0): 
+        if ( len(om.strip()) == 0 or len(fornecedor.strip()) == 0 or len(numero_empenho.strip()) == 0 or len(pregao.strip()) ==0 or len(data.strip()) ==0): 
             messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
             return redirect(f'/om_empenhos_id/{id}')
 
@@ -106,7 +104,6 @@ def inserir_empenho(request, id):
         try:
             empenho = Empenho(om=om_id,
                                 fornecedor=forn1,
-                                nd=nd,ug=ug,
                                 pregao=pregao_id,
                                 data=data,
                                 numero=numero_empenho,
@@ -254,3 +251,10 @@ def deletar_fornecedor(request, id):
     fornecedor = Fornecedor.objects.get(id=id)
     fornecedor.delete()
     return redirect('/fornecedores/')
+
+
+
+def credito(request):
+    creditos = PlanoInterno.objects.all()
+    # print(creditos)
+    return render(request, 'credito.html',{'creditos': creditos} )

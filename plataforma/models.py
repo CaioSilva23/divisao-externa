@@ -59,23 +59,9 @@ class Pregao(models.Model):
 
 
 class Empenho(models.Model):
-    LISTA_ND = (
-        ("30", '30'),
-        ("39", '39'),
-        ("52", '52'),
-    )
-
-    LISTA_UG = (
-        ("160242", '160242'),
-        ("167242", '167242'),
-    )
-
     om = models.ForeignKey(Om, on_delete=models.CASCADE)
     fornecedor = models.ForeignKey(Fornecedor, on_delete=models.DO_NOTHING)
     pregao = models.ForeignKey(Pregao, on_delete=models.DO_NOTHING)
-    nd = models.CharField(max_length=2,choices=LISTA_ND)
-    ug = models.CharField(max_length=6,choices=LISTA_UG)
-    pregao = models.CharField(max_length=8)
     data = models.DateField()
     numero = models.CharField(max_length=4)
     pdf = models.FileField(upload_to="pdf")
@@ -85,3 +71,26 @@ class Empenho(models.Model):
         return f'2022NE000{self.numero}'
 
 
+class PlanoInterno(models.Model):
+    pi = models.CharField(max_length=15)
+  
+    def valor_total(self):
+        creditos = NotaCredito.objects.filter(pi_id=self.id)
+        total = 0
+        for i in creditos:
+            total += i.valor
+        return total
+
+    def __str__(self):
+        return self.pi
+
+
+class NotaCredito(models.Model):
+    numero = models.CharField(max_length=10)
+    valor = models.FloatField()
+    fonte = models.CharField(max_length=10)
+    nd = models.CharField(max_length=6)
+    pi = models.ForeignKey(PlanoInterno, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'2022NC{self.numero}'

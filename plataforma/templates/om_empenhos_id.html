@@ -63,8 +63,6 @@
             <th>OM</th>
             <th>FORNECEDOR</th>
             <th>NE</th>
-            <th>ND</th>
-            <th>UG</th>
             <th>PREGÃO</th>
             <th>DATA</th>
             <th>AÇÕES</th>
@@ -78,8 +76,6 @@
                 <td>{{i.om}}</td>
                 <td>{{i.fornecedor }}</td>
                 <td>2022NE000{{i.numero}}</td>
-                <td>{{i.nd}}</td>
-                <td>{{i.ug }}</td>
                 <td>{{i.pregao}}</td>
                 <td>{{i.data}}</td>
                 <td> 
@@ -140,22 +136,6 @@
                                         <label>NUMERO:</label>
                                         <input type="text" placeholder="0" class="form-control" name="numero_empenho">
                                     
-                                        <label>ND:</label>
-                                            <select name="nd" class="form-control">
-                                                {% comment %}
-                                                    <option value="" selected=""></option>
-                                                {% endcomment %}
-                                                
-                                                <option value="30">30</option>
-                                                <option value="39">39</option>
-                                                <option value="52">52</option>
-                                        </select>
-                                        
-                                        <label>UG: </label>
-                                            <select name="ug" class="form-control">
-                                                <option value="160242">160242</option>
-                                                <option value="167242">167242</option>
-                                        </select>
    
                                         <label>PREGÃO: </label>
                                         <select name="pregao" class="form-control">

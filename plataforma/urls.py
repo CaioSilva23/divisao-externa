@@ -26,4 +26,8 @@ urlpatterns = [
     path('fornecedores/', views.fornecedores, name='fornecedores'),
     path('inserir_fornecedor/', views.inserir_fornecedor, name='inserir_fornecedor'),
     path('deletar_fornecedor/<int:id>', views.deletar_fornecedor, name='deletar_fornecedor'),
+
+
+    path('credito/', views.credito, name='credito'),
+
 ]
