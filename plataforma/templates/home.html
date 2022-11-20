@@ -3,35 +3,50 @@
 
 
 {% block 'plataforma' %}
-    {% if messages %}
-        <br>
-        {% for message in messages %}
-            <div class="alert {{message.tags}}">
-            {{message}}
-            </div>
-        {% endfor %}
-    {% endif %}
-    <br>
-    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal">
-    CADASTRAR OM
-    </button>
 
-    <br>
-    <br>
+<div class="wrapper">
+    <div class="box"> 
+            <div class="header-box">
+                <div class='row'>
+                    {% if messages %}
+                    <br>
+                    {% for message in messages %}
+                        <div class="alert {{message.tags}}">
+                        {{message}}
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div>
+                    <button type="button" class="btn btn-conteudo bg-fundo" data-toggle="modal" data-target="#modal">
+                    CADASTRAR OM
+                    </button>
+                </div>   
 
-    <div class="row " style='padding: 20px;'> 
-        {% for om in oms %}
-        <div class="card col-md-2" style='margin: 4px;'>
-            <br>
-            <div class="card-header text-center bg-white ">
-                <a href="{% url 'dados_om_id' om.id%}"><img src="{{ om.foto.url}}" height="150" width="100"></a>
+                   
             </div>
-            <div class="card-body text-center ">
-              <h5 class="card-title ">{{om.sigla}}</h5>
-            </div>
-        </div>
-        {% endfor %}
-        </div>
+ <br>
+
+            <div class="borda-box"></div>
+            <div class="body-box">
+                <div class="row " style='padding: 20px;'> 
+                    {% for om in oms %}
+                    <div class="card col-md-2 card-real" >
+                        <br>
+                        <div class="card-header card-om">
+                            <a href="{% url 'dados_om_id' om.id%}"><img src="{{ om.foto.url}}" height="150" width="100"></a>
+                        </div>
+                        <div class="card-body card-om">
+                          <h5 class="card-title ">{{om.sigla}}</h5>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    </div>
+            </div>        
+    </div>
+</div>
+
+    
 
 
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -67,7 +82,7 @@
                             </div>
                         </div>
                         <br>
-                        <input type="submit" class="btn btn-success bg-dark" value="Registar">
+                        <input type="submit" class="btn bg-fundo" value="Registar">
                     </form>
                     </div>
                 </div>
@@ -75,3 +90,4 @@
         </div>
 
 {% endblock 'plataforma' %}
+

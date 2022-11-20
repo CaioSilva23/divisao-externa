@@ -14,7 +14,7 @@
                     {% endfor %}
                 {% endif %}
                 <h2 class="titulo">FORNECEDORES</h2>
-                <button type="button" class="btn-nova-empresa btn-dark" data-toggle="modal" data-target="#modal">
+                <button type="button" class="btn btn-conteudo bg-fundo" data-toggle="modal" data-target="#modal">
                     NOVO FORNECEDOR
                 </button>
             </div>
@@ -33,9 +33,9 @@
                 </div>
                 </form>
                 <br>
-                <table class="table" cellpadding="20">
+                <table class="tabela table-striped table-hover table-sm" cellpadding="20">
                     <caption>Lista de fornecedores</caption>
-                    <thead class='thead-dark'>
+                    <thead class='table-dark th-table'>
                         <th>FORNECEDOR</th>
                         <th>CNPJ</th>
                         <th>EMAIL</th>
@@ -44,7 +44,7 @@
                         
                     </tr>
                 </thead> 
-                 <tbody class='table-light'>
+                 <tbody class='tb-table'>
                         {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
                         {% for fornecedor in fornecedores %}
                       
@@ -58,7 +58,7 @@
                                 {{fornecedor.telefone}}
                             </td>
                             <td>
-                                <a href="{% url 'deletar_fornecedor' fornecedor.id%}" class="btn btn-dark ">Excluir Fornecedor</a>
+                                <a href="{% url 'deletar_fornecedor' fornecedor.id%}" class="btn btn-dark ">Excluir</a>
                             </td>
                         </tr> 
                              {% endfor %}

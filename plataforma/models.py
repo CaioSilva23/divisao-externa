@@ -1,6 +1,5 @@
 from django.db import models
 from datetime import date
-from django.utils.timezone import now
 class Om(models.Model):
     LISTA_OMS = (
         ('PMPV', 'PMPV'),
@@ -46,9 +45,9 @@ class Pregao(models.Model):
     ('CJU','CJU'),
     )
 
-    numero_ano = models.CharField(max_length=7)
+    numero_ano = models.CharField(max_length=7, null=False, blank=False)
     situacao = models.CharField(max_length=20, choices=SITUACAO_CHICES)
-    descrição = models.CharField(max_length=200)
+    descrição = models.CharField(max_length=200, null=False, blank=False)
     oms_favorecidas = models.ManyToManyField(Om)
     termo_homolocao = models.URLField()
     catalago = models.FileField(upload_to='catalago', null=True, blank=True)
@@ -56,20 +55,6 @@ class Pregao(models.Model):
     
     def __str__(self):
         return self.numero_ano
-
-
-class Empenho(models.Model):
-    om = models.ForeignKey(Om, on_delete=models.CASCADE)
-    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.DO_NOTHING)
-    pregao = models.ForeignKey(Pregao, on_delete=models.DO_NOTHING)
-    data = models.DateField()
-    numero = models.CharField(max_length=4)
-    pdf = models.FileField(upload_to="pdf")
-    
-
-    def __str__(self):
-        return f'2022NE000{self.numero}'
-
 
 class PlanoInterno(models.Model):
     pi = models.CharField(max_length=15)
@@ -92,5 +77,40 @@ class NotaCredito(models.Model):
     nd = models.CharField(max_length=6)
     pi = models.ForeignKey(PlanoInterno, on_delete=models.CASCADE)
 
+
+    def saldo_empenhado(self):
+        empenhos = Empenho.objects.filter(nota_credito_id=self.id)
+        total = 0
+        for i in empenhos:
+            total += i.valor
+        return total
+
     def __str__(self):
         return f'2022NC{self.numero}'
+
+class Empenho(models.Model):
+    om = models.ForeignKey(Om, on_delete=models.CASCADE)
+    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.DO_NOTHING)
+    pregao = models.ForeignKey(Pregao, on_delete=models.DO_NOTHING)
+    plano_interno = models.ForeignKey(PlanoInterno, on_delete=models.DO_NOTHING, null=True, blank=True)
+    nota_credito = models.ForeignKey(NotaCredito, on_delete=models.DO_NOTHING)
+    data = models.DateField()
+    numero = models.CharField(max_length=4)
+    pdf = models.FileField(upload_to="pdf")
+    valor = models.FloatField(null=True, blank=True)
+    
+
+
+    def __str__(self):
+        return f'2022NE000{self.numero}'
+
+
+class Arquivo(models.Model):
+    demanda = models.FileField(upload_to='demanda-oms')
+    om = models.ForeignKey(Om, on_delete=models.DO_NOTHING)
+    data = models.DateField(default=date.today())
+
+    def __str__(self) -> str:
+        return 'Aquivo'
+
+    

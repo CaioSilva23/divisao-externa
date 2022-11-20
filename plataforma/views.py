@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Om, Empenho, Fornecedor, Pregao, PlanoInterno
+from .models import Om, Empenho, Fornecedor, Pregao, PlanoInterno, NotaCredito, Arquivo
 from .forms import OmForms
 from django.contrib import messages
 from django.contrib.messages import constants
@@ -30,8 +30,10 @@ def home(request):
 
 @login_required(login_url='/auth/logar/')
 def dados_om_id(request, id):
-    om = Om.objects.filter(id=id)
-    return render(request, 'dados_om.html',{'om':om})
+    oms = Om.objects.all()
+    om = Om.objects.get(id=id)
+    arq = Arquivo.objects.filter(om_id=id)
+    return render(request, 'dados_om.html',{'om':om, 'arq': arq, 'oms': oms})
 
 
 @login_required(login_url='/auth/logar/')
@@ -46,6 +48,7 @@ def om_empenhos_id(request, id):
     om = Om.objects.get(id=id)
     empenhos = Empenho.objects.filter(om_id=id).order_by('numero')
     pregoes = Pregao.objects.all()
+    nc = NotaCredito.objects.all()
     
     try:
         fornecedor_filtar = request.GET.get('fornecedor')
@@ -56,9 +59,9 @@ def om_empenhos_id(request, id):
 
         if numero_empenho_filtar:
             empenhos = Empenho.objects.filter(numero=numero_empenho_filtar)
-        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'fornecedor': fornecedor,'pregoes':pregoes})
+        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'fornecedor': fornecedor,'pregoes':pregoes, 'nc': nc})
     except:
-        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos,  'fornecedor': fornecedor,'pregoes':pregoes})
+        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos,  'fornecedor': fornecedor,'pregoes':pregoes, 'nc': nc})
 
 
 @login_required(login_url='/auth/logar/')
@@ -73,6 +76,8 @@ def inserir_empenho(request, id):
         pregao = request.POST.get('pregao')
         data = request.POST.get('data')
         pdf = request.FILES.get('pdf')
+        valor = request.POST.get('valor')
+        nc = request.POST.get('nc')
      
      
         if ( len(om.strip()) == 0 or len(fornecedor.strip()) == 0 or len(numero_empenho.strip()) == 0 or len(pregao.strip()) ==0 or len(data.strip()) ==0): 
@@ -100,15 +105,24 @@ def inserir_empenho(request, id):
         forn1 = Fornecedor.objects.get(id=fornecedor)
         om_id = Om.objects.get(id=om)
         pregao_id = Pregao.objects.get(id=pregao)
-
+        nc_credito = NotaCredito.objects.get(id=nc)
         try:
             empenho = Empenho(om=om_id,
                                 fornecedor=forn1,
                                 pregao=pregao_id,
                                 data=data,
                                 numero=numero_empenho,
-                                pdf=pdf)
+                                pdf=pdf, 
+                                valor=valor,
+                                nota_credito=nc_credito)
             empenho.save()
+            
+            nova_nc = NotaCredito.objects.get(id=nc)
+
+            nova_nc.valor -= float(valor)
+            nova_nc.save()
+
+
             messages.add_message(request, constants.SUCCESS, 'Empenho inserido com sucesso')
             return redirect(f'/om_empenhos_id/{id}')
         except Exception as e:
@@ -256,5 +270,32 @@ def deletar_fornecedor(request, id):
 
 def credito(request):
     creditos = PlanoInterno.objects.all()
-    # print(creditos)
+
+
+    # for emp in empenhados:
+    #     print(emp.saldo_empenhado())'empenhados': empenhados
     return render(request, 'credito.html',{'creditos': creditos} )
+
+
+
+def inserir_demanda(request):
+    om = request.POST.get('om')
+    demanda = request.FILES.get('demanda')
+    data = request.POST.get('data')
+
+
+    om_id = Om.objects.get(id=om)
+
+    novo_arquivo = Arquivo(om=om_id,
+                            demanda=demanda,
+                            data=data)
+
+    novo_arquivo.save()
+    messages.add_message(request, constants.SUCCESS, 'DOCUMENTOS ENVIADOS')
+
+    return redirect(f'/dados_om/{om}/')
+
+
+
+
+ 

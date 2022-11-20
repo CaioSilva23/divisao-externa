@@ -30,4 +30,7 @@ urlpatterns = [
 
     path('credito/', views.credito, name='credito'),
 
+
+    path('inserir_demanda', views.inserir_demanda, name='inserir_demenda'),
+
 ]

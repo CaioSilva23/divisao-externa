@@ -4,60 +4,56 @@
 
 {% block 'head' %}
 
-<link rel="stylesheet" href="{% static 'plataforma/css/plataforma.css' %}">
-<link rel="stylesheet" href="{% static 'plataforma/css/empresas.css' %}">
-
 
 {% endblock 'head' %}
 
 {% block 'body' %}
     <div class="container-fluid">
-        <div class="row">
+        <div class="row row1">
             <div class="col-md-2">
                 <br>
                 <a href="{% url 'home'%}" class="link-lateral">
-                    <div class="card-lateral btn-first bg-dark">
+                    <div class="card-lateral">
                     <img src="{% static 'plataforma/img/saude.png' %}" weight='80' height='80'  >
                     <br>
-                    <br>
-                    <h3>OMS</h3>
+
+                    <h4>OMS</h4>
                     </div>
                     </a>
                     <a href="{% url 'credito'%}" class="link-lateral">
-                        <div class="card-lateral btn-first bg-dark">
+                        <div class="card-lateral ">
                             <img src="{% static 'plataforma/img/credito.png' %}" weight='80' height='80'>
-                            <br>
                             
-                            <h3>CRÉDITO DISPONÍVEL</h3>
+                            
+                            <h4>CONTROLE DE CRÉDITO</h4>
                         </div>
                     </a>
                     <a href="{% url 'om_empenhos'%}" class="link-lateral">
-                    <div class="card-lateral btn-first bg-dark">
+                    <div class="card-lateral">
                     <img src="{% static 'plataforma/img/ne.png' %}" weight='80' height='80'>
-                    <br>
-                    <br>
-                    <h3>NOTAS DE EMPENHO</h3>
+                  
+                    <h4>NOTAS DE EMPENHO</h4>
                     </div>
                     </a>
                     <a href="{% url 'pregoes'%}" class="link-lateral">
-                    <div class="card-lateral btn-first bg-dark">
+                    <div class="card-lateral ">
                     <img src="{% static 'plataforma/img/pregao.png' %}" weight='80' height='80'>
                     <br>
-                    <br>
-                    <h3>PREGÕES</h3>
+                   
+                    <h4>PREGÕES</h4>
                     </div>
                     </a>
                     <a href="{% url 'fornecedores'%}" class="link-lateral">
-                        <div class="card-lateral btn-first bg-dark">
+                        <div class="card-lateral card-ultimo">
                             <img src="{% static 'plataforma/img/fornecedor1.png' %}" weight='80' height='80'>
                             <br>
-                            <br>
-                            <h3>FORNECEDORES</h3>
+                        
+                            <h4>FORNECEDORES</h4>
                         </div>
                     </a>
                     
             </div>
-            <div class="col-md-8">
+            <div class="col-md-9">
                 {% block 'plataforma' %}
                 {% endblock %}
             </div>

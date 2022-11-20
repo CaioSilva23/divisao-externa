@@ -3,106 +3,112 @@
 {% load static %}
 
 
-{% block 'plataforma' %}
-    {% if messages %}
-        <br>
+{% block 'plataforma' %}  
+ 
+    
+<div class="wrapper">
+    <div class="box"> 
+        {% if messages %}
         {% for message in messages %}
             <div class="alert {{message.tags}}">
-                {{message}}
+            {{message}}
             </div>
         {% endfor %}
-    {% endif %}
-    <br>
-    
-    <div class="row">
-
-        <div class="col-md-3">
-            <img src="{{ om.foto.url}}">
+        {% endif %}
+            <div class="header-box-om">
+                <div class="alinhado_ne">
+                    <div> 
+                            <img width="5%" src="{{om.foto.url}}">
+                      </div>
+  
+                            <h1 class="titulo">{{om.sigla}}</h1>
+                            <p class="paragrafo">POLICLINICA MILITAR DA PRAIA VERMELHA</p>            
+                </div>
             </div>
-            <div class="col-md-3 dados descricao">
-            <h4>{{om.sigla}}</h4>
-            <h6>{{om.email}}</h6>
-            <h6>{{om.telefone}}</h6>
-        </div>
-     
-        <h1>{{om.sigla}}</h1>
-    </div>
-    <br>
-    <div class="borda-box"></div>
-    <br>
-    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal">
-        Inserir Empenho
-    </button>
-    <br>
-    <br>
-    <form>
-        <div class="row" action="{% url 'inserir_empenho' om.id%}" method="GET">
+    
+            <div class="body-box">
+   
+                <form>
+                    <div class="row" action="{% url 'inserir_empenho' om.id%}" method="GET">
+
+                            <div class="col-md-4">
+                                <input type="text" placeholder="Busque pelo fornecedor" class="form-control" name="fornecedor">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <input type="text" placeholder="Busque pelo n° empenho" class="form-control" name="numero_empenho">
+                            </div>
+                                
             
-                <div class="col-md-4">
-                    <input type="text" placeholder="Busque pelo fornecedor" class="form-control" name="fornecedor">
-                </div>
-
-                <div class="col-md-4">
-                    <input type="text" placeholder="Busque pelo n° empenho" class="form-control" name="numero_empenho">
-                </div>
-
-
-
-            <div class="col-md-3">
-                <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark">
-            </div>
-        </div>
-        </form>
-    <br>
+            
+                        <div>
+                            <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark">
+                        </div>
+                      
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-lg btn-dark" data-toggle="modal" data-target="#modal">
+                                Inserir Empenho
+                            </button>
+                        </div>
+                    </div>
+                    </form>
+                <br>
+                
+                <div class='scroll'>
+                    <table class="table table-striped table-bordered table-hover table-sm ">
+                        <caption>Lista de Empenhos</caption>
+                        <thead class='table-dark '>
+                        <tr>
+                        <th>OM</th>
+                        <th>FORNECEDOR</th>
+                        <th>NE</th>
+                        <th>PREGÃO</th>
+                        <th>DATA</th>
+                        <th>VALOR</th>
+                        <th>AÇÕES</th>
+            
+                        </tr>
+                        </thead >
+            
+                        <tbody>
+                        {% for i in empenhos %}
+                        <tr>
+                            <td>{{i.om}}</td>
+                            <td>{{i.fornecedor }}</td>
+                            <td>2022NE000{{i.numero}}</td>
+                            <td>{{i.pregao}}</td>
+                            <td>{{i.data}}</td>
+                            <td>R$ {{i.valor}}0</td>
+                            <td> 
+                                <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer"><button type="button" class="btn btn-dark btn-sm">
+                                    ABRIR
+                                    </button></a>
+            
+                                    <a href="{% url 'remover_empenho' i.id%}" rel="noopener noreferrer"><button type="button" class="btn btn-dark btn-sm">
+                                        REMOVER
+                                        </button></a>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            </td>
+                            {% comment %}{% url 'remover_empenho' i.id%}{% endcomment %}
+                  
+            
+            
+                        </tr>
+                        {% empty %}
+                        <td> SEM EMPENHOS</td>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+            
+                    </div>
+                </div> 
+            </div>        
+    </div>
+</div>
     
-    <div class='scroll'>
-        <table class="table table-striped table-bordered table-hover table-sm ">
-            <caption>Lista de Empenhos</caption>
-            <thead class='table-dark '>
-            <tr>
-            <th>OM</th>
-            <th>FORNECEDOR</th>
-            <th>NE</th>
-            <th>PREGÃO</th>
-            <th>DATA</th>
-            <th>AÇÕES</th>
-
-            </tr>
-            </thead >
-
-            <tbody>
-            {% for i in empenhos %}
-            <tr>
-                <td>{{i.om}}</td>
-                <td>{{i.fornecedor }}</td>
-                <td>2022NE000{{i.numero}}</td>
-                <td>{{i.pregao}}</td>
-                <td>{{i.data}}</td>
-                <td> 
-                    <a href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer"><button type="button" class="btn btn-dark btn-sm">
-                        ABRIR
-                        </button></a>
-
-                        <a href="{% url 'remover_empenho' i.id%}" rel="noopener noreferrer"><button type="button" class="btn btn-dark btn-sm">
-                            REMOVER
-                            </button></a>
-                    </div>
-                    </div>
-                </div>
-                </div>
-                </td>
-                {% comment %}{% url 'remover_empenho' i.id%}{% endcomment %}
-      
-
-
-            </tr>
-            {% empty %}
-            <td> SEM EMPENHOS</td>
-            {% endfor %}
-            </tbody>
-        </table>
-
-        </div>
 
             <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -118,38 +124,62 @@
                             
                             <div class="row">
                                 <div class="modal-body"> 
-
+                                     
+                                        <div class="col-md">
                                         <label>OM: </label>                                        
                                         <select name="om" class="form-control">
                                             <option value="{{om.id}}">{{om.sigla}}</option>
                                         </select>
+                                        </div>
 
-
+                                        <div class="col-md">
                                         <label>FORNECEDOR: </label>
                                         <select name="fornecedor" class="form-control">
                                             {% for forn in  fornecedor%}
                                             <option value="{{forn.id}}">{{forn.nome}}</option>
                                             {% endfor %}
                                         </select>
-                             
-                       
+                                         </div>
+
+                                         <div class="col-md">    
                                         <label>NUMERO:</label>
-                                        <input type="text" placeholder="0" class="form-control" name="numero_empenho">
-                                    
-   
+                                        <input type="text" placeholder="" class="form-control" name="numero_empenho">
+                                        </div>
+
+                                        <div class="col-md">
+                                        <label>VALOR:</label>
+                                        <input type="number" step="0.01" class="form-control" name="valor">
+                                        </div>
+
+                                        <div class="col-md">
                                         <label>PREGÃO: </label>
                                         <select name="pregao" class="form-control">
                                         {% for pregao in  pregoes%}
                                         <option value="{{pregao.id}}">{{pregao.numero_ano}}</option>
                                         {% endfor %}
-                                        </select>                                     
-                                   
+                                        </select>          
+                                        </div>
+
+                                        <div class="col-md">
+                                        <label>NOTA DE CRÉDITO: </label>
+                                        <select name="nc" class="form-control">
+                                            {% for i in  nc %}
+                                                <option value="{{i.id}}">2022NC{{i.numero}}</option>
+                                            {% endfor %}
+                                        </select>      
+                                        </div>    
+
+                                        <div class="col-md">
                                         <label>DATA:</label>
                                         <input type="date" class="form-control" name="data">
-                                        
+                                        </div>
                                         <br>
+
+                                        <div class="col-md">
                                         <label>PDF: </label>
-                                        <input type="file" name="pdf">
+                                        <input type="file" class="input-control" name="pdf">
+
+                                    </div>
                                     </div>
                                 </div>
                                 <input type="submit" class="btn btn-lg btn-dark " value="Registrar">
@@ -169,3 +199,7 @@
 
             
 {% endblock%}
+
+
+
+

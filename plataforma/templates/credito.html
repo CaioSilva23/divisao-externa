@@ -17,8 +17,8 @@
             <div class="header-box">
                 <h2 class="titulo">CRÉDITO DISPONÍVEL</h2>
                 
-                <button type="button" class="btn-nova-empresa btn-dark" data-toggle="modal" data-target="#modal">
-                    CADASTRAR PI 
+                <button type="button" class="btn btn-conteudo bg-fundo" data-toggle="modal" data-target="#modal">
+                    NOVO CRÉDITO 
                 </button>            </div>
             <div class="borda-box"></div>
             <div class="body-box">
@@ -38,9 +38,9 @@
                 </div>
                 </form> 
                 <br>
-                <table class="table " cellpadding="20">
+                <table class="tabela table-striped table-hover table-sm" cellpadding="20">
                     <caption>Lista de pregões</caption>
-                    <thead class='thead-dark'>
+                    <thead class='table-dark'>
                        <tr >
                         <th>PLANO INTERNO</th>
                         <th>VALOR RECEBIDO</th>
@@ -62,9 +62,11 @@
                         <tr>
                             <td>{{credito}}</td>
                             <td>R${{credito.valor_total}}0</td>
+                
+                            
                             <td>#</td>
                             <td>#</td>
-                           
+                        
                         </tr>   
                         {% endfor %}
                     </tbody>
