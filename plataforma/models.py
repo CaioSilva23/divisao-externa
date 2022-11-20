@@ -47,7 +47,7 @@ class Pregao(models.Model):
     ('CJU','CJU'),
     )
 
-    capacidade_empenho = models.FloatField()
+    saldo_homologado = models.FloatField()
     pregao = models.CharField(max_length=7, null=False, blank=False)
     situacao = models.CharField(max_length=20, choices=SITUACAO_CHICES)
     descrição = models.CharField(max_length=200, null=False, blank=False)

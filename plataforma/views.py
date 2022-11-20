@@ -109,6 +109,9 @@ def inserir_empenho(request, id):
         om_id = Om.objects.get(id=om)
         pregao_id = Pregao.objects.get(id=pregao)
         nc_credito = NotaCredito.objects.get(id=nc)
+        if not nc_credito.disponivel():
+            messages.add_message(request, constants.ERROR, 'VALOR DA NOTA DE CRÉDITO INSUFICIENTE')
+            return redirect(f'/om_empenhos_id/{id}')
         try:
             empenho = Empenho(om=om_id,
                                 fornecedor=forn1,
@@ -226,15 +229,37 @@ def capacidade_empenho(request, id):
         empenhado = 0
 
     try:
-        inicial = float(pregao.capacidade_empenho)
+        inicial = float(pregao.saldo_homologado)
         final = float(empenhado)
         soma = inicial + final
+        capacidade = inicial - empenhado
         r = (soma - inicial) / inicial * 100
         print(r)
+        r = '{:.2f}'.format(r)
     except Exception as e:
         print(e)
-    return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r})
+    return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r, 'capacidade': capacidade})
 
+
+# def dashboard(request):
+#     pregao = Pregao.objects.all()
+
+    
+#     empenhado = Empenho.objects.filter(pregao_id=id).aggregate(Sum('valor'))
+#     if empenhado['valor__sum']:
+#         empenhado = empenhado['valor__sum'] 
+#     else:
+#         empenhado = 0
+
+#     try:
+#         inicial = float(pregao.capacidade_empenho)
+#         final = float(empenhado)
+#         soma = inicial + final
+#         r = (soma - inicial) / inicial * 100
+#         print(r)
+#     except Exception as e:
+#         print(e)
+#     return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r})
 
 @login_required(login_url='/auth/logar/') 
 def fornecedores(request):
