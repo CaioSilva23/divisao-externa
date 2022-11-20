@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Om, Empenho, Fornecedor, Pregao, PlanoInterno, NotaCredito, Arquivo
 from .forms import OmForms
@@ -241,25 +241,59 @@ def capacidade_empenho(request, id):
     return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r, 'capacidade': capacidade})
 
 
-# def dashboard(request):
-#     pregao = Pregao.objects.all()
+def dashboard(request):
+    pregao = Pregao.objects.all()
+    homologado = []
+    l_empenhado = []
+    p = []
+    percent = []
+    for i in pregao:
+        empenhado = Empenho.objects.filter(pregao_id=i.id).aggregate(Sum('valor'))
+        if empenhado['valor__sum']:
+            empenhado = empenhado['valor__sum'] 
+        else:
+            empenhado = 0
 
+        try:
+            inicial = float(i.saldo_homologado)
+            final = float(empenhado)
+
+            soma = inicial + final
+            capacidade = inicial - empenhado
+            r = (soma - inicial) / inicial * 100
+            print(r)
+            r = '{:.2f}'.format(r)
+            
+        except Exception as e:
+            print(e)
+            pass
+            # print(e)homologado
+        homologado.append(i.saldo_homologado)
+        l_empenhado.append(empenhado)
+        p.append(i.pregao)
+        percent.append(r)
+
+    x = {'labels': p, 'data':percent}
+    return JsonResponse(x)
+
+
+def homologado(request):
+    homologado = Pregao.objects.all().aggregate(Sum('saldo_homologado'))['saldo_homologado__sum']
     
-#     empenhado = Empenho.objects.filter(pregao_id=id).aggregate(Sum('valor'))
-#     if empenhado['valor__sum']:
-#         empenhado = empenhado['valor__sum'] 
-#     else:
-#         empenhado = 0
+    return JsonResponse({'homologado':homologado})
 
-#     try:
-#         inicial = float(pregao.capacidade_empenho)
-#         final = float(empenhado)
-#         soma = inicial + final
-#         r = (soma - inicial) / inicial * 100
-#         print(r)
-#     except Exception as e:
-#         print(e)
-#     return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r})
+def empenhado(request):
+    empenhado = Empenho.objects.all().aggregate(Sum('valor'))['valor__sum']
+    
+    return JsonResponse({'empenhado':empenhado})
+
+def capacidade(request):
+    empenhado = Empenho.objects.all().aggregate(Sum('valor'))['valor__sum']
+    homologado = Pregao.objects.all().aggregate(Sum('saldo_homologado'))['saldo_homologado__sum']
+    capacidade = homologado - empenhado
+    return JsonResponse({'capacidade':capacidade})
+
+
 
 @login_required(login_url='/auth/logar/') 
 def fornecedores(request):

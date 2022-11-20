@@ -282,3 +282,38 @@ li{
     box-shadow: 4px 4px 10px rgba(0,0,0,.3);
 
 }
+.informacoes_basicas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    height: 70px;
+    margin: 1px;
+    border-radius: 10px;
+    box-shadow:  0  2px 5px rgba(0, 0, 0, 0.9);
+    margin-left: 1%;
+    
+
+
+}
+.informacoes_basicas1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    height: 70px;
+    margin: 1;
+
+    margin-left: 1%;
+    
+    
+
+
+}
+
+.icone{
+    color: #1b1b1b;
+    width: 40px;
+ 
+
+}
