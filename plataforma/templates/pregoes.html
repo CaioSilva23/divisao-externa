@@ -58,7 +58,7 @@
                         {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
                         {% for pregao in pregoes %}
                         <tr>
-                            <td>{{pregao.numero_ano}}</td>
+                            <td>{{pregao.pregao}}</td>
                             <td>{{pregao.descrição}}</td>
                             <td>
                                 {{pregao.situacao}}                            

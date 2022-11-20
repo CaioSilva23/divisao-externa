@@ -45,7 +45,7 @@ class Pregao(models.Model):
     ('CJU','CJU'),
     )
 
-    numero_ano = models.CharField(max_length=7, null=False, blank=False)
+    pregao = models.CharField(max_length=7, null=False, blank=False)
     situacao = models.CharField(max_length=20, choices=SITUACAO_CHICES)
     descrição = models.CharField(max_length=200, null=False, blank=False)
     oms_favorecidas = models.ManyToManyField(Om)
@@ -54,7 +54,7 @@ class Pregao(models.Model):
     
     
     def __str__(self):
-        return self.numero_ano
+        return self.pregao
 
 class PlanoInterno(models.Model):
     pi = models.CharField(max_length=15)

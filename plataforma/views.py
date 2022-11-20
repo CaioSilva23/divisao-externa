@@ -187,7 +187,7 @@ def inserir_pregao(request):
 
     print(oms)
     try:
-        novo_pregao = Pregao(numero_ano=pregao,
+        novo_pregao = Pregao(pregao=pregao,
                             situacao=situacao,
                             termo_homolocao=link,
                             descrição=descricao,
