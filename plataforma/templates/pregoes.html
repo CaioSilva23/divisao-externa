@@ -58,7 +58,7 @@
                         {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
                         {% for pregao in pregoes %}
                         <tr>
-                            <td>{{pregao.pregao}}</td>
+                            <td><a href="{% url 'capacidade_empenho' pregao.id%}">{{pregao.pregao}}</a> </td>
                             <td>{{pregao.descrição}}</td>
                             <td>
                                 {{pregao.situacao}}                            

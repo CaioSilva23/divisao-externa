@@ -15,10 +15,10 @@
     <div class="wrapper">
         <div class="box"> 
             <div class="header-box">
-                <h2 class="titulo">CRÉDITO DISPONÍVEL</h2>
+                <h2 class="titulo">NOTAS DE CRÉDITO</h2>
                 
                 <button type="button" class="btn btn-conteudo bg-fundo" data-toggle="modal" data-target="#modal">
-                    NOVO CRÉDITO 
+                    NOVA NC  
                 </button>            </div>
             <div class="borda-box"></div>
             <div class="body-box">
@@ -27,41 +27,37 @@
                 <div class="row">
                     
                         <div class="col-md-5">
-                            <input type="text" placeholder="Busque pelo numero" class="form-control" name="nome">
+                            <h3 class="titulo">PI: {{pi.pi}}</h3>
                         </div>
 
         
-                    
-                    <div class="col-md-3">
-                        <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark ">
-                    </div>
+               
                 </div>
                 </form> 
                 <br>
                 <table class="tabela table-striped table-hover table-sm" cellpadding="20">
-                    <caption>Lista de pregões</caption>
+                    <caption>Lista de Notas de Créditos</caption>
                     <thead class='table-dark'>
                        <tr >
-                        <th>PLANO INTERNO</th>
+                        <th>NOTA DE CRÉDITO</th>
                         <th>VALOR RECEBIDO</th>
+                        <th>SALDO EMPENHADO</th>
+                        <th>SALDO DISPONIVEL</th>
 
-                        {% comment %} <th>SITUAÇÃO</th>
-                        <th>OMS FAVORECIDAS</th>
-                        <th>TERMO DE HOMOLOGAÇÃO</th>
-                        <th>CATÁLOGO DE MATERIAIS</th>
 
-                        <th>AÇÃO</th> {% endcomment %}
-                        
                     </tr> 
                     </thead>
                     
                     <tbody class='table-light'>
                         {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
-                        {% for credito in creditos %}
+                        {% for i in nc %}
                         <tr>
-                            <td><a href="{% url 'nc' credito.id %}">{{credito}}</a> </td>
-                            <td>R${{credito.valor_total}}0</td>
+                            <td>2022NC{{i.numero}}</td>
+                            <td>R${{i.valor}}0</td>
+                            <td>{% if i.saldo_empenhado %}R${{i.saldo_empenhado}}0 {% else %}R$ 0,00 {% endif %} </td>
+                            <td>R${{i.disponivel}}</td>
                 
+                 
                         
                         </tr>   
                         {% endfor %}

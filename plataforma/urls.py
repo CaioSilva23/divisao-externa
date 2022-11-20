@@ -21,6 +21,7 @@ urlpatterns = [
     path('pregoes/', views.pregoes, name='pregoes'),
     path('inserir_pregao/', views.inserir_pregao, name='inserir_pregao'),
     path('deletar_pregao/<int:id>', views.deletar_pregao, name='deletar_pregao'),
+    path('capacidade_empenho<int:id>', views.capacidade_empenho, name='capacidade_empenho'),
 
     # FORNECEDORES
     path('fornecedores/', views.fornecedores, name='fornecedores'),
@@ -29,6 +30,7 @@ urlpatterns = [
 
 
     path('credito/', views.credito, name='credito'),
+    path('nc/<int:id>', views.nc, name='nc'),
 
 
     path('inserir_demanda', views.inserir_demanda, name='inserir_demenda'),

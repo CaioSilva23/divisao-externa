@@ -47,13 +47,13 @@ class Pregao(models.Model):
     ('CJU','CJU'),
     )
 
+    capacidade_empenho = models.FloatField()
     pregao = models.CharField(max_length=7, null=False, blank=False)
     situacao = models.CharField(max_length=20, choices=SITUACAO_CHICES)
     descrição = models.CharField(max_length=200, null=False, blank=False)
     oms_favorecidas = models.ManyToManyField(Om)
     termo_homolocao = models.URLField()
     catalago = models.FileField(upload_to='catalago', null=True, blank=True)
-    
     
     def __str__(self):
         return self.pregao
@@ -62,11 +62,8 @@ class PlanoInterno(models.Model):
     pi = models.CharField(max_length=15)
   
     def valor_total(self):
-        creditos = NotaCredito.objects.filter(pi_id=self.id)
-        total = 0
-        for i in creditos:
-            total += i.valor
-        return total
+        creditos = NotaCredito.objects.filter(pi_id=self.id).aggregate(Sum('valor'))
+        return creditos['valor__sum']
 
     def __str__(self):
         return self.pi
@@ -77,15 +74,26 @@ class NotaCredito(models.Model):
     valor = models.FloatField()
     fonte = models.CharField(max_length=10)
     nd = models.CharField(max_length=6)
-    pi = models.ForeignKey(PlanoInterno, on_delete=models.CASCADE)
+    pi = models.ForeignKey(PlanoInterno, on_delete=models.SET_NULL, null=True)
 
 
     def saldo_empenhado(self):
-        empenhos = Empenho.objects.filter(nota_credito_id=self.id)
-        total = 0
-        for i in empenhos:
-            total += i.valor
-        return total
+        empenhos = Empenho.objects.filter(nota_credito_id=self.id).aggregate(Sum('valor'))
+
+        return empenhos['valor__sum']
+
+    def disponivel(self):
+        creditos = NotaCredito.objects.filter(id=self.id).aggregate(Sum('valor'))
+
+        if self.saldo_empenhado():
+            soma = float(creditos['valor__sum']) 
+            empenhado = float(self.saldo_empenhado())
+        else:
+            soma = float(creditos['valor__sum'])     
+            empenhado = 0
+
+        return soma - empenhado
+
 
     def __str__(self):
         return f'2022NC{self.numero}'

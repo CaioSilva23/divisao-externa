@@ -5,6 +5,8 @@ from .models import Om, Empenho, Fornecedor, Pregao, PlanoInterno, NotaCredito, 
 from .forms import OmForms
 from django.contrib import messages
 from django.contrib.messages import constants
+from datetime import date
+from django.db.models.aggregates import Avg, Sum, Min, Max
 
 def home_auth(request):
     if request.user.is_authenticated: # VERIFICA SE O USUÁRIO JÁ ESTÁ AUTENTICADO
@@ -33,7 +35,8 @@ def dados_om_id(request, id):
     oms = Om.objects.all()
     om = Om.objects.get(id=id)
     arq = Arquivo.objects.filter(om_id=id)
-    return render(request, 'dados_om.html',{'om':om, 'arq': arq, 'oms': oms})
+    data = date.today()
+    return render(request, 'dados_om.html',{'om':om, 'arq': arq, 'oms': oms, 'data':data})
 
 
 @login_required(login_url='/auth/logar/')
@@ -117,10 +120,10 @@ def inserir_empenho(request, id):
                                 nota_credito=nc_credito)
             empenho.save()
             
-            nova_nc = NotaCredito.objects.get(id=nc)
+            # nova_nc = NotaCredito.objects.get(id=nc)
 
-            nova_nc.valor -= float(valor)
-            nova_nc.save()
+            # nova_nc.valor -= float(valor)
+            # nova_nc.save()
 
 
             messages.add_message(request, constants.SUCCESS, 'Empenho inserido com sucesso')
@@ -211,6 +214,28 @@ def deletar_pregao(request, id):
     messages.add_message(request, constants.SUCCESS, 'Pregão deletado com sucesso')
     return redirect ('/pregoes/')
 
+
+def capacidade_empenho(request, id):
+    pregao = Pregao.objects.get(id=id)
+
+    
+    empenhado = Empenho.objects.filter(pregao_id=id).aggregate(Sum('valor'))
+    if empenhado['valor__sum']:
+        empenhado = empenhado['valor__sum'] 
+    else:
+        empenhado = 0
+
+    try:
+        inicial = float(pregao.capacidade_empenho)
+        final = float(empenhado)
+        soma = inicial + final
+        r = (soma - inicial) / inicial * 100
+        print(r)
+    except Exception as e:
+        print(e)
+    return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r})
+
+
 @login_required(login_url='/auth/logar/') 
 def fornecedores(request):
     fornecedores = Fornecedor.objects.all()
@@ -271,29 +296,44 @@ def deletar_fornecedor(request, id):
 def credito(request):
     creditos = PlanoInterno.objects.all()
 
+    # nc = NotaCredito.objects.all()
+    # for n in nc:
+    #     print(n.numero ,n.saldo_empenhado())
+    for c in creditos:
+        print(c.id)
 
-    # for emp in empenhados:
-    #     print(emp.saldo_empenhado())'empenhados': empenhados
+
     return render(request, 'credito.html',{'creditos': creditos} )
+
+def nc(request, id):
+    nc = NotaCredito.objects.filter(pi_id=id)
+    pi = PlanoInterno.objects.get(id=id)
+    return render(request, 'nc.html',{'nc':nc, 'pi':pi})
 
 
 
 def inserir_demanda(request):
-    om = request.POST.get('om')
-    demanda = request.FILES.get('demanda')
-    data = request.POST.get('data')
+    
+    try:
+        om = request.POST.get('om')
+        demanda = request.FILES.get('demanda')
+        data = date.today()
 
 
-    om_id = Om.objects.get(id=om)
+        om_id = Om.objects.get(id=om)
 
-    novo_arquivo = Arquivo(om=om_id,
-                            demanda=demanda,
-                            data=data)
+        novo_arquivo = Arquivo(om=om_id,
+                                demanda=demanda,
+                                data=data)
 
-    novo_arquivo.save()
-    messages.add_message(request, constants.SUCCESS, 'DOCUMENTOS ENVIADOS')
+        novo_arquivo.save()
+        messages.add_message(request, constants.SUCCESS, 'DOCUMENTOS ENVIADOS')
 
-    return redirect(f'/dados_om/{om}/')
+        return redirect(f'/dados_om/{om}/')
+    except Exception as e:
+        print(e)
+        messages.add_message(request, constants.ERROR, 'ERRO, TENTE NOVAMENTE')
+        return redirect(f'/dados_om/{om}/')
 
 
 
