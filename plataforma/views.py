@@ -132,7 +132,7 @@ def inserir_empenho(request, id):
             messages.add_message(request, constants.SUCCESS, 'Empenho inserido com sucesso')
             return redirect(f'/om_empenhos_id/{id}')
         except Exception as e:
-            print(e)
+            
             messages.add_message(request, constants.ERROR, 'ERRO AO INSERIR EMPENHO')
             return redirect(f'/om_empenhos_id/{id}')
 
@@ -190,6 +190,7 @@ def inserir_pregao(request):
     oms = request.POST.getlist('oms')
     link = request.POST.get('link')
     catalogo = request.FILES.get('catalogo')
+    valor= request.POST.get('valor')
 
     print(oms)
     try:
@@ -197,7 +198,8 @@ def inserir_pregao(request):
                             situacao=situacao,
                             termo_homolocao=link,
                             descrição=descricao,
-                            catalago=catalogo)
+                            catalago=catalogo,
+                            saldo_homologado=valor)
         novo_pregao.save()
         novo_pregao.oms_favorecidas.add(*oms)
         novo_pregao.save()
@@ -206,7 +208,7 @@ def inserir_pregao(request):
         messages.add_message(request, constants.SUCCESS, 'Pregão inserido com sucesso')
         return redirect ('/pregoes/')
     except Exception as e:
-        print(e)
+     
         messages.add_message(request, constants.ERROR, 'Erro ao inserir o pregão')
         return redirect ('/pregoes/')
 
@@ -234,13 +236,13 @@ def capacidade_empenho(request, id):
         soma = inicial + final
         capacidade = inicial - empenhado
         r = (soma - inicial) / inicial * 100
-        print(r)
+    
         r = '{:.2f}'.format(r)
     except Exception as e:
-        print(e)
-    return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r, 'capacidade': capacidade})
+   
+        return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r, 'capacidade': capacidade})
 
-
+# API DASHBOARD
 def dashboard(request):
     pregao = Pregao.objects.all()
     homologado = []
@@ -272,25 +274,32 @@ def dashboard(request):
         l_empenhado.append(empenhado)
         p.append(i.pregao)
         percent.append(r)
-
     x = {'labels': p, 'data':percent}
     return JsonResponse(x)
 
 
 def homologado(request):
     homologado = Pregao.objects.all().aggregate(Sum('saldo_homologado'))['saldo_homologado__sum']
-    
+    homologado = f'{homologado:_.2f}'
+    homologado = homologado.replace('.',',').replace('_','.')
+
     return JsonResponse({'homologado':homologado})
 
 def empenhado(request):
     empenhado = Empenho.objects.all().aggregate(Sum('valor'))['valor__sum']
-    
+
+
+    empenhado = f'R$ {empenhado:_.2f}'
+    empenhado = empenhado.replace('.',',').replace('_','.')
     return JsonResponse({'empenhado':empenhado})
 
 def capacidade(request):
     empenhado = Empenho.objects.all().aggregate(Sum('valor'))['valor__sum']
     homologado = Pregao.objects.all().aggregate(Sum('saldo_homologado'))['saldo_homologado__sum']
     capacidade = homologado - empenhado
+
+    capacidade = f'{capacidade:_.2f}'
+    capacidade = capacidade.replace('.',',').replace('_','.')
     return JsonResponse({'capacidade':capacidade})
 
 

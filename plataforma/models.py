@@ -63,7 +63,7 @@ class PlanoInterno(models.Model):
   
     def valor_total(self):
         creditos = NotaCredito.objects.filter(pi_id=self.id).aggregate(Sum('valor'))
-        return creditos['valor__sum']
+        return f"{creditos['valor__sum']:,.2f}"
 
     def __str__(self):
         return self.pi
