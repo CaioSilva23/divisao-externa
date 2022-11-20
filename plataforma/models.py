@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import date
+from django.db.models.aggregates import Avg, Sum, Min, Max
+
 class Om(models.Model):
     LISTA_OMS = (
         ('PMPV', 'PMPV'),
