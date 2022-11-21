@@ -16,6 +16,9 @@ def home_auth(request):
 
 @login_required(login_url='/auth/logar/') 
 def home(request):
+    return render(request, 'home.html')
+
+def home_oms(request):
     
     if request.method == 'POST':
         form_om = OmForms(request.POST, request.FILES)
@@ -27,7 +30,7 @@ def home(request):
     elif request.method == 'GET':
         form_om = OmForms()
         oms = Om.objects.all()
-        return render(request, 'home.html', {'form_om': form_om, 'oms': oms})
+        return render(request, 'home_oms.html', {'form_om': form_om, 'oms': oms})
 
 
 @login_required(login_url='/auth/logar/')
