@@ -305,7 +305,46 @@ def capacidade(request):
     capacidade = capacidade.replace('.',',').replace('_','.')
     return JsonResponse({'capacidade':capacidade})
 
+def home_tabela(request):
+    pregao = Pregao.objects.all()
+    homologado = []
+    l_empenhado = []
+    pe = []
+    percent = []
+    capacidade_list = []
+    for i in pregao:
+        empenhado = Empenho.objects.filter(pregao_id=i.id).aggregate(Sum('valor'))
+        if empenhado['valor__sum']:
+            empenhado = empenhado['valor__sum'] 
+        else:
+            empenhado = 0
 
+        try:
+            inicial = float(i.saldo_homologado)
+            final = float(empenhado)
+
+            soma = inicial + final
+            capacidade = inicial - empenhado
+            r = (soma - inicial) / inicial * 100
+            
+            r = '{:.2f}'.format(r)
+            
+        except Exception as e:
+            
+            pass
+            # print(e)homologado
+        homologado.append(i.saldo_homologado)
+        l_empenhado.append(empenhado)
+        pe.append(i.pregao)
+        percent.append(r)
+        capacidade_list.append(capacidade)
+
+
+    # x = list(zip(pe,homologado,l_empenhado, capacidade_list,percent))
+    # x = list(zip(*x))
+    # print(x)
+
+    return render(request, 'home_tabela.html', {'pe':pe})
 
 @login_required(login_url='/auth/logar/') 
 def fornecedores(request):
