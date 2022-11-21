@@ -25,7 +25,7 @@ def home_oms(request):
         if form_om.is_valid:
             form_om.save()
             messages.add_message(request, constants.SUCCESS, 'OM cadastrada com sucesso')
-            return redirect('/home/')
+            return redirect('/home_oms/')
     
     elif request.method == 'GET':
         form_om = OmForms()
@@ -112,7 +112,7 @@ def inserir_empenho(request, id):
         om_id = Om.objects.get(id=om)
         pregao_id = Pregao.objects.get(id=pregao)
         nc_credito = NotaCredito.objects.get(id=nc)
-        if nc_credito.disponivel() <= float(valor):
+        if nc_credito.disponivel() < float(valor):
             messages.add_message(request, constants.ERROR, 'SALDO DA NOTA DE CRÉDITO INSUFICIENTE')
             return redirect(f'/om_empenhos_id/{id}')
         try:
@@ -340,11 +340,11 @@ def home_tabela(request):
         capacidade_list.append(capacidade)
 
 
-    # x = list(zip(pe,homologado,l_empenhado, capacidade_list,percent))
-    # x = list(zip(*x))
-    # print(x)
+    x = list(zip(pe,homologado,l_empenhado, capacidade_list,percent))
+    x = list(zip(*x))
+    print(x)
 
-    return render(request, 'home_tabela.html', {'pe':pe})
+    return render(request, 'home_tabela.html', {'x':x})
 
 @login_required(login_url='/auth/logar/') 
 def fornecedores(request):

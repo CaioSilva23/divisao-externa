@@ -69,7 +69,7 @@
                 </div> 
                 <br>
                 <table class="tabela table-striped table-hover table-sm" cellpadding="20">
-                    <caption>Lista de pregões</caption>
+        
                     <thead class='table-dark'>
                        <tr >
                         <th>PREGÃO</th>
@@ -81,28 +81,24 @@
 
                     </tr> 
                     </thead>
-                    
-                    <tbody class='table-light'>
-                        {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
-                        
-                        {% for i in pe %}
-                       
-              
+                    <tbody>
+               
                         <tr>
-                            <td>{{i}}</td>
-                            
-                            <td>R${{pregao.saldo_homologado}}0</td>
-                            <td>R${{empenhado}}0</td>
-                            <td>R${{capacidade}}0</td>
-                            <td>{{r}}%</td>
-                   
-                        {% endfor %}
-                    
-                        </tr>   
-                       
-                    </tbody>
-                </table>
+                            <td></td>
+                            <td></td>
+                            <td>a</td>
+                            <td>a</td>
+                        
+                        </tr>
 
+                    </tbody>
+
+          
+                  
+                </table>
+                {% for c, v in x.items  %}
+                    {{c}} - {{v}}
+                {% endfor %}
             
             </div>
             </div>        
