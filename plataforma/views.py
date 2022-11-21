@@ -101,16 +101,16 @@ def inserir_empenho(request, id):
             messages.add_message(request, constants.ERROR, 'Empenho já existe')
             return redirect(f'/om_empenhos_id/{id}')
 
-        if pdf.size > 100_000_000:
-            messages.add_message(request, constants.ERROR, 'PDF não pode ser mair que 10MB')
-            return redirect(f'/om_empenhos_id/{id}')
+        # if pdf.size > 100_000_000:
+        #     messages.add_message(request, constants.ERROR, 'PDF não pode ser mair que 10MB')
+        #     return redirect(f'/om_empenhos_id/{id}')
 
         forn1 = Fornecedor.objects.get(id=fornecedor)
         om_id = Om.objects.get(id=om)
         pregao_id = Pregao.objects.get(id=pregao)
         nc_credito = NotaCredito.objects.get(id=nc)
-        if not nc_credito.disponivel():
-            messages.add_message(request, constants.ERROR, 'VALOR DA NOTA DE CRÉDITO INSUFICIENTE')
+        if nc_credito.disponivel() <= float(valor):
+            messages.add_message(request, constants.ERROR, 'SALDO DA NOTA DE CRÉDITO INSUFICIENTE')
             return redirect(f'/om_empenhos_id/{id}')
         try:
             empenho = Empenho(om=om_id,
@@ -239,8 +239,8 @@ def capacidade_empenho(request, id):
     
         r = '{:.2f}'.format(r)
     except Exception as e:
-   
-        return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r, 'capacidade': capacidade})
+        pass
+    return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r, 'capacidade': capacidade})
 
 # API DASHBOARD
 def dashboard(request):
@@ -263,11 +263,11 @@ def dashboard(request):
             soma = inicial + final
             capacidade = inicial - empenhado
             r = (soma - inicial) / inicial * 100
-            print(r)
+            
             r = '{:.2f}'.format(r)
             
         except Exception as e:
-            print(e)
+            
             pass
             # print(e)homologado
         homologado.append(i.saldo_homologado)
