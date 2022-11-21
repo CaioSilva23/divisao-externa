@@ -25,7 +25,7 @@ def home_oms(request):
         if form_om.is_valid:
             form_om.save()
             messages.add_message(request, constants.SUCCESS, 'OM cadastrada com sucesso')
-            return redirect('/home/')
+            return redirect('/home_oms/')
     
     elif request.method == 'GET':
         form_om = OmForms()
@@ -112,7 +112,7 @@ def inserir_empenho(request, id):
         om_id = Om.objects.get(id=om)
         pregao_id = Pregao.objects.get(id=pregao)
         nc_credito = NotaCredito.objects.get(id=nc)
-        if nc_credito.disponivel() <= float(valor):
+        if nc_credito.disponivel() < float(valor):
             messages.add_message(request, constants.ERROR, 'SALDO DA NOTA DE CRÉDITO INSUFICIENTE')
             return redirect(f'/om_empenhos_id/{id}')
         try:
@@ -305,7 +305,46 @@ def capacidade(request):
     capacidade = capacidade.replace('.',',').replace('_','.')
     return JsonResponse({'capacidade':capacidade})
 
+def home_tabela(request):
+    pregao = Pregao.objects.all()
+    homologado = []
+    l_empenhado = []
+    pe = []
+    percent = []
+    capacidade_list = []
+    for i in pregao:
+        empenhado = Empenho.objects.filter(pregao_id=i.id).aggregate(Sum('valor'))
+        if empenhado['valor__sum']:
+            empenhado = empenhado['valor__sum'] 
+        else:
+            empenhado = 0
 
+        try:
+            inicial = float(i.saldo_homologado)
+            final = float(empenhado)
+
+            soma = inicial + final
+            capacidade = inicial - empenhado
+            r = (soma - inicial) / inicial * 100
+            
+            r = '{:.2f}'.format(r)
+            
+        except Exception as e:
+            
+            pass
+            # print(e)homologado
+        homologado.append(i.saldo_homologado)
+        l_empenhado.append(empenhado)
+        pe.append(i.pregao)
+        percent.append(r)
+        capacidade_list.append(capacidade)
+
+
+    x = list(zip(pe,homologado,l_empenhado, capacidade_list,percent))
+    x = list(zip(*x))
+    print(x)
+
+    return render(request, 'home_tabela.html', {'x':x})
 
 @login_required(login_url='/auth/logar/') 
 def fornecedores(request):

@@ -27,6 +27,7 @@ urlpatterns = [
     path('homologado/', views.homologado, name='homologado'),
     path('empenhado/', views.empenhado, name='empenhado'),
     path('capacidade/', views.capacidade, name='capacidade'),
+    path('home_tabela/', views.home_tabela, name='home_tabela'),
 
     # FORNECEDORES
     path('fornecedores/', views.fornecedores, name='fornecedores'),

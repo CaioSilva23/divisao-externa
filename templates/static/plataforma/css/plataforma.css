@@ -4,10 +4,11 @@
     margin-top: 25px;
     margin-right: 10px;
 
-    padding: 10px;
+    
+    padding: 5px;
     color: white;
     font-weight: bold;
-
+    font-size: 13px;
     text-align: center;
     box-shadow: 5px 5px 5px 5px rgb(45, 46, 45);
 }
