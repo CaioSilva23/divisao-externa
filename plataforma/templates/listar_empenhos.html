@@ -3,109 +3,110 @@
 
 
 {% block 'plataforma' %}
-    {% if messages %}
-        <br>
+
+<div class="wrapper">
+    <div class="box"> 
+        {% if messages %}
         {% for message in messages %}
             <div class="alert {{message.tags}}">
-                {{message}}
+            {{message}}
             </div>
         {% endfor %}
-    {% endif %}
-    <br>
-    <div class="header-box row">
-        <div class='col-md-3'>
-            <img src="{% static 'plataforma/img/base.png'%} " width='100'>
-        </div>
-        
-  
-            <h1 class="titulo">B ADM CMPL SAU RJ</h1>
+        {% endif %}
+            <div class="header-box-om">
+                <div class="alinhado_ne">
+                    <div>
+                        <img src="{% static 'plataforma/img/base.png'%} " width='100'>
+                    </div>
       
-        
-
-    </div>
-    {% comment "" %}    <div class="row">
-        <div class="col-md-3">
+              
+                        <h1 class="titulo">B ADM CMPL SAU RJ</h1>
+          
+                </div>
             </div>
- 
-    <h1> B ADM CMPL SAU RJ </h1>
-       
-        
-    </div>{% endcomment %}
-
-    <hr>
-    <form>
-        <div class="row" action="{% url 'listar_empenhos' %}" method="GET">
-            
-                <div class="col-md-3">
-                    <input type="text" placeholder="Busque pelo fornecedor" class="form-control" name="fornecedor">
-                </div>
-
-                
-                <div class="col-md-3">
-                    <input type="text" placeholder="Busque pelo n° empenho" class="form-control" name="numero_empenho">
-                </div>
-               
-               
-                
-             
-                <div class="col-md-2">   
-                    <select class="form-control" name="om_select">
-                        <option value="" selected="">-----</option>
-                        {% for om in om_list %}
+            <div class="borda-box"></div>
+            <div class="body-box">
+                <form>
+                    <div class="row" action="{% url 'listar_empenhos' %}" method="GET">
                         
-                        <option value="{{ om.id }}">{{ om }}</option>
-                        {% endfor %}
-                    </select>         
-                </div>
-
-            <div class="col-md-1">
-                <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark">
-            </div>
-            <div class="col-md-3">
-                <a href="{% url 'listar_empenhos'%}">
-                    <button type="button" class="btn btn-lg btn-dark ">
-                    LIMPAR
-                    </button>
-                    </a>
-            </div>
-        </div>
-        </form>
-    <br>
-    <div class='scroll1'>
-        <table class="tabela table-striped table-hover table-sm" cellpadding="20">
-            <caption>Lista de Empenhos</caption>
-            <thead class='table-dark'>
-            <tr>
-                <th>OM</th>
-                <th>FORNECEDOR</th>
-                <th>NE</th>
-                <th>ND</th>
-                <th>UG</th>
-                <th>PREGÃO</th>
-                <th>DATA</th>
-                <th>AÇÕES</th>
-            </tr>
-            </thead>
-            <tbody class='bg-light'>
-                {% for i in empenhos %}
-                <tr class="tabela-linha" >
-                    <td>{{i.om }}</td>
-                    <td>{{i.fornecedor }}</td>
-                    <td>2022NE000{{i.numero}}</td>
-                    <td>{{i.nd}}</td>
-                    <td>{{i.ug }}</td>
-                    <td>{{i.pregao}}</td>
-                    <td>{{i.data}}</td>
-                    <td> 
-                        <a class="btn btn-dark" href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer">ABRIR</a>
-                    </td>
-                </tr>
-                {% empty %}
-                <td> SEM EMPENHOS</td>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        </div>
+                            <div class="col-md-3">
+                                <input type="text" placeholder="Busque pelo fornecedor" class="form-control" name="fornecedor">
+                            </div>
+            
+                            
+                            <div class="col-md-3">
+                                <input type="text" placeholder="Busque pelo n° empenho" class="form-control" name="numero_empenho">
+                            </div>
+                           
+                           
+                            
+                         
+                            <div class="col-md-2">   
+                                <select class="form-control" name="om_select">
+                                    <option value="" selected="">-----</option>
+                                    {% for om in om_list %}
+                                    
+                                    <option value="{{ om.id }}">{{ om }}</option>
+                                    {% endfor %}
+                                </select>         
+                            </div>
+            
+                        <div class="col-md-1">
+                            <input type="submit" value="FILTRAR" class="btn btn-lg btn-dark">
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{% url 'listar_empenhos'%}">
+                                <button type="button" class="btn btn-lg btn-dark ">
+                                LIMPAR
+                                </button>
+                                </a>
+                        </div>
+                    </div>
+                    </form>
+                <br>
+                <div class='scroll1'>
+                    <table class="tabela table-striped table-hover table-sm" cellpadding="20">
+                        <caption>Lista de Empenhos</caption>
+                        <thead class='table-dark'>
+                        <tr>
+                            <th>OM</th>
+                            <th>FORNECEDOR</th>
+                            <th>NE</th>
+                            <th>PREGÃO</th>
+                            <th>DATA</th>
+                            <th>VALOR</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                        </thead>
+                        <tbody class='bg-light'>
+                            {% for i in empenhos %}
+                            <tr class="tabela-linha" >
+                                <td>{{i.om }}</td>
+                                <td>{{i.fornecedor }}</td>
+                                <td>2022NE000{{i.numero}}</td>
+                                <td>{{i.pregao}}</td>
+                                <td>{{i.data}}</td>
+                                <td>
+                                    {% if i.valor%}
+                                    R$ {{i.valor}}0
+                                    {% else %}
+                                    -------
+                                    {% endif %}</td>
+                                <td> 
+                                    <a class="btn btn-dark" href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer">ABRIR</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <td> SEM EMPENHOS</td>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            
+                    </div>
+            
+            </div>        
+    </div>
+</div>
             
 {% endblock%}
+

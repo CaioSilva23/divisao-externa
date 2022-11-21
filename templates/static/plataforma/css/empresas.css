@@ -11,6 +11,7 @@
     width: 80vw;
     background: #fff;
     box-shadow: 4px 4px 10px rgba(0,0,0,.3);
+    margin-bottom: 100px;
 }
 
 
@@ -22,17 +23,15 @@
     justify-content: center;
 }
 
-.btn-nova-empresa{
+.btn-conteudo{
     float: right;
     text-decoration: none;
-    color: white;
-    background-color: #7D2948;
     padding: 10px;
     border-radius: 10px;
     font-weight: bold;
 }
 
-.btn-nova-empresa:hover{
+.btn-conteudo:hover{
     color: white;
     text-decoration: none;
     background-color: #631f38;
@@ -49,13 +48,26 @@
     padding: 30px;
 
 }
+.header-box-om{
+
+    padding: 10px;
+
+}
+
+.header-box-ne{
+
+    padding: 15px;
+
+}
 
 .borda-box{
     border-top: 1px solid black;
+    
 }
 
 .body-box{
-    padding: 30px;
+    padding: 20px;
+    
 }
 
 .btn-orange{

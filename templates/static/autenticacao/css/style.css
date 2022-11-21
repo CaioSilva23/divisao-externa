@@ -12,20 +12,41 @@
     width: 100%;
     min-height: 100vh;
 }
+.body-branco{
+    background: white;
 
-.logo{
-    height: 50px;
-    width: auto;
 }
 
+/* UTILS */
+
+.row1{
+    border-left: 60px;
+}
+
+.bg-fundo
+{
+    background-color: #112026 !important;
+    color: white;
+
+}
+/* NAVBAR */
 .logo{
+    height: 55px;
+    width: auto;
+    padding: 5px;
     cursor: pointer;
+}
+/* tbody{
+    border: 1px solid;
+} */
+table{
+    box-shadow: 5px 5px 5px 5px rgb(220, 230, 220);
+    text-align: center;
+}
 
-}    
 
-
-.btn-home{
-    background-color: rgb(66, 66, 60);
+.btn-padrao{
+    background-color: #112026 !important;
     padding: 20px 50px; /* ESPACO INTERNO - 15 EM CIMA E BAIXO, 50 NO LADOS*/
     border: none; /* TIRA AS BORDAS*/
     border-radius: 10px; /* ARRENDAMENTO*/
@@ -36,60 +57,83 @@
     font-size:medium;
 }
 
+.btn-confirmar{
+    background-color: #1c421f !important;
+    padding: 10px 25px; /* ESPACO INTERNO - 15 EM CIMA E BAIXO, 50 NO LADOS*/
+    border: none; /* TIRA AS BORDAS*/
+    border-radius: 10px; /* ARRENDAMENTO*/
+    letter-spacing: 1px; /* ESPAÇO ENTRE AS LETRAS*/
+    font-weight: bold;
+    color: white;
+    font-size:medium;
+}
+.btn-deletar{
+    background-color: #912525 !important;
+    padding: 10px 25px; /* ESPACO INTERNO - 15 EM CIMA E BAIXO, 50 NO LADOS*/
+    border: none; /* TIRA AS BORDAS*/
+    border-radius: 10px; /* ARRENDAMENTO*/
+    letter-spacing: 1px; /* ESPAÇO ENTRE AS LETRAS*/
+    font-weight: bold;
+    color: white;
+    font-size:medium;
+}
+
 .btn-home:hover{
     background: green;
     cursor: pointer;
 }
-
-#navbar-inicial{
-    display: flex;
+.bg-nav{
+    padding: 10px;
     color: white;
-    background-color: rgb(44, 46, 45);
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    width: 100%;
+}
+
+.alinhado{
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    text-align: center;
+}
+.alinhado_ne{
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px;
+    text-align: center;
 
 }
 
-.navbar-conteudo{
-    width: 70%;
+.ul{
+    display: flex;
+    list-style: none;
+
+}
+ul li:nth-child(3){
+    border-right: 0.1px solid white;
+    align-items: right;
+}
+
+li{
+    padding: 0 20px;
+    transition: all 300ms ease;
+    color: white;
+    font-weight: bold;
+    align-items: right;
+}
+.nav-body{
+    margin-right: 80px;
+}
+.nav-logo{
+    margin-left: 100px;
+    font-weight: bold;
+    color: white;
+}
+.nav-container{
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 0;
-}
-.ul-ul{
-    display: flex;
-    list-style: none;
-    font-weight: bold;
+    padding: 1px 0;
 }
 
-.li-li{
-    padding: 0 20px;
-    transition: all 300ms ease;
-}
-
-.li-li:hover{
-    color: green;
-    cursor: pointer;
-}
-
-.li-li:nth-child(3){
-    border-right: 1px solid white;
-
-}
-.a-a:visited{
-    color: white;
-}
-.a-a:link{
-    text-decoration: none
-    
-}
-.a-a:hover{
-    color: green;
-    cursor: pointer;
-}
 
 .main-inicial{
     height: 100vh;
@@ -122,13 +166,14 @@
  
 }
 
+
 .footer-inicial{
     display: flex;
     color: white;
-    background-color: rgb(44, 46, 45);
     justify-content: center;
     width: 100%;
     padding: 10px 0;
+    color: white;
 
 
 }
@@ -174,7 +219,6 @@
 
 .form-cabeca{
     color: white;
-    background-color: rgb(44, 46, 45);
     padding: 20px;
     text-align: center;
 
@@ -216,4 +260,71 @@
 }
 .sub-titulo{
     color: gray;
+}
+
+.scroll {
+    height: 400px;
+    overflow-y: auto;
+}
+.scroll1 {
+  height: 500px;
+  overflow-y: auto;
+}
+
+.card-om{
+    background-color: white;
+    text-align: center;
+
+}
+.card-real{
+
+    margin: 5px;
+    box-shadow: 4px 4px 10px rgba(0,0,0,.3);
+
+}
+.informacoes_basicas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    height: 70px;
+    margin: 1px;
+    border-radius: 10px;
+    box-shadow:  0  2px 5px rgba(0, 0, 0, 0.3);
+    margin-left: 1%;
+  
+    
+
+
+}
+.informacoes{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  
+    
+
+
+}
+.informacoes_basicas1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    height: 70px;
+    margin: 1;
+
+    margin-left: 1%;
+    
+    
+
+
+}
+
+.icone{
+    color: #1b1b1b;
+    width: 40px;
+ 
+
 }

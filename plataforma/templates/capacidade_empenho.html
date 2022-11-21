@@ -1,0 +1,75 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+    {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{message.tags}}">
+            {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="wrapper">
+        <div class="box"> 
+            <div class="header-box">
+                <h2 class="titulo">CAPACIDADE DE EMPENHO</h2>
+                        </div>
+            <div class="borda-box"></div>
+            <div class="body-box">
+            
+                <form action='#' method='GET'> {% csrf_token %}
+                <div class="row">
+                    
+                        <div class="col-md-5">
+                            <h3 class="titulo">{{pregao}}</h3>
+                        </div>
+
+        
+               
+                </div>
+                </form> 
+                <br>
+                <table class="tabela table-striped table-hover table-sm" cellpadding="20">
+                    <caption>Lista de Notas de Créditos</caption>
+                    <thead class='table-dark'>
+                       <tr >
+                        <th>PREGÃO</th>
+                        <th>SALDO HOMOLOGADO</th>
+                        <th>EMPENHADO</th>
+                        <th>CAPACIDADE DE EMPENHO</th>
+                        <th>PORCENTAGEM</th>
+
+
+                    </tr> 
+                    </thead>
+                    
+                    <tbody class='table-light'>
+                        {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
+                        
+                        <tr>
+                            <td>{{pregao}}</td>
+                            <td>R${{pregao.saldo_homologado}}0</td>
+                            <td>R${{empenhado}}0</td>
+                            <td>R${{capacidade}}0</td>
+                            <td>{{r}}%</td>
+
+                 
+                        
+                        </tr>   
+                       
+                    </tbody>
+                </table>
+            </div>
+
+
+            
+
+        </div>
+    </div>
+   
+   
+
+{% endblock 'plataforma' %}

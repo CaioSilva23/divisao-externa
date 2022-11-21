@@ -1,15 +1,21 @@
 .card-lateral{
-    background-color: #27DB8F;
-    margin-top: 20px;
+    background-color: #112026;
+    margin-left: 50px;
+    margin-top: 25px;
+    margin-right: 10px;
+
     padding: 10px;
     color: white;
     font-weight: bold;
-    text-decoration: none;
+
     text-align: center;
-    box-shadow: 5px 5px 5px gray;
+    box-shadow: 5px 5px 5px 5px rgb(45, 46, 45);
 }
     .link-lateral:hover{
     text-decoration: none;
+}
+.card-ultimo{
+    margin-bottom: 100px;
 }
     .titulo{
     color: #27DB8F;

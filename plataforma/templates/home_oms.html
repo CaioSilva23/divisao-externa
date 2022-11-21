@@ -1,0 +1,90 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+<div class="wrapper">
+    <div class="box"> 
+            <div class="header-box">
+                <div class='row'>
+                    {% if messages %}
+                    <br>
+                    {% for message in messages %}
+                        <div class="alert {{message.tags}}">
+                        {{message}}
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div>
+                    <button type="button" class="btn btn-conteudo bg-fundo" data-toggle="modal" data-target="#modal">
+                    CADASTRAR OM
+                    </button>
+                </div>   
+
+                   
+            </div>
+ <br>
+
+            <div class="borda-box"></div>
+            <div class="body-box">
+                <div class="row " style='padding: 20px;'> 
+                    {% for om in oms %}
+                    <div class="card col-md-2 card-real" >
+                        <br>
+                        <div class="card-header card-om">
+                            <a href="{% url 'dados_om_id' om.id%}"><img src="{{ om.foto.url}}" height="150" width="100"></a>
+                        </div>
+                        <div class="card-body card-om">
+                          <h5 class="card-title ">{{om.sigla}}</h5>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    </div>
+            </div>        
+    </div>
+</div>
+
+    
+
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header table-dark ">
+                    <h5 id="exampleModalLabel">Cadastrar OM</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="{% url 'home'%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="modal-body"> 
+                                    <div><label>OM: </label>
+                                    <div>{{form_om.sigla}}</div>
+                                    </div>
+                                    <br>
+                                    <div><label>EMAIL: </label>
+                                    <div>{{form_om.email}}</div>
+                                    </div>
+                                    <br>
+                                    <div><label>TELEFONE:</label>
+                                    <div>{{form_om.telefone}}</div>
+                                    </div>
+                                    <br>
+                                    <div><label>INSIGNIAS:</label>
+                                    <div>{{form_om.foto}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <input type="submit" class="btn bg-fundo" value="Registar">
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div> 
+{% endblock 'plataforma' %}

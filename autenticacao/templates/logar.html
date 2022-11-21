@@ -1,9 +1,7 @@
-{% extends 'base_auth.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block 'head' %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-
 {% endblock %}
 
 {% block 'titulo' %}LOGIN{% endblock %}
@@ -15,7 +13,7 @@
     
             <main class="form-inicial">
                 <div class="conteudo">
-                    <div class="form-cabeca">
+                    <div class="form-cabeca bg-fundo">
                         <h2 class='h2-h'>DIV ADM EXT</h2>
 
                     </div>
@@ -39,7 +37,7 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-                        <button type="submit" class="btn-home">ENTRAR</button>
+                        <button type="submit" class="btn-padrao bg-fundo">ENTRAR</button>
                     </form>
 
                 </main>

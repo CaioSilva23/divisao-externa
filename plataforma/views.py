@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-from .models import Om, Empenho, Fornecedor, Pregao
+from .models import Om, Empenho, Fornecedor, Pregao, PlanoInterno, NotaCredito, Arquivo
 from .forms import OmForms
 from django.contrib import messages
 from django.contrib.messages import constants
+from datetime import date
+from django.db.models.aggregates import Avg, Sum, Min, Max
 
 def home_auth(request):
     if request.user.is_authenticated: # VERIFICA SE O USUÁRIO JÁ ESTÁ AUTENTICADO
@@ -14,6 +16,9 @@ def home_auth(request):
 
 @login_required(login_url='/auth/logar/') 
 def home(request):
+    return render(request, 'home.html')
+
+def home_oms(request):
     
     if request.method == 'POST':
         form_om = OmForms(request.POST, request.FILES)
@@ -25,13 +30,16 @@ def home(request):
     elif request.method == 'GET':
         form_om = OmForms()
         oms = Om.objects.all()
-        return render(request, 'home.html', {'form_om': form_om, 'oms': oms})
+        return render(request, 'home_oms.html', {'form_om': form_om, 'oms': oms})
 
 
 @login_required(login_url='/auth/logar/')
 def dados_om_id(request, id):
-    om = Om.objects.filter(id=id)
-    return render(request, 'dados_om.html',{'om':om})
+    oms = Om.objects.all()
+    om = Om.objects.get(id=id)
+    arq = Arquivo.objects.filter(om_id=id)
+    data = date.today()
+    return render(request, 'dados_om.html',{'om':om, 'arq': arq, 'oms': oms, 'data':data})
 
 
 @login_required(login_url='/auth/logar/')
@@ -46,6 +54,7 @@ def om_empenhos_id(request, id):
     om = Om.objects.get(id=id)
     empenhos = Empenho.objects.filter(om_id=id).order_by('numero')
     pregoes = Pregao.objects.all()
+    nc = NotaCredito.objects.all()
     
     try:
         fornecedor_filtar = request.GET.get('fornecedor')
@@ -56,9 +65,9 @@ def om_empenhos_id(request, id):
 
         if numero_empenho_filtar:
             empenhos = Empenho.objects.filter(numero=numero_empenho_filtar)
-        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'fornecedor': fornecedor,'pregoes':pregoes})
+        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos, 'fornecedor': fornecedor,'pregoes':pregoes, 'nc': nc})
     except:
-        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos,  'fornecedor': fornecedor,'pregoes':pregoes})
+        return render(request, 'om_empenhos_id.html',{'om':om, 'empenhos':empenhos,  'fornecedor': fornecedor,'pregoes':pregoes, 'nc': nc})
 
 
 @login_required(login_url='/auth/logar/')
@@ -70,14 +79,14 @@ def inserir_empenho(request, id):
         om = request.POST.get('om')
         fornecedor = request.POST.get('fornecedor')
         numero_empenho = request.POST.get('numero_empenho')
-        nd = request.POST.get('nd')
-        ug = request.POST.get('ug')
         pregao = request.POST.get('pregao')
         data = request.POST.get('data')
         pdf = request.FILES.get('pdf')
+        valor = request.POST.get('valor')
+        nc = request.POST.get('nc')
      
      
-        if ( len(om.strip()) == 0 or len(fornecedor.strip()) == 0 or len(numero_empenho.strip()) == 0 or len(nd.strip()) ==0 or len(ug.strip()) ==0 or len(pregao.strip()) ==0 or len(data.strip()) ==0): 
+        if ( len(om.strip()) == 0 or len(fornecedor.strip()) == 0 or len(numero_empenho.strip()) == 0 or len(pregao.strip()) ==0 or len(data.strip()) ==0): 
             messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
             return redirect(f'/om_empenhos_id/{id}')
 
@@ -95,27 +104,38 @@ def inserir_empenho(request, id):
             messages.add_message(request, constants.ERROR, 'Empenho já existe')
             return redirect(f'/om_empenhos_id/{id}')
 
-        if pdf.size > 100_000_000:
-            messages.add_message(request, constants.ERROR, 'PDF não pode ser mair que 10MB')
-            return redirect(f'/om_empenhos_id/{id}')
+        # if pdf.size > 100_000_000:
+        #     messages.add_message(request, constants.ERROR, 'PDF não pode ser mair que 10MB')
+        #     return redirect(f'/om_empenhos_id/{id}')
 
         forn1 = Fornecedor.objects.get(id=fornecedor)
         om_id = Om.objects.get(id=om)
         pregao_id = Pregao.objects.get(id=pregao)
-
+        nc_credito = NotaCredito.objects.get(id=nc)
+        if nc_credito.disponivel() <= float(valor):
+            messages.add_message(request, constants.ERROR, 'SALDO DA NOTA DE CRÉDITO INSUFICIENTE')
+            return redirect(f'/om_empenhos_id/{id}')
         try:
             empenho = Empenho(om=om_id,
                                 fornecedor=forn1,
-                                nd=nd,ug=ug,
                                 pregao=pregao_id,
                                 data=data,
                                 numero=numero_empenho,
-                                pdf=pdf)
+                                pdf=pdf, 
+                                valor=valor,
+                                nota_credito=nc_credito)
             empenho.save()
+            
+            # nova_nc = NotaCredito.objects.get(id=nc)
+
+            # nova_nc.valor -= float(valor)
+            # nova_nc.save()
+
+
             messages.add_message(request, constants.SUCCESS, 'Empenho inserido com sucesso')
             return redirect(f'/om_empenhos_id/{id}')
         except Exception as e:
-            print(e)
+            
             messages.add_message(request, constants.ERROR, 'ERRO AO INSERIR EMPENHO')
             return redirect(f'/om_empenhos_id/{id}')
 
@@ -173,14 +193,16 @@ def inserir_pregao(request):
     oms = request.POST.getlist('oms')
     link = request.POST.get('link')
     catalogo = request.FILES.get('catalogo')
+    valor= request.POST.get('valor')
 
     print(oms)
     try:
-        novo_pregao = Pregao(numero_ano=pregao,
+        novo_pregao = Pregao(pregao=pregao,
                             situacao=situacao,
                             termo_homolocao=link,
                             descrição=descricao,
-                            catalago=catalogo)
+                            catalago=catalogo,
+                            saldo_homologado=valor)
         novo_pregao.save()
         novo_pregao.oms_favorecidas.add(*oms)
         novo_pregao.save()
@@ -189,7 +211,7 @@ def inserir_pregao(request):
         messages.add_message(request, constants.SUCCESS, 'Pregão inserido com sucesso')
         return redirect ('/pregoes/')
     except Exception as e:
-        print(e)
+     
         messages.add_message(request, constants.ERROR, 'Erro ao inserir o pregão')
         return redirect ('/pregoes/')
 
@@ -199,6 +221,91 @@ def deletar_pregao(request, id):
     pregao.delete()
     messages.add_message(request, constants.SUCCESS, 'Pregão deletado com sucesso')
     return redirect ('/pregoes/')
+
+
+def capacidade_empenho(request, id):
+    pregao = Pregao.objects.get(id=id)
+
+    
+    empenhado = Empenho.objects.filter(pregao_id=id).aggregate(Sum('valor'))
+    if empenhado['valor__sum']:
+        empenhado = empenhado['valor__sum'] 
+    else:
+        empenhado = 0
+
+    try:
+        inicial = float(pregao.saldo_homologado)
+        final = float(empenhado)
+        soma = inicial + final
+        capacidade = inicial - empenhado
+        r = (soma - inicial) / inicial * 100
+    
+        r = '{:.2f}'.format(r)
+    except Exception as e:
+        pass
+    return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r, 'capacidade': capacidade})
+
+# API DASHBOARD
+def dashboard(request):
+    pregao = Pregao.objects.all()
+    homologado = []
+    l_empenhado = []
+    p = []
+    percent = []
+    for i in pregao:
+        empenhado = Empenho.objects.filter(pregao_id=i.id).aggregate(Sum('valor'))
+        if empenhado['valor__sum']:
+            empenhado = empenhado['valor__sum'] 
+        else:
+            empenhado = 0
+
+        try:
+            inicial = float(i.saldo_homologado)
+            final = float(empenhado)
+
+            soma = inicial + final
+            capacidade = inicial - empenhado
+            r = (soma - inicial) / inicial * 100
+            
+            r = '{:.2f}'.format(r)
+            
+        except Exception as e:
+            
+            pass
+            # print(e)homologado
+        homologado.append(i.saldo_homologado)
+        l_empenhado.append(empenhado)
+        p.append(i.pregao)
+        percent.append(r)
+    x = {'labels': p, 'data':percent}
+    return JsonResponse(x)
+
+
+def homologado(request):
+    homologado = Pregao.objects.all().aggregate(Sum('saldo_homologado'))['saldo_homologado__sum']
+    homologado = f'{homologado:_.2f}'
+    homologado = homologado.replace('.',',').replace('_','.')
+
+    return JsonResponse({'homologado':homologado})
+
+def empenhado(request):
+    empenhado = Empenho.objects.all().aggregate(Sum('valor'))['valor__sum']
+
+
+    empenhado = f'R$ {empenhado:_.2f}'
+    empenhado = empenhado.replace('.',',').replace('_','.')
+    return JsonResponse({'empenhado':empenhado})
+
+def capacidade(request):
+    empenhado = Empenho.objects.all().aggregate(Sum('valor'))['valor__sum']
+    homologado = Pregao.objects.all().aggregate(Sum('saldo_homologado'))['saldo_homologado__sum']
+    capacidade = homologado - empenhado
+
+    capacidade = f'{capacidade:_.2f}'
+    capacidade = capacidade.replace('.',',').replace('_','.')
+    return JsonResponse({'capacidade':capacidade})
+
+
 
 @login_required(login_url='/auth/logar/') 
 def fornecedores(request):
@@ -254,3 +361,52 @@ def deletar_fornecedor(request, id):
     fornecedor = Fornecedor.objects.get(id=id)
     fornecedor.delete()
     return redirect('/fornecedores/')
+
+
+
+def credito(request):
+    creditos = PlanoInterno.objects.all()
+
+    # nc = NotaCredito.objects.all()
+    # for n in nc:
+    #     print(n.numero ,n.saldo_empenhado())
+    for c in creditos:
+        print(c.id)
+
+
+    return render(request, 'credito.html',{'creditos': creditos} )
+
+def nc(request, id):
+    nc = NotaCredito.objects.filter(pi_id=id)
+    pi = PlanoInterno.objects.get(id=id)
+    return render(request, 'nc.html',{'nc':nc, 'pi':pi})
+
+
+
+def inserir_demanda(request):
+    
+    try:
+        om = request.POST.get('om')
+        demanda = request.FILES.get('demanda')
+        data = date.today()
+
+
+        om_id = Om.objects.get(id=om)
+
+        novo_arquivo = Arquivo(om=om_id,
+                                demanda=demanda,
+                                data=data)
+
+        novo_arquivo.save()
+        messages.add_message(request, constants.SUCCESS, 'DOCUMENTOS ENVIADOS')
+
+        return redirect(f'/dados_om/{om}/')
+    except Exception as e:
+        print(e)
+        messages.add_message(request, constants.ERROR, 'ERRO, TENTE NOVAMENTE')
+        return redirect(f'/dados_om/{om}/')
+
+
+
+
+ 

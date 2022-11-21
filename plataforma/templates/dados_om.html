@@ -2,64 +2,94 @@
 {% load static %}
 {% block 'plataforma' %}
 
-    <br>
-    <!-- Button trigger modal -->
-    <br>
-    {% for i in om %}
-    <div class="container">  
-        <div class="row">
-            <div class="col-md-3">
-                <img width="50%" src="{{i.foto.url}}">
-            </div>
+    <div class="wrapper">
+      <div class="box">  {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+              <div class="alinhado">
+                  <div> 
+   
+                          <img width="5%" src="{{om.foto.url}}">
+                    </div>
 
-            <div class="col-md">
-                <h1 class="titulo">{{i.sigla}}</h1>
-                <p class="paragrafo">POLICLINICA MILITAR DA PRAIA VERMELHA</p>
-            </div>
+                          <h1 class="titulo">{{om.sigla}}</h1>
+                          <p class="paragrafo">POLICLINICA MILITAR DA PRAIA VERMELHA</p>       
+              </div>
+    
+              <div class="body-box">
+                  <div>
+                        <div class="col-md-6">
+                            <label>OM:</label>
+                            <input disabled type="text" class="form-control" value="{{om.sigla}}">
+                        </div>
 
+                          <div class="col-md-6">
+                              <label>Contato Principal:</label>
+                              <input disabled type="text" class="form-control" value="{{om.telefone}}">
+                          </div>
+                        
+                          <div class="col-md-6">
+                              <label>Email:</label>
+                              <input disabled type="text" class="form-control" value="{{om.email}}">
+                          </div>
+                        
+                    
+                    
+                          <div class="col-md-6">
+                              <label>Contatos almoxarifado:</label>
+                              <label>Ch: {{om.ch_almox}}</label>
+                              <input disabled type="text" class="form-control" value="{{om.tel_ch_almox}}">
+                              <label>Adj / Aux: {{om.adj_almox}}</label>
+                              <input disabled type="text" class="form-control" value="{{om.tel_adj_almox}}">
+                          </div>
+                          <br>
+                          <div class="col-md-6">
+               
+                            <a href="#" class="btn btn-confirmar ">EDITAR</a>
+                       
+                          {% comment %} <button type="button" class="btn btn-deletar" data-toggle="modal" data-target="#modal">
+                            EXCLUIR
+                        </button>  {% endcomment %}
+                        <button type="button" class="btn btn-confirmar" data-toggle="modal" data-target="#modal">
+                          ENVIAR DEMANDA
+                      </button>   
+                      </div>
+                      <br>
+                      <table class="tabela table-striped table-hover table-sm ">
+                        <caption>Lista de pregões</caption>
+                        <thead class='table-dark'>
+                           <tr >
+                            <th>DOCUMENTOS</th>
+                            <th>DATA</th>
 
-
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-6">
-                <label>OM:</label>
-                <input disabled type="text" class="form-control" value="{{i.sigla}}">
-            </div>
-
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-6">
-                <label>Contato Principal:</label>
-                <input disabled type="text" class="form-control" value="{{i.telefone}}">
-            </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-md-6">
-                <label>Email:</label>
-                <input disabled type="text" class="form-control" value="{{i.email}}">
-            </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-md-6">
-                <label>Contatos almoxarifado:</label>
-                <br>
-                <label>Ch: {{i.ch_almox}}</label>
-                <input disabled type="text" class="form-control" value="{{i.tel_ch_almox}}">
-                <label>Adj / Aux: {{i.adj_almox}}</label>
-                <input disabled type="text" class="form-control" value="{{i.tel_adj_almox}}">
-            </div>
-          </div>
-        </div>
-
-        <hr>
-  {% endfor %}
+                            
+                        </tr> 
+                        </thead>
+                        
+                        <tbody>      
+                                 {% for i in arq %}   
+                            <tr>
+                                <td><a href="{{i.demanda.url}}" target="_blank" rel="noopener noreferrer">DOCUMENTOS</td>
+                                <td>{{i.data}}</td>
+                                
+                            </tr>
+              {% endfor %}
+                        </tbody>
+                    </table>
+                  </div>
+            </div>        
+      </div>
+    </div>
+   
   <!-- Modal -->
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+  
+  {% comment %} <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -71,14 +101,63 @@
         <div class="modal-body">
           Tem certeza que deseja remover esta OM ?
         </div>
-        {% for i in om %}
+        
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">NÃO</button>
-          <a href="{% url 'deletar_om' i.id %}"><button type="button" class="btn btn-danger">DELETAR</button></a>
-        {% endfor %}
+          <a href="{% url 'deletar_om' om.id %}"><button type="button" class="btn btn-danger">DELETAR</button></a>
+  
         </div>
       </div>
     </div>
   </div>
 
-{% endblock%}
+ {% endcomment %}
+
+ <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header table-dark ">
+              <h5 id="exampleModalLabel">ENVIAR DOCUMENTOS</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <form action="{% url 'inserir_demenda'%}" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+                  
+                  <div class="row">
+                      <div class="modal-body"> 
+                            <div class="col-md">
+                              <label>OM:</label>
+                              <select name="om" class="form-control">
+                                <option value="{{om.id}}">{{om.sigla}}</option>
+                              </select>
+                              </div>
+                              <br>
+                              
+                              <div class="col-md">
+                              <label>Data:</label>
+                              <select name="data" class="form-control">
+                                <option value="{{data}}">{{data}}</option>
+                              </select>                              </div>
+                              <br>
+                              <div class="col-md">
+                                <label>ARQUIVOS: </label>
+                                <br>
+                                <input type="file" placeholder="demanda" name="demanda">
+                                </div>
+                          </div>
+                      </div>
+                      <input type="submit" class="btn btn-lg btn-dark " value="ENVIAR">
+
+                  </div>
+                  <br>
+    
+              </form>
+        
+              </div>
+          </div>
+      </div>
+  </div>
+{% endblock %}
+

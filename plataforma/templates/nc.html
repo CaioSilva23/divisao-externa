@@ -1,0 +1,131 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+
+{% block 'plataforma' %}
+    {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{message.tags}}">
+            {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="wrapper">
+        <div class="box"> 
+            <div class="header-box">
+                <h2 class="titulo">NOTAS DE CRÉDITO</h2>
+                
+                <button type="button" class="btn btn-conteudo bg-fundo" data-toggle="modal" data-target="#modal">
+                    NOVA NC  
+                </button>            </div>
+            <div class="borda-box"></div>
+            <div class="body-box">
+            
+                <form action='#' method='GET'> {% csrf_token %}
+                <div class="row">
+                    
+                        <div class="col-md-5">
+                            <h3 class="titulo">PI: {{pi.pi}}</h3>
+                        </div>
+
+        
+               
+                </div>
+                </form> 
+                <br>
+                <table class="tabela table-striped table-hover table-sm" cellpadding="20">
+                    <caption>Lista de Notas de Créditos</caption>
+                    <thead class='table-dark'>
+                       <tr >
+                        <th>NOTA DE CRÉDITO</th>
+                        <th>VALOR RECEBIDO</th>
+                        <th>SALDO EMPENHADO</th>
+                        <th>SALDO DISPONIVEL</th>
+
+
+                    </tr> 
+                    </thead>
+                    
+                    <tbody class='table-light'>
+                        {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
+                        {% for i in nc %}
+                        <tr>
+                            <td>2022NC{{i.numero}}</td>
+                            <td>R${{i.valor}}0</td>
+                            <td>{% if i.saldo_empenhado %}R${{i.saldo_empenhado}}0 {% else %}R$ 0,00 {% endif %} </td>
+                            <td>R${{i.disponivel}}</td>
+                
+                 
+                        
+                        </tr>   
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            
+
+        </div>
+    </div>
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header table-dark ">
+                    <h5 id="exampleModalLabel">NOVO PREGÃO</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="POST" enctype='multipart/form-data'> {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="modal-body"> 
+
+                                    <label>PREGÃO: </label>                                        
+                                    <input type="text" placeholder="PE" class="form-control" name="pregao">
+
+
+                                    <label>DESCRIÇÃO: </label>
+                                    <input type="text" placeholder="Descrição" class="form-control" name="descricao">
+
+                                    <label>OMS FAVORECIDAS:</label>
+                                    <select class="form-control" name="oms" multiple>                                
+                                        {% for om in oms %}
+                                        <option value="{{om.id}}">{{om}}</option>
+                                        {% endfor %}
+                                        
+                                    </select>
+
+                                    <label>SITUAÇÃO: </label>
+                                    <select name="situacao" class="form-control">
+                                        <option value="HOMOLOGADO">HOMOLOGADO</option>
+                                        <option value="CJU">CJU</option>
+
+                                    </select>
+                                    <label>Termo de Homologação:</label>
+                                    <input type="text" placeholder="https://" class="form-control" name="link">
+
+                                    <label>Catálogo:</label>
+                                    <br>
+                                    <input type="file" placeholder="Catálogo" name="catalogo">
+
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-lg btn-dark " value="Registrar">
+
+                        </div>
+                        <br>
+          
+                    </form>
+              
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+
+{% endblock 'plataforma' %}
