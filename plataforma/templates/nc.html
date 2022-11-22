@@ -53,8 +53,8 @@
                         {% for i in nc %}
                         <tr>
                             <td>2022NC{{i.numero}}</td>
-                            <td>R${{i.valor}}0</td>
-                            <td>{% if i.saldo_empenhado %}R${{i.saldo_empenhado}}0 {% else %}R$ 0,00 {% endif %} </td>
+                            <td>R${{i.saldo}}</td>
+                            <td>{% if i.saldo_empenhado %}R${{i.saldo_empenhado}} {% else %}R$ 0,00 {% endif %} </td>
                             <td>R${{i.disponivel}}</td>
                 
                  

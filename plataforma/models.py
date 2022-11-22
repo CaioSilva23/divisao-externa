@@ -63,7 +63,8 @@ class PlanoInterno(models.Model):
   
     def valor_total(self):
         creditos = NotaCredito.objects.filter(pi_id=self.id).aggregate(Sum('valor'))
-        return f"{creditos['valor__sum']:,.2f}"
+        valor  = f"{creditos['valor__sum']:_.2f}"
+        return valor.replace('.',',').replace('_','.')
 
     def __str__(self):
         return self.pi
@@ -77,36 +78,36 @@ class NotaCredito(models.Model):
     pi = models.ForeignKey(PlanoInterno, on_delete=models.SET_NULL, null=True)
 
 
-    def saldo_empenhado(self):
-        empenhos = Empenho.objects.filter(nota_credito_id=self.id).aggregate(Sum('valor'))
+    def saldo(self):
+        saldo = f'{self.valor:_.2f}'
+        return saldo.replace('.',',').replace('_','.')
 
-        return empenhos['valor__sum']
+    def saldo_empenhado(self):
+        empenhos = Empenho.objects.filter(nota_credito_id=self.id).aggregate(Sum('valor'))['valor__sum']
+        if not empenhos:
+            return 0
+        return f"{empenhos:_.2f}".replace('.',',').replace('_','.')
 
     def disponivel(self):
-        creditos = NotaCredito.objects.filter(id=self.id).aggregate(Sum('valor'))
+        empenhos = Empenho.objects.filter(nota_credito_id=self.id).aggregate(Sum('valor'))['valor__sum']
+        saldo = self.valor
+        if not empenhos:
+            return f'{saldo:_.2f}'.replace('.',',').replace('_','.')
+        return f'{saldo - empenhos:_.2f}'.replace('.',',').replace('_','.')
 
-        if self.saldo_empenhado():
-            soma = float(creditos['valor__sum']) 
-            empenhado = float(self.saldo_empenhado())
-        else:
-            soma = float(creditos['valor__sum'])     
-            empenhado = 0
-
-        return soma - empenhado
-
-
+    
     def __str__(self):
         return f'2022NC{self.numero}'
 
 class Empenho(models.Model):
     om = models.ForeignKey(Om, on_delete=models.CASCADE)
-    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.DO_NOTHING)
-    pregao = models.ForeignKey(Pregao, on_delete=models.DO_NOTHING)
-    plano_interno = models.ForeignKey(PlanoInterno, on_delete=models.DO_NOTHING, null=True, blank=True)
-    nota_credito = models.ForeignKey(NotaCredito, on_delete=models.DO_NOTHING)
+    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.SET_NULL, null=True)
+    pregao = models.ForeignKey(Pregao, on_delete=models.SET_NULL, null=True)
+    plano_interno = models.ForeignKey(PlanoInterno, on_delete=models.SET_NULL, null=True)
+    nota_credito = models.ForeignKey(NotaCredito, on_delete=models.SET_NULL, null=True)
     data = models.DateField()
     numero = models.CharField(max_length=4)
-    pdf = models.FileField(upload_to="pdf")
+    pdf = models.FileField(upload_to="pdf", null=True, blank=True)
     valor = models.FloatField(null=True, blank=True)
     
 
@@ -117,7 +118,7 @@ class Empenho(models.Model):
 
 class Arquivo(models.Model):
     demanda = models.FileField(upload_to='demanda-oms')
-    om = models.ForeignKey(Om, on_delete=models.DO_NOTHING)
+    om = models.ForeignKey(Om, on_delete=models.CASCADE)
     data = models.DateField(default=date.today())
 
     def __str__(self) -> str:

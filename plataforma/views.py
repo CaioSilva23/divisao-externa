@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Om, Empenho, Fornecedor, Pregao, PlanoInterno, NotaCredito, Arquivo
@@ -9,13 +9,17 @@ from datetime import date
 from django.db.models.aggregates import Avg, Sum, Min, Max
 
 def home_auth(request):
-    if request.user.is_authenticated: # VERIFICA SE O USUÁRIO JÁ ESTÁ AUTENTICADO
+
+    if request.user.is_authenticated: # VERIFICA SE O USUÁRIO JÁ ESTÁ AUTENTICADOa
         return redirect('home')
     return render(request, 'home_auth.html')
 
 
 @login_required(login_url='/auth/logar/') 
 def home(request):
+    nc_credito = NotaCredito.objects.get(id=1)
+    a = nc_credito.disponivel()
+    print(type(a))
     return render(request, 'home.html')
 
 def home_oms(request):
@@ -51,7 +55,7 @@ def om_empenhos(request):
 @login_required(login_url='/auth/logar/')
 def om_empenhos_id(request, id):
     fornecedor = Fornecedor.objects.all()
-    om = Om.objects.get(id=id)
+    om = get_object_or_404(Om, id=id)
     empenhos = Empenho.objects.filter(om_id=id).order_by('numero')
     pregoes = Pregao.objects.all()
     nc = NotaCredito.objects.all()
@@ -110,9 +114,16 @@ def inserir_empenho(request, id):
 
         forn1 = Fornecedor.objects.get(id=fornecedor)
         om_id = Om.objects.get(id=om)
+
         pregao_id = Pregao.objects.get(id=pregao)
+
         nc_credito = NotaCredito.objects.get(id=nc)
-        if nc_credito.disponivel() < float(valor):
+        a = nc_credito.disponivel().replace('.','').replace(',','.')
+
+        if float(a) < float(valor):
+
+
+
             messages.add_message(request, constants.ERROR, 'SALDO DA NOTA DE CRÉDITO INSUFICIENTE')
             return redirect(f'/om_empenhos_id/{id}')
         try:
@@ -125,13 +136,7 @@ def inserir_empenho(request, id):
                                 valor=valor,
                                 nota_credito=nc_credito)
             empenho.save()
-            
-            # nova_nc = NotaCredito.objects.get(id=nc)
-
-            # nova_nc.valor -= float(valor)
-            # nova_nc.save()
-
-
+        
             messages.add_message(request, constants.SUCCESS, 'Empenho inserido com sucesso')
             return redirect(f'/om_empenhos_id/{id}')
         except Exception as e:
@@ -283,6 +288,8 @@ def dashboard(request):
 
 def homologado(request):
     homologado = Pregao.objects.all().aggregate(Sum('saldo_homologado'))['saldo_homologado__sum']
+    if not homologado:
+        homologado = 0
     homologado = f'{homologado:_.2f}'
     homologado = homologado.replace('.',',').replace('_','.')
 
@@ -290,6 +297,8 @@ def homologado(request):
 
 def empenhado(request):
     empenhado = Empenho.objects.all().aggregate(Sum('valor'))['valor__sum']
+    if not empenhado:
+        empenhado = 0
 
 
     empenhado = f'R$ {empenhado:_.2f}'
@@ -299,6 +308,10 @@ def empenhado(request):
 def capacidade(request):
     empenhado = Empenho.objects.all().aggregate(Sum('valor'))['valor__sum']
     homologado = Pregao.objects.all().aggregate(Sum('saldo_homologado'))['saldo_homologado__sum']
+    if not empenhado:
+        empenhado = 0
+    if not homologado:
+        homologado = 0
     capacidade = homologado - empenhado
 
     capacidade = f'{capacidade:_.2f}'
