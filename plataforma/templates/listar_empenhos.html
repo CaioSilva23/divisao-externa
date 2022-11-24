@@ -1,7 +1,9 @@
 {% extends 'base_plataforma.html' %}
 {% load static %}
 
+{% block head %}
 
+{% endblock head %}
 {% block 'plataforma' %}
 
 <div class="wrapper">
@@ -69,6 +71,7 @@
                         <caption>Lista de Empenhos</caption>
                         <thead class='table-dark'>
                         <tr>
+                            <th>DIAS</th>
                             <th>OM</th>
                             <th>FORNECEDOR</th>
                             <th>NE</th>
@@ -81,6 +84,7 @@
                         <tbody class='bg-light'>
                             {% for i in empenhos %}
                             <tr class="tabela-linha" >
+                                <td {% if not i.entregue %}{{i.prioridade}}>{{i.qtd_dias }}{% else %}</td>OK{% endif %}
                                 <td>{{i.om }}</td>
                                 <td>{{i.fornecedor }}</td>
                                 <td>2022NE000{{i.numero}}</td>
@@ -88,12 +92,22 @@
                                 <td>{{i.data}}</td>
                                 <td>
                                     {% if i.valor%}
-                                    R$ {{i.valor}}0
+                                    R${{i.preco}}
                                     {% else %}
                                     -------
                                     {% endif %}</td>
                                 <td> 
-                                    <a class="btn btn-dark" href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer">ABRIR</a>
+                                    <a class="btn btn-success btn-sm" href="{{ i.pdf.url }}" target="_blank" rel="noopener noreferrer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                                          </svg>
+
+                                    </a>
+                                    <a class="btn btn-success btn-sm" href="{% url 'entregue' i.id%}"  rel="noopener noreferrer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                                        <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z"/>
+                                      </svg>
+                                    </a>
                                 </td>
                             </tr>
                             {% empty %}

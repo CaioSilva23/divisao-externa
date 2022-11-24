@@ -22,7 +22,11 @@
             </div>
         <br>
 
-            <div class="borda-box"></div>
+
+        <div class='home'>
+            <a href='{% url 'home'%}' class="btn bg-fundo">GRÁFICO</a>
+            <a href='{% url 'home_tabela'%}' class="btn bg-fundo">TABELA</a>
+           </div>
             <div class="body-box">
                 <br>
                 <div class="row informacoes">
@@ -82,15 +86,16 @@
                     </tr> 
                     </thead>
                     <tbody>
-               
+                        {% for i in lista %}
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td>a</td>
-                            <td>a</td>
+                            <td>{{i.pe}}</td>
+                            <td>{{i.homologado}}</td>
+                            <td>{{i.empenhado}}</td>
+                            <td>{{i.capacidade}}</td>
+                            <td>{{i.percent}}</td>
                         
                         </tr>
-
+{% endfor %}
                     </tbody>
 
           

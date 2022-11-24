@@ -16,7 +16,10 @@
     background: white;
 
 }
-
+.home{
+    text-align: left;
+    margin-left: 30px;
+}
 /* UTILS */
 
 .row1{
