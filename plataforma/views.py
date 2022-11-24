@@ -8,6 +8,7 @@ from django.contrib.messages import constants
 from datetime import date
 from django.db.models.aggregates import Avg, Sum, Min, Max
 from .entidade import tabela
+from django.utils.safestring import mark_safe
 
 def home_auth(request):
 
@@ -367,16 +368,26 @@ def home_tabela(request):
             r = (soma - inicial) / inicial * 100
             
             r = '{:.2f}'.format(r)
+
             
         except Exception as e:
             print(e)
             pass
-            # print(e)homologado
+        if True:
+            if float(r) < 50:
+                classe = "table-danger"
+            elif float(r) >= 50 and float(r) < 70:
+                classe = "table-warning"
+            elif float(r) > 70:
+                classe = "table-success"
 
-        n = tabela.Tabela(i, empenhado, capacidade, r)
+            prioridade = f'''class="{classe}"'''
+
+        prioridade = mark_safe(str(prioridade))    
+        n = tabela.Tabela(i, empenhado, capacidade, r, prioridade)
         lista.append(n)
 
-    print(lista)
+
 
     return render(request, 'home_tabela.html', {'lista':lista})
 
