@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from datetime import date
 from django.db.models.aggregates import Avg, Sum, Min, Max
+from .entidade import tabela
+from django.utils.safestring import mark_safe
 
 def home_auth(request):
 
@@ -88,7 +90,7 @@ def inserir_empenho(request, id):
         pdf = request.FILES.get('pdf')
         valor = request.POST.get('valor')
         nc = request.POST.get('nc')
-     
+        print(data)
      
         if ( len(om.strip()) == 0 or len(fornecedor.strip()) == 0 or len(numero_empenho.strip()) == 0 or len(pregao.strip()) ==0 or len(data.strip()) ==0): 
             messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
@@ -177,6 +179,30 @@ def remover_empenho(request, id):
     return redirect(f'/om_empenhos_id/{id_om}')
 
 
+def entregue(request, id):
+    empenho = Empenho.objects.filter(id=id)
+
+
+    
+    if not empenho.exists():
+        messages.add_message(request, constants.ERROR, 'Delete apenas empenhos válidos!')
+        return redirect('/home/')
+    
+
+    empenho = empenho.first()
+    if empenho.entregue == True:
+        messages.add_message(request, constants.ERROR, 'Registro de entrega já foi realizado para este empenho!')
+        return redirect(f'/om_empenhos_id/{empenho.om.id}')
+    elif empenho.entregue == False:
+        empenho.entregue = True
+        empenho.save()
+        messages.add_message(request, constants.SUCCESS, 'Registro de entrega realizado!')
+        return redirect(f'/om_empenhos_id/{empenho.om.id}')
+
+
+        
+
+
 @login_required(login_url='/auth/logar/') 
 def deletar_om(request, id):
     om_del = Om.objects.get(id=id)
@@ -242,10 +268,15 @@ def capacidade_empenho(request, id):
         inicial = float(pregao.saldo_homologado)
         final = float(empenhado)
         soma = inicial + final
-        capacidade = inicial - empenhado
+        capacidade = f'{inicial - empenhado:_.2f}'.replace('.',',').replace('_','.')
         r = (soma - inicial) / inicial * 100
     
         r = '{:.2f}'.format(r)
+
+        empenhado = f'{empenhado:_.2f}'.replace('.',',').replace('_','.')
+
+        # saldo = f'{self.valor:_.2f}'
+        # return saldo.replace('.',',').replace('_','.')
     except Exception as e:
         pass
     return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r, 'capacidade': capacidade})
@@ -320,11 +351,7 @@ def capacidade(request):
 
 def home_tabela(request):
     pregao = Pregao.objects.all()
-    homologado = []
-    l_empenhado = []
-    pe = []
-    percent = []
-    capacidade_list = []
+    lista = []
     for i in pregao:
         empenhado = Empenho.objects.filter(pregao_id=i.id).aggregate(Sum('valor'))
         if empenhado['valor__sum']:
@@ -341,23 +368,28 @@ def home_tabela(request):
             r = (soma - inicial) / inicial * 100
             
             r = '{:.2f}'.format(r)
+
             
         except Exception as e:
-            
+            print(e)
             pass
-            # print(e)homologado
-        homologado.append(i.saldo_homologado)
-        l_empenhado.append(empenhado)
-        pe.append(i.pregao)
-        percent.append(r)
-        capacidade_list.append(capacidade)
+        if True:
+            if float(r) < 50:
+                classe = "table-danger"
+            elif float(r) >= 50 and float(r) < 70:
+                classe = "table-warning"
+            elif float(r) > 70:
+                classe = "table-success"
+
+            prioridade = f'''class="{classe}"'''
+
+        prioridade = mark_safe(str(prioridade))    
+        n = tabela.Tabela(i, empenhado, capacidade, r, prioridade)
+        lista.append(n)
 
 
-    x = list(zip(pe,homologado,l_empenhado, capacidade_list,percent))
-    x = list(zip(*x))
-    print(x)
 
-    return render(request, 'home_tabela.html', {'x':x})
+    return render(request, 'home_tabela.html', {'lista':lista})
 
 @login_required(login_url='/auth/logar/') 
 def fornecedores(request):

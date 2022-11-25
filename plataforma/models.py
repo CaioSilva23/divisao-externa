@@ -1,6 +1,7 @@
 from django.db import models
-from datetime import date
+from datetime import date, datetime
 from django.db.models.aggregates import Avg, Sum, Min, Max
+from django.utils.safestring import mark_safe
 
 class Om(models.Model):
     LISTA_OMS = (
@@ -57,6 +58,11 @@ class Pregao(models.Model):
     
     def __str__(self):
         return self.pregao
+    
+    def saldo(self):
+        saldo = f'{self.saldo_homologado:_.2f}'
+
+        return saldo.replace('.',',').replace('_','.')
 
 class PlanoInterno(models.Model):
     pi = models.CharField(max_length=15)
@@ -79,8 +85,8 @@ class NotaCredito(models.Model):
 
 
     def saldo(self):
-        saldo = f'{self.valor:_.2f}'
-        return saldo.replace('.',',').replace('_','.')
+        saldo = f'{self.valor:_.2f}'.replace('.',',').replace('_','.')
+        return saldo
 
     def saldo_empenhado(self):
         empenhos = Empenho.objects.filter(nota_credito_id=self.id).aggregate(Sum('valor'))['valor__sum']
@@ -109,7 +115,41 @@ class Empenho(models.Model):
     numero = models.CharField(max_length=4)
     pdf = models.FileField(upload_to="pdf", null=True, blank=True)
     valor = models.FloatField(null=True, blank=True)
-    
+    entregue = models.BooleanField(default=False)
+
+
+    def qtd_dias(self):
+        # Data final
+
+        data = str(date.today())
+
+        d2 = datetime.strptime(data, '%Y-%m-%d')
+
+        # Data inicial
+        d1 = datetime.strptime(str(self.data), '%Y-%m-%d')
+
+        # Realizamos o calculo da quantidade de dias
+        quantidade_dias = abs((d2 - d1).days)
+
+        return quantidade_dias
+
+
+    def prioridade(self):
+        if self.qtd_dias() < 30:
+            classe = "table-success"
+        elif self.qtd_dias() <= 50:
+            classe = "table-warning"
+        else:
+            classe = "table-danger"
+        
+        prioridade = f'''class="{classe}"'''
+
+        return mark_safe(str(prioridade))
+        
+    def preco(self):
+        preco = f'{self.valor:_.2f}'.replace('.',',').replace('_','.')
+        return preco
+        
 
 
     def __str__(self):
