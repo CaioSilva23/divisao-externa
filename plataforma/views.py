@@ -208,7 +208,7 @@ def deletar_om(request, id):
     om_del = Om.objects.get(id=id)
     om_del.delete()
     messages.add_message(request, constants.SUCCESS, 'OM deletada com sucesso')
-    return redirect ('/home/')
+    return redirect ('/home_oms/')
 
 @login_required(login_url='/auth/logar/') 
 def pregoes(request):

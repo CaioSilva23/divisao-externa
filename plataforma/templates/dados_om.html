@@ -51,12 +51,14 @@
                
                             <a href="#" class="btn btn-confirmar ">EDITAR</a>
                        
-                          {% comment %} <button type="button" class="btn btn-deletar" data-toggle="modal" data-target="#modal">
-                            EXCLUIR
-                        </button>  {% endcomment %}
+                       
                         <button type="button" class="btn btn-confirmar" data-toggle="modal" data-target="#modal">
                           ENVIAR DEMANDA
-                      </button>   
+                        </button>  
+                     
+                        <a href="#" ><button class="btn btn-deletar " type="button" data-toggle="modal" data-target="#modalOM">EXCLUIR</button></a>
+                  
+
                       </div>
                       <br>
                       <table class="tabela table-striped table-hover table-sm ">
@@ -87,9 +89,8 @@
    
   <!-- Modal -->
 
-
-  
-  {% comment %} <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Modal OM -->
+ <div class="modal fade" id="modalOM" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -111,8 +112,8 @@
     </div>
   </div>
 
- {% endcomment %}
-
+ 
+  <!-- Modal DEMANDA -->
  <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
       <div class="modal-content">
