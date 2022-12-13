@@ -157,7 +157,7 @@ class Empenho(models.Model):
 
 
 class Arquivo(models.Model):
-    demanda = models.FileField(upload_to='demanda-oms')
+    demanda = models.FileField(upload_to='demanda-oms', null=True)
     om = models.ForeignKey(Om, on_delete=models.CASCADE)
     data = models.DateField(default=date.today())
 
