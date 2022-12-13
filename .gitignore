@@ -60,7 +60,10 @@ cover/
 local_settings.py
 db.sqlite3-journal
 db.sqlite3
+<<<<<<< HEAD
 
+=======
+>>>>>>> 285a3718f9759a687428b4cc68ce6a52140cbd66
 # Flask stuff:
 instance/
 .webassets-cache

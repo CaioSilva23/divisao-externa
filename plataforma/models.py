@@ -1,33 +1,12 @@
 from django.db import models
-from datetime import date, datetime
 from django.db.models.aggregates import Avg, Sum, Min, Max
-from django.utils.safestring import mark_safe
+from django.utils.timezone import now
 
-class Om(models.Model):
-    LISTA_OMS = (
-        ('PMPV', 'PMPV'),
-        ('PMRJ', 'PMRJ'),
-        ('PMN', 'PMN'),
-        ('IBEX', 'IBEX'),
-        ('HCE', 'HCE'),
-        ('OCEX', 'OCEX'),
-        ('HMR', 'HMR'),
-        ('HGERJ', 'HGERJ'),
-        ('PM Gu VV', 'PM Gu VV'),
-        ('LQFEX', 'LQFEX'),
-        )
 
-    sigla = models.CharField(max_length=10, choices=LISTA_OMS)
-    foto = models.ImageField(upload_to="imagens")
-    email = models.EmailField(null=True)
-    telefone = models.IntegerField(null=True)
-    ch_almox = models.CharField(max_length=10, null=True, blank=True)
-    tel_ch_almox = models.CharField(max_length=15, null=True, blank=True)
-    adj_almox = models.CharField(max_length=10, null=True, blank=True)
-    tel_adj_almox = models.CharField(max_length=15, null=True, blank=True)
+from oms.models import Om
+from empenhos.models import Empenho
+from pregoes.models import Pregao
 
-    def __str__(self):
-        return self.sigla
 
 
 class Fornecedor(models.Model):
@@ -38,31 +17,6 @@ class Fornecedor(models.Model):
 
     def __str__(self):
         return self.nome
-
-
-
-
-class Pregao(models.Model):
-    SITUACAO_CHICES = (
-    ('HOMOLOGADO','HOMOLOGADO'),
-    ('CJU','CJU'),
-    )
-
-    saldo_homologado = models.FloatField()
-    pregao = models.CharField(max_length=7, null=False, blank=False)
-    situacao = models.CharField(max_length=20, choices=SITUACAO_CHICES)
-    descrição = models.CharField(max_length=200, null=False, blank=False)
-    oms_favorecidas = models.ManyToManyField(Om)
-    termo_homolocao = models.URLField()
-    catalago = models.FileField(upload_to='catalago', null=True, blank=True)
-    
-    def __str__(self):
-        return self.pregao
-    
-    def saldo(self):
-        saldo = f'{self.saldo_homologado:_.2f}'
-
-        return saldo.replace('.',',').replace('_','.')
 
 class PlanoInterno(models.Model):
     pi = models.CharField(max_length=15)
@@ -105,61 +59,13 @@ class NotaCredito(models.Model):
     def __str__(self):
         return f'2022NC{self.numero}'
 
-class Empenho(models.Model):
-    om = models.ForeignKey(Om, on_delete=models.CASCADE)
-    fornecedor = models.ForeignKey(Fornecedor, on_delete=models.SET_NULL, null=True)
-    pregao = models.ForeignKey(Pregao, on_delete=models.SET_NULL, null=True)
-    plano_interno = models.ForeignKey(PlanoInterno, on_delete=models.SET_NULL, null=True)
-    nota_credito = models.ForeignKey(NotaCredito, on_delete=models.SET_NULL, null=True)
-    data = models.DateField()
-    numero = models.CharField(max_length=4)
-    pdf = models.FileField(upload_to="pdf", null=True, blank=True)
-    valor = models.FloatField(null=True, blank=True)
-    entregue = models.BooleanField(default=False)
 
-
-    def qtd_dias(self):
-        # Data final
-
-        data = str(date.today())
-
-        d2 = datetime.strptime(data, '%Y-%m-%d')
-
-        # Data inicial
-        d1 = datetime.strptime(str(self.data), '%Y-%m-%d')
-
-        # Realizamos o calculo da quantidade de dias
-        quantidade_dias = abs((d2 - d1).days)
-
-        return quantidade_dias
-
-
-    def prioridade(self):
-        if self.qtd_dias() < 30:
-            classe = "table-success"
-        elif self.qtd_dias() <= 50:
-            classe = "table-warning"
-        else:
-            classe = "table-danger"
-        
-        prioridade = f'''class="{classe}"'''
-
-        return mark_safe(str(prioridade))
-        
-    def preco(self):
-        preco = f'{self.valor:_.2f}'.replace('.',',').replace('_','.')
-        return preco
-        
-
-
-    def __str__(self):
-        return f'2022NE000{self.numero}'
 
 
 class Arquivo(models.Model):
     demanda = models.FileField(upload_to='demanda-oms', null=True)
     om = models.ForeignKey(Om, on_delete=models.CASCADE)
-    data = models.DateField(default=date.today())
+    data = models.DateField(default=now)
 
     def __str__(self) -> str:
         return 'Aquivo'

@@ -5,6 +5,11 @@ from django.contrib.messages import constants
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
+def home_auth(request):
+
+    if request.user.is_authenticated: # VERIFICA SE O USUÁRIO JÁ ESTÁ AUTENTICADOa
+        return redirect('home')
+    return render(request, 'home_auth.html')
 
 
 

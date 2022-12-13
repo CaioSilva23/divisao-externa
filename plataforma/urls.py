@@ -3,32 +3,20 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.home_auth, name='home_auth'),
+
     path('home/', views.home, name='home'),
 
-    #OM
-    path('home_oms/', views.home_oms, name='home_oms'),
-    path('deletar_om/<str:id>', views.deletar_om, name='deletar_om'),
-    path('dados_om/<str:id>/', views.dados_om_id, name='dados_om_id'),
-    path('om_empenhos/', views.om_empenhos, name='om_empenhos'),
-    path('om_empenhos_id/<str:id>/', views.om_empenhos_id, name='om_empenhos_id'),
 
-    #EMPENHOS
-    path('inserir_empenho/<str:id>/', views.inserir_empenho, name='inserir_empenho'),
-    path('listar_empenhos/', views.listar_empenhos, name='listar_empenhos'),
-    path('remover_empenho/<str:id>/', views.remover_empenho, name="remover_empenho"),
-    path('entregue/<int:id>/', views.entregue, name='entregue' ),
-
-    #PREGÕES
-    path('pregoes/', views.pregoes, name='pregoes'),
-    path('inserir_pregao/', views.inserir_pregao, name='inserir_pregao'),
-    path('deletar_pregao/<int:id>', views.deletar_pregao, name='deletar_pregao'),
-    path('capacidade_empenho<int:id>', views.capacidade_empenho, name='capacidade_empenho'),
-    path('dashboard/', views.dashboard, name='dashboard'),
-    path('homologado/', views.homologado, name='homologado'),
-    path('empenhado/', views.empenhado, name='empenhado'),
-    path('capacidade/', views.capacidade, name='capacidade'),
-    path('home_tabela/', views.home_tabela, name='home_tabela'),
+    # #PREGÕES
+    # path('pregoes/', views.pregoes, name='pregoes'),
+    # path('inserir_pregao/', views.inserir_pregao, name='inserir_pregao'),
+    # path('deletar_pregao/<int:id>', views.deletar_pregao, name='deletar_pregao'),
+    # path('capacidade_empenho<int:id>', views.capacidade_empenho, name='capacidade_empenho'),
+    # path('dashboard/', views.dashboard, name='dashboard'),
+    # path('homologado/', views.homologado, name='homologado'),
+    # path('empenhado/', views.empenhado, name='empenhado'),
+    # path('capacidade/', views.capacidade, name='capacidade'),
+    # path('home_tabela/', views.home_tabela, name='home_tabela'),
 
     # FORNECEDORES
     path('fornecedores/', views.fornecedores, name='fornecedores'),
