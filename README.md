@@ -11,25 +11,20 @@
 </div>
 
 <p align="center">
-  <img alt="Principal linguagem do projeto" src="https://img.shields.io/github/languages/top/CaioSilva23/divisao-externa?color=56BEB8" />
+  <img alt="Principal linguagem do projeto" src="https://img.shields.io/github/languages/top/CaioSilva23/divisao-externa" />
 
-  <img alt="Quantidade de linguagens utilizadas" src="https://img.shields.io/github/languages/count/caiosilva23/divisao-externa?color=56BEB8" />
+  <img alt="Quantidade de linguagens utilizadas" src="https://img.shields.io/github/languages/count/caiosilva23/divisao-externa" />
 
-  <img alt="Tamanho do repositório" src="https://img.shields.io/github/repo-size/caiosilva23/divisao-externa?color=56BEB8" />
+  <img alt="Tamanho do repositório" src="https://img.shields.io/github/repo-size/caiosilva23/divisao-externa" />
 
-  <img alt="Licença" src="https://img.shields.io/github/license/navegantes/freelaway?color=56BEB8" />
+  <img alt="Licença" src="https://img.shields.io/github/license/caiosilva23/divisao-externa" />
 
-  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/navegantes/freelaway?color=56BEB8" /> -->
-
-  <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/navegantes/freelaway?color=56BEB8" /> -->
-
-  <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/navegantes/freelaway?color=56BEB8" /> -->
 </p>
 
 <!-- Status -->
 
 <!-- <h4 align="center">
-	🚧  Freelaway 🚀 Em construção...  🚧
+
 </h4>
 
 <hr> -->
@@ -41,7 +36,7 @@
   <a href="#white_check_mark-pré-requisitos">Pré requisitos</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-começando">Começando</a> &#xa0; | &#xa0;
   <a href="#memo-licença">Licença</a> &#xa0; | &#xa0;
-  <a href="https://github.com/navegantes" target="_blank">Autor</a>
+  <a href="https://github.com/caiosilva23" target="_blank">Autor</a>
 </p>
 
 <p align="center">
