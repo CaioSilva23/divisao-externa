@@ -34,7 +34,7 @@ def inserir_fornecedor(request):
         nome = request.POST.get('nome').upper()
         cnpj = request.POST.get('cnpj')
         email = request.POST.get('email')
-        telefone = request.POST.get('email')
+        telefone = request.POST.get('telefone')
 
         if (len(nome.strip()) == 0 or len(email.strip()) == 0 or len(telefone.strip()) == 0 or len(email.strip()) ==0): 
             messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
