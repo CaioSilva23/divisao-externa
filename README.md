@@ -1,5 +1,5 @@
 <div align="center" id="top"> 
-  <img src="./public/logo.png" alt="Freelaway" />
+  <img src="#" alt="" />
 
 <!-- &#xa0; -->
 
@@ -8,15 +8,14 @@
 
 <div align="center"> 
   <h1 align="center">SISTEMA DE CONTROLE - PREGÕES E EMPENHOS</h1>
-  <!-- <img src="./public/pystack_week.png" alt="Freelaway" width=200 /> -->
 </div>
 
 <p align="center">
-  <img alt="Principal linguagem do projeto" src="https://img.shields.io/github/languages/top/navegantes/freelaway?color=56BEB8" />
+  <img alt="Principal linguagem do projeto" src="https://img.shields.io/github/languages/top/CaioSilva23/divisao-externa?color=56BEB8" />
 
-  <img alt="Quantidade de linguagens utilizadas" src="https://img.shields.io/github/languages/count/navegantes/freelaway?color=56BEB8" />
+  <img alt="Quantidade de linguagens utilizadas" src="https://img.shields.io/github/languages/count/caiosilva23/divisao-externa?color=56BEB8" />
 
-  <img alt="Tamanho do repositório" src="https://img.shields.io/github/repo-size/navegantes/freelaway?color=56BEB8" />
+  <img alt="Tamanho do repositório" src="https://img.shields.io/github/repo-size/caiosilva23/divisao-externa?color=56BEB8" />
 
   <img alt="Licença" src="https://img.shields.io/github/license/navegantes/freelaway?color=56BEB8" />
 
@@ -47,11 +46,14 @@
 
 <p align="center">
   <img alt="Login" src="public/login.png" width=250>
-  <img alt="cadastrar" src="public/cadastrar.png" width=250>
-  <img alt="Recuprerar senha" src="public/recuperar_senha.png" width=250>
-  <img alt="Encontrar job" src="public/encontrar_jobs.png" width=250>
-  <img alt="Job" src="public/job.png" width=250>
-  <img alt="Perfil" src="public/perfil.png" width=250>
+  <img alt="home" src="public/home.png" width=250>
+  <img alt="execucao" src="public/execucao1.png" width=250>
+<img alt="execucao" src="public/execucao2.png" width=250>
+  <img alt="pregoes" src="public/pregoes.png" width=250>
+  <img alt="empenhos" src="public/empenhos.png" width=250>
+  <img alt="capacidade" src="public/capacidade.png" width=250>
+  <img alt="nota_credito" src="public/nota_credito.png" width=250>
+  <img alt="om" src="public/om.png" width=250>
 </p>
 
 ## 🎯 Sobre
