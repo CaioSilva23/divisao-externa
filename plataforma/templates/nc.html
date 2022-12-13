@@ -30,8 +30,6 @@
                             <h3 class="titulo">PI: {{pi.pi}}</h3>
                         </div>
 
-        
-               
                 </div>
                 </form> 
                 <br>
@@ -49,16 +47,12 @@
                     </thead>
                     
                     <tbody class='table-light'>
-                        {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
                         {% for i in nc %}
                         <tr>
                             <td>2022NC{{i.numero}}</td>
                             <td>R${{i.saldo}}</td>
                             <td>{% if i.saldo_empenhado %}R${{i.saldo_empenhado}} {% else %}R$ 0,00 {% endif %} </td>
                             <td>R${{i.disponivel}}</td>
-                
-                 
-                        
                         </tr>   
                         {% endfor %}
                     </tbody>

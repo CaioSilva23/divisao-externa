@@ -55,7 +55,6 @@
                     </thead>
                     
                     <tbody>
-                        {% comment %} {% for empresa in empresas  %}{% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}{% endcomment %}
                         {% for pregao in pregoes %}
                         <tr>
                             <td><a href="{% url 'capacidade_empenho' pregao.id%}">{{pregao.pregao}}</a> </td>
