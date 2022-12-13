@@ -17,7 +17,7 @@
 
   <img alt="Tamanho do repositório" src="https://img.shields.io/github/repo-size/caiosilva23/divisao-externa" />
 
-  <img alt="Licença" src="https://img.shields.io/github/license/caiosilva23/divisao-externa" />
+    <img alt="Licença" src="https://img.shields.io/github/license/caiosilva23/divisao-externa" />
 
 </p>
 
