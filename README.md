@@ -164,7 +164,7 @@ $ python manage.py runserver <porta>
 
 Este projeto está sob licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-Feito com ❤️ por <a href="https://github.com/navegantes" target="_blank">Raphael Navegantes</a>
+Desenvolvido por <a href="https://github.com/caiosilva23" target="_blank">Caio Silva</a>
 
 &#xa0;
 
