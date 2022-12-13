@@ -5,8 +5,6 @@ from django.utils.timezone import now
 
 from oms.models import Om
 from empenhos.models import Empenho
-from pregoes.models import Pregao
-
 
 
 class Fornecedor(models.Model):

@@ -61,30 +61,25 @@ def deletar_pregao(request, id):
     messages.add_message(request, constants.SUCCESS, 'Pregão deletado com sucesso')
     return redirect ('/pregoes/')
 
-
 def capacidade_empenho(request, id):
     pregao = Pregao.objects.get(id=id)
+    empenhado = Empenho.objects.filter(pregao_id=id).aggregate(Sum('valor'))['valor__sum']
 
-    
-    empenhado = Empenho.objects.filter(pregao_id=id).aggregate(Sum('valor'))
-    if empenhado['valor__sum']:
-        empenhado = empenhado['valor__sum'] 
-    else:
+    if not empenhado:
         empenhado = 0
-
     try:
+        # CAPACIDADE DE EMPENHO
         inicial = float(pregao.saldo_homologado)
         final = float(empenhado)
-        soma = inicial + final
         capacidade = f'{inicial - empenhado:_.2f}'.replace('.',',').replace('_','.')
+        
+        # PORCENTAGEM EMPENHADO DO PREGAO
+        soma = inicial + final
         r = (soma - inicial) / inicial * 100
-    
         r = '{:.2f}'.format(r)
-
+        
+        # SALDO EMPENHADO DO PREGAO
         empenhado = f'{empenhado:_.2f}'.replace('.',',').replace('_','.')
-
-        # saldo = f'{self.valor:_.2f}'
-        # return saldo.replace('.',',').replace('_','.')
     except Exception as e:
         pass
     return render(request, 'capacidade_empenho.html', {'pregao':pregao, 'empenhado': empenhado, 'r':r, 'capacidade': capacidade})
@@ -92,35 +87,30 @@ def capacidade_empenho(request, id):
 # API DASHBOARD
 def dashboard(request):
     pregao = Pregao.objects.all()
+
     homologado = []
     l_empenhado = []
     p = []
     percent = []
-    for i in pregao:
-        empenhado = Empenho.objects.filter(pregao_id=i.id).aggregate(Sum('valor'))
-        if empenhado['valor__sum']:
-            empenhado = empenhado['valor__sum'] 
-        else:
-            empenhado = 0
 
+    for i in pregao:
+        empenhado = Empenho.objects.filter(pregao_id=i.id).aggregate(Sum('valor'))['valor__sum']
+        if not empenhado:
+            empenhado = 0
         try:
             inicial = float(i.saldo_homologado)
             final = float(empenhado)
-
             soma = inicial + final
-            capacidade = inicial - empenhado
             r = (soma - inicial) / inicial * 100
-            
             r = '{:.2f}'.format(r)
             
         except Exception as e:
-            
             pass
-            # print(e)homologado
         homologado.append(i.saldo_homologado)
         l_empenhado.append(empenhado)
         p.append(i.pregao)
         percent.append(r)
+
     x = {'labels': p, 'data':percent}
     return JsonResponse(x)
 
@@ -138,8 +128,6 @@ def empenhado(request):
     empenhado = Empenho.objects.all().aggregate(Sum('valor'))['valor__sum']
     if not empenhado:
         empenhado = 0
-
-
     empenhado = f'R$ {empenhado:_.2f}'
     empenhado = empenhado.replace('.',',').replace('_','.')
     return JsonResponse({'empenhado':empenhado})
@@ -166,7 +154,6 @@ def home_tabela(request):
             empenhado = empenhado['valor__sum'] 
         else:
             empenhado = 0
-
         try:
             inicial = float(i.saldo_homologado)
             final = float(empenhado)
@@ -177,7 +164,6 @@ def home_tabela(request):
             
             r = '{:.2f}'.format(r)
 
-            
         except Exception as e:
             print(e)
             pass

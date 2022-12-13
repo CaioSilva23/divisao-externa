@@ -1,17 +1,12 @@
 from django.shortcuts import render, redirect , get_object_or_404
-from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-
 
 from .models import Fornecedor, PlanoInterno, NotaCredito, Arquivo
 from oms.models import Om
-from pregoes.models import Pregao
 
 from django.contrib import messages
 from django.contrib.messages import constants
 from datetime import date
-from django.db.models.aggregates import Avg, Sum, Min, Max
-from django.utils.safestring import mark_safe
 
 
 
@@ -79,14 +74,6 @@ def deletar_fornecedor(request, id):
 
 def credito(request):
     creditos = PlanoInterno.objects.all()
-
-    # nc = NotaCredito.objects.all()
-    # for n in nc:
-    #     print(n.numero ,n.saldo_empenhado())
-    for c in creditos:
-        print(c.id)
-
-
     return render(request, 'credito.html',{'creditos': creditos} )
 
 def nc(request, id):
@@ -97,29 +84,19 @@ def nc(request, id):
 
 
 def inserir_demanda(request):
-    
     try:
         om = request.POST.get('om')
         demanda = request.FILES.get('demanda')
-        data = date.today()
-
-
         om_id = Om.objects.get(id=om)
 
         novo_arquivo = Arquivo(om=om_id,
                                 demanda=demanda,
-                                data=data)
+                                data=date.today())
 
         novo_arquivo.save()
         messages.add_message(request, constants.SUCCESS, 'DOCUMENTOS ENVIADOS')
 
         return redirect(f'/dados_om/{om}/')
     except Exception as e:
-        print(e)
         messages.add_message(request, constants.ERROR, 'ERRO, TENTE NOVAMENTE')
         return redirect(f'/dados_om/{om}/')
-
-
-
-
- 
